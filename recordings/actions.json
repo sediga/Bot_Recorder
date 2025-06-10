@@ -1,0 +1,18 @@
+[
+  {
+    "action": "click",
+    "selector": "#identifierId"
+  },
+  {
+    "action": "click",
+    "selector": "#identifierId"
+  },
+  {
+    "action": "click",
+    "selector": ".VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d-OWXEXe-Tv8l5d-lJfZMc.VfPpkd-ksKsZd-mWPk3d"
+  },
+  {
+    "action": "click",
+    "selector": ".WpHeLc.VfPpkd-mRLv6.VfPpkd-RLmnJb"
+  }
+]
