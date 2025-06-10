@@ -1,81 +1,63 @@
-from playwright.sync_api import sync_playwright
+import asyncio
 import json
-import os
-import threading
-import keyboard  # install with: pip install keyboard
+from pathlib import Path
+from playwright.async_api import async_playwright
 
-actions = []
-recording = True
+recorded_events = []
+output_path = Path("recorded_actions.json")
+recorded_actions_json = {}
+with open(output_path, "r") as f:
+    content = f.read().strip()
+    if not content:
+        print("⚠️ recorded_actions.json is empty.")
+        recorded_actions_json = {}
+    else:
+        recorded_actions_json = json.loads(content)
 
-def record_action(event):
-    if event["type"] == "click":
-        selector = event.get("selector", "")
-        actions.append({
-            "action": "click",
-            "selector": selector
-        })
-    # elif event["type"] == ""
+async def handle_event(source, event):
+    recorded_events.append(event)
+    print("Recorded:", event)
 
-def wait_for_enter():
-    global recording
-    input("\nPress Enter to stop recording...\n")
-    recording = False
+async def run():
+    script_path = Path("./javascript/recorder.js")
 
-def main():
-    global recording
-    url = input("Enter URL to record actions: ").strip()
-    if not url.startswith("http"):
-        url = "https://" + url
+    if not script_path.exists():
+        print("Missing recorder.js file")
+        return
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        context = browser.new_context()
-        page = context.new_page()
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=False, slow_mo=50)
+        context = await browser.new_context()
+        page = await context.new_page()
 
-        # Inject script to record clicks
-        page.expose_function("recordAction", lambda e: record_action(e))
-        page.goto(url)
+        # Bind JS to Python
+        await context.expose_binding("sendEventToPython", handle_event)
 
-        page.evaluate("""
-            () => {
-                document.addEventListener('click', (event) => {
-                    const path = event.composedPath();
-                    const element = path.find(el => el.id || el.className || el.tagName);
-                    console.log("click event receibed:", element);
-                    if (!element) return;
+        # Inject the JS recorder
+        await context.add_init_script(script_path.read_text(encoding="utf-8"))
 
-                    const selector = element.id
-                        ? `#${element.id}`
-                        : element.className
-                        ? `.${element.className.toString().replace(/\\s+/g, '.')}`
-                        : element.tagName;
+        print("please enter url : ")
+        url = input().strip()
+        # Go to the target site
+        await page.goto(url)  # Replace with your target
 
-                    console.log("Received action:", selector);
-                    window.recordAction({ type: 'click', selector });
-                });
-            }
-        """)
+        try:
+            print("Recording... Press ENTER to stop.")
+            input()
+            await browser.close()
+        except KeyboardInterrupt:
+            print("Recording interrupted.")
+        finally:
+            recorded_actions_json[url] = recorded_events
+            output_path.write_text(json.dumps(recorded_actions_json, indent=2))
+            # with open(output_path, "w") as f:
+            #     json.dump(recorded_events, f, indent=2)
+            print(f"Saved {len(recorded_events)} events to {output_path}")
+            await browser.close()
+            print("Recording session ended.")
 
-        # Start Enter listener
-        enter_thread = threading.Thread(target=wait_for_enter, daemon=True)
-        enter_thread.start()
-
-        print("Recording started...")
-
-        while recording:
-            pass
-
-        browser.close()
-        
-    print("\nRecording stopped.\nActions recorded:")
-    for a in actions:
-        print(a)
-
-    # Save to JSON file
-    os.makedirs("recordings", exist_ok=True)
-    with open("recordings/actions.json", "w") as f:
-        json.dump(actions, f, indent=2)
-
+        # # Save the results
+ 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(run())

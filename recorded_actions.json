@@ -1,1 +1,537 @@
-[]
+{
+  "http://gmail.com": [
+    {
+      "action": "focus",
+      "selector": "#identifierId",
+      "timestamp": 1749572195140
+    },
+    {
+      "action": "click",
+      "selector": "#identifierId",
+      "timestamp": 1749572200553
+    },
+    {
+      "action": "change",
+      "selector": "#identifierId",
+      "timestamp": 1749572207362,
+      "value": "sreenivasa.goud@gamil.com"
+    },
+    {
+      "action": "blur",
+      "selector": "#identifierId",
+      "timestamp": 1749572207362
+    },
+    {
+      "action": "focus",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.fAlnEc > c-wiz.A77ntc > div.Svhjgc > div.JYXaTc > div.O1Slxf > div.TNTaPb > div.XjS9D.TrZEUc > div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d-OWXEXe-Tv8l5d-lJfZMc",
+      "timestamp": 1749572207365
+    },
+    {
+      "action": "blur",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.fAlnEc > c-wiz.A77ntc > div.Svhjgc > div.JYXaTc > div.O1Slxf > div.TNTaPb > div.XjS9D.TrZEUc > div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d-OWXEXe-Tv8l5d-lJfZMc.VfPpkd-ksKsZd-mWPk3d",
+      "timestamp": 1749572207476
+    },
+    {
+      "action": "focus",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.kPY6ve",
+      "timestamp": 1749572207480
+    },
+    {
+      "action": "click",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.fAlnEc > c-wiz.A77ntc > div.Svhjgc > div.JYXaTc > div.O1Slxf > div.TNTaPb > div.XjS9D.TrZEUc > div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d > span.VfPpkd-vQzf8d",
+      "timestamp": 1749572207603
+    },
+    {
+      "action": "blur",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.kPY6ve",
+      "timestamp": 1749572208208
+    },
+    {
+      "action": "focus",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.fAlnEc > c-wiz.A77ntc > div.Svhjgc > div.JYXaTc > div.O1Slxf > div.TNTaPb > div.XjS9D.TrZEUc > div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > div.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d-OWXEXe-Tv8l5d-lJfZMc > a.WpHeLc.VfPpkd-mRLv6.VfPpkd-RLmnJb",
+      "timestamp": 1749572209586
+    },
+    {
+      "action": "click",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.fAlnEc > c-wiz.A77ntc > div.Svhjgc > div.JYXaTc > div.O1Slxf > div.TNTaPb > div.XjS9D.TrZEUc > div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > div.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d-OWXEXe-Tv8l5d-lJfZMc.VfPpkd-ksKsZd-mWPk3d",
+      "timestamp": 1749572209709
+    },
+    {
+      "action": "click",
+      "selector": "html.eC9N2e > body.jR8x9d.nyoS7c.UzCXuf.EIlDfe > div.S7xv8.LZgQXe > div.TcuCfd.NQ5OL > div.fAlnEc > c-wiz.A77ntc > div.Svhjgc > div.JYXaTc > div.O1Slxf > div.TNTaPb > div.XjS9D.TrZEUc > div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb > div.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.BqKGqe.Jskylb.TrZEUc.lw1w4b.VfPpkd-ksKsZd-mWPk3d-OWXEXe-Tv8l5d-lJfZMc.VfPpkd-ksKsZd-mWPk3d > a.WpHeLc.VfPpkd-mRLv6.VfPpkd-RLmnJb",
+      "timestamp": 1749572209710
+    }
+  ],
+  "http://edigatech.com": [
+    {
+      "action": "click",
+      "selector": "html > body > div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4 > div.grid.md:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover:shadow-lg.transition > p.text-gray-700",
+      "timestamp": 1749572511447
+    },
+    {
+      "action": "focus",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572514775
+    },
+    {
+      "action": "click",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572514861
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515099,
+      "key": "s"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515109,
+      "value": "s"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515159,
+      "key": "r"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515163,
+      "value": "sr"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515357,
+      "key": "e"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515361,
+      "value": "sre"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515507,
+      "key": "e"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572515512,
+      "value": "sree"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572516049,
+      "key": "n"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572516052,
+      "value": "sreen"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572516318,
+      "key": "i"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572516322,
+      "value": "sreeni"
+    },
+    {
+      "action": "change",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572516988,
+      "value": "sreeni"
+    },
+    {
+      "action": "blur",
+      "selector": "[name=\"name\"]",
+      "timestamp": 1749572516989
+    },
+    {
+      "action": "focus",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572516990
+    },
+    {
+      "action": "click",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572517090
+    },
+    {
+      "action": "blur",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572518339
+    },
+    {
+      "action": "focus",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572518340
+    },
+    {
+      "action": "click",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572518439
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572518838,
+      "key": "a"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572518843,
+      "value": "a"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572518954,
+      "key": "s"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572518956,
+      "value": "as"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519014,
+      "key": "g"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519016,
+      "value": "asg"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519126,
+      "key": "f"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519130,
+      "value": "asgf"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519174,
+      "key": "s"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519178,
+      "value": "asgfs"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519262,
+      "key": "f"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519266,
+      "value": "asgfsf"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519349,
+      "key": "g"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519352,
+      "value": "asgfsfg"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519467,
+      "key": "d"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519473,
+      "value": "asgfsfgd"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519475,
+      "key": "s"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519479,
+      "value": "asgfsfgds"
+    },
+    {
+      "action": "change",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519862,
+      "value": "asgfsfgds"
+    },
+    {
+      "action": "blur",
+      "selector": "[name=\"message\"]",
+      "timestamp": 1749572519862
+    },
+    {
+      "action": "focus",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > main.max-w-6xl.mx-auto.p-6.min-h-screen > section.py-12 > div.bg-indigo-50.rounded-2xl.p-6.shadow-md.border.border-indigo-200.mx-auto.max-w-3xl > form.space-y-4.bg-white.p-6.rounded-xl.shadow-lg > button.px-4.py-2.bg-indigo-600.text-white.rounded.hover:bg-indigo-700",
+      "timestamp": 1749572519863
+    },
+    {
+      "action": "click",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > main.max-w-6xl.mx-auto.p-6.min-h-screen > section.py-12 > div.bg-indigo-50.rounded-2xl.p-6.shadow-md.border.border-indigo-200.mx-auto.max-w-3xl > form.space-y-4.bg-white.p-6.rounded-xl.shadow-lg > button.px-4.py-2.bg-indigo-600.text-white.rounded.hover:bg-indigo-700",
+      "timestamp": 1749572519968
+    },
+    {
+      "action": "blur",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > main.max-w-6xl.mx-auto.p-6.min-h-screen > section.py-12 > div.bg-indigo-50.rounded-2xl.p-6.shadow-md.border.border-indigo-200.mx-auto.max-w-3xl > form.space-y-4.bg-white.p-6.rounded-xl.shadow-lg > button.px-4.py-2.bg-indigo-600.text-white.rounded.hover:bg-indigo-700",
+      "timestamp": 1749572519969
+    },
+    {
+      "action": "focus",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572519969
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523072,
+      "key": "t"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523082,
+      "value": "t"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523158,
+      "key": "e"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523163,
+      "value": "te"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523336,
+      "key": "s"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523339,
+      "value": "tes"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523432,
+      "key": "t"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572523438,
+      "value": "test"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572524688,
+      "key": "Shift"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572524957,
+      "key": "@"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572524961,
+      "value": "test@"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572525950,
+      "key": "t"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572525955,
+      "value": "test@t"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572526128,
+      "key": "e"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572526130,
+      "value": "test@te"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572526218,
+      "key": "s"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572526222,
+      "value": "test@tes"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572526495,
+      "key": "t"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572526498,
+      "value": "test@test"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572527029,
+      "key": "."
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572527034,
+      "value": "test@test."
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572527628,
+      "key": "c"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572527632,
+      "value": "test@test.c"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572528109,
+      "key": "o"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572528112,
+      "value": "test@test.co"
+    },
+    {
+      "action": "keydown",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572528379,
+      "key": "m"
+    },
+    {
+      "action": "type",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572528383,
+      "value": "test@test.com"
+    },
+    {
+      "action": "change",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572529199,
+      "value": "test@test.com"
+    },
+    {
+      "action": "blur",
+      "selector": "[name=\"email\"]",
+      "timestamp": 1749572529200
+    },
+    {
+      "action": "focus",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > main.max-w-6xl.mx-auto.p-6.min-h-screen > section.py-12 > div.bg-indigo-50.rounded-2xl.p-6.shadow-md.border.border-indigo-200.mx-auto.max-w-3xl > form.space-y-4.bg-white.p-6.rounded-xl.shadow-lg > button.px-4.py-2.bg-indigo-600.text-white.rounded.hover:bg-indigo-700",
+      "timestamp": 1749572529201
+    },
+    {
+      "action": "click",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > main.max-w-6xl.mx-auto.p-6.min-h-screen > section.py-12 > div.bg-indigo-50.rounded-2xl.p-6.shadow-md.border.border-indigo-200.mx-auto.max-w-3xl > form.space-y-4.bg-white.p-6.rounded-xl.shadow-lg > button.px-4.py-2.bg-indigo-600.text-white.rounded.hover:bg-indigo-700",
+      "timestamp": 1749572529264
+    },
+    {
+      "action": "blur",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > main.max-w-6xl.mx-auto.p-6.min-h-screen > section.py-12 > div.bg-indigo-50.rounded-2xl.p-6.shadow-md.border.border-indigo-200.mx-auto.max-w-3xl > form.space-y-4.bg-white.p-6.rounded-xl.shadow-lg > button.px-4.py-2.bg-indigo-600.text-white.rounded.hover:bg-indigo-700",
+      "timestamp": 1749572529272
+    },
+    {
+      "action": "submit",
+      "selector": "[name=\"[object HTMLInputElement]\"]",
+      "timestamp": 1749572529274
+    },
+    {
+      "action": "focus",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > header.sticky.top-0.bg-white.shadow.z-50 > nav.max-w-6xl.mx-auto.px-4.py-3.flex.justify-between.items-center > a.text-sm.text-indigo-600.hover:text-indigo-800.transition.font-medium",
+      "timestamp": 1749572531696
+    },
+    {
+      "action": "click",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > header.sticky.top-0.bg-white.shadow.z-50 > nav.max-w-6xl.mx-auto.px-4.py-3.flex.justify-between.items-center > a.text-sm.text-indigo-600.hover:text-indigo-800.transition.font-medium",
+      "timestamp": 1749572531747
+    },
+    {
+      "action": "blur",
+      "selector": "html > body > div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > header.sticky.top-0.bg-white.shadow.z-50 > nav.max-w-6xl.mx-auto.px-4.py-3.flex.justify-between.items-center > a.text-sm.text-indigo-600.hover:text-indigo-800.transition.font-medium",
+      "timestamp": 1749572531751
+    }
+  ]
+}
