@@ -1,3 +1,5 @@
+import { getSmartSelector } from './selectorHelper.js';
+
 (function () {
   if (window.__recorderInjected) return;
   window.__recorderInjected = true;
@@ -14,7 +16,7 @@
 
     if (!target || typeof window.sendEventToPython !== "function") return;
 
-    const selector = generateSmartSelector(target);
+    const selector = getSmartSelector(target);
     const now = Date.now();
 
     if (type === "click") {
@@ -34,7 +36,7 @@
         if (lastTypedElement) {
           window.sendEventToPython({
             action: "type",
-            selector: generateSmartSelector(lastTypedElement),
+            selector: getSmartSelector(lastTypedElement),
             timestamp: Date.now(),
             value: lastTypedElement.value,
           });
@@ -52,72 +54,6 @@
   };
 
   const escapeQuotes = (str) => str.replace(/"/g, '\\"').replace(/'/g, "\\'");
-
-  const generateSmartSelector = (el) => {
-    if (!el || el === document) return "";
-
-    const clickable = el.closest("button, [role='button'], a, input[type='button']");
-    const target = clickable || el;
-
-    if (target.id) return `#${target.id}`;
-
-    if (target.tagName?.toLowerCase() === 'a' && target.getAttribute('aria-label')) {
-      return `a[aria-label='${escapeQuotes(target.getAttribute('aria-label'))}']`;
-    }
-
-    if (target.name) return `[name='${escapeQuotes(target.name)}']`;
-    if (target.getAttribute("data-testid"))
-      return `[data-testid='${escapeQuotes(target.getAttribute("data-testid"))}']`;
-    if (target.getAttribute("aria-label"))
-      return `[aria-label='${escapeQuotes(target.getAttribute("aria-label"))}']`;
-    if (target.placeholder)
-      return `[placeholder='${escapeQuotes(target.placeholder)}']`;
-
-    const tag = target.tagName?.toLowerCase();
-
-    if (tag?.toLowerCase() === "button") {
-      const label = target.getAttribute("aria-label") || target.textContent.trim();
-      return `button:has-text("${escapeQuotes(label)}")`;
-    }
-
-    if (tag?.toLowerCase() === "input" && target.type?.toLowerCase() === "button") {
-      return `input[type="button"][value='${escapeQuotes(target.value)}']`;
-    }
-
-    const role = target.getAttribute("role");
-    const label = target.getAttribute("aria-label") || target.textContent.trim();
-    if ((role?.toLowerCase() === "button" || role?.toLowerCase() === "link") && label) {
-      return `[role='${escapeQuotes(role)}']:has-text("${escapeQuotes(label)}")`;
-    }
-
-    // Try meaningful class name selector before fallback
-    const classList = [...target.classList]
-      .filter(cls => !/^\d+$/.test(cls) && /^[A-Za-z0-9_-]+$/.test(cls)); // only safe class names
-
-    if (classList.length) {
-      console.log("Using class selector:", classList);
-      const classSelector = '.' + classList.join('.');
-      const matches = document.querySelectorAll(classSelector);
-      if (matches.length === 1) {
-        return classSelector; // Unique enough, use it
-      }
-    }
-    // Fallback: DOM path with filtered classnames
-    const path = [];
-    let elWalker = target;
-    while (elWalker && elWalker.nodeType === Node.ELEMENT_NODE && elWalker !== document.body) {
-      let part = elWalker.nodeName.toLowerCase();
-      const classList = [...elWalker.classList].filter(cls => !/^\d+$/.test(cls));
-      if (classList.length) part += '.' + classList.join('.');
-      const siblings = Array.from(elWalker.parentNode.children)
-        .filter(n => n.nodeName === elWalker.nodeName);
-      if (siblings.length > 1) part += `:nth-of-type(${siblings.indexOf(elWalker) + 1})`;
-      path.unshift(part);
-      elWalker = elWalker.parentNode;
-    }
-
-    return path.join(" > ");
-  };
 
   ["click", "focus", "blur", "change", "input", 'mousedown'].forEach(type => {
     document.addEventListener(type, sendEvent, true);

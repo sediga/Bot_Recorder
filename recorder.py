@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright
 
 recorded_events = []
 output_path = Path("recorded_actions.json")
-script_path = Path("./javascript/recorder.js")
+script_path = Path("./javascript/recorder.bundle.js")
 
 # Load existing recordings
 recorded_actions_json = {}
