@@ -1,57 +1,59 @@
 export function getSmartSelector(el) {
-  if (!el || el.nodeType !== Node.ELEMENT_NODE) return '';
+  if (!el || el === document || el.nodeType !== 1) return '';
 
-  // Prioritize meaningful attributes
-  const preferAttr = (element) => {
-    const attrPriority = ['id', 'data-testid', 'aria-label', 'name', 'placeholder', 'title'];
-    for (const attr of attrPriority) {
-      const value = element.getAttribute(attr);
-      if (value) return `[${attr}="${cssEscape(value)}"]`;
-    }
-    return null;
-  };
+  // Prefer semantic ancestors for interactions
+  const interactiveAncestor = el.closest('button, [role="button"], a, input[type="button"], [tabindex]');
+  const targetEl = interactiveAncestor || el;
 
-  // Prefer text for buttons/links
-  const tag = el.tagName.toLowerCase();
-  if (tag === 'button' || tag === 'a') {
-    const label = el.getAttribute('aria-label') || el.textContent.trim();
-    if (label) return `${tag}:has-text("${label}")`;
+  // Use stable attributes first
+  if (targetEl.id) return `#${CSS.escape(targetEl.id)}`;
+  if (targetEl.name) return `[name='${CSS.escape(targetEl.name)}']`;
+  if (targetEl.getAttribute('data-testid'))
+    return `[data-testid='${CSS.escape(targetEl.getAttribute('data-testid'))}']`;
+  if (targetEl.getAttribute('aria-label'))
+    return `[aria-label='${CSS.escape(targetEl.getAttribute('aria-label'))}']`;
+  if (targetEl.placeholder) return `[placeholder='${CSS.escape(targetEl.placeholder)}']`;
+
+  const tag = targetEl.tagName.toLowerCase();
+  const type = targetEl.getAttribute('type');
+  const role = targetEl.getAttribute('role');
+  const text = targetEl.textContent.trim().replace(/\s+/g, ' ').replace(/["']/g, '');
+
+  // Buttons
+  if (tag === 'button' && text) return `button:has-text("${text}")`;
+  if (tag === 'input' && type === 'button' && targetEl.value)
+    return `input[type="button"][value="${CSS.escape(targetEl.value)}"]`;
+
+  // Elements with role + label/text
+  if ((role === 'button' || role === 'link') && text)
+    return `[role='${role}']:has-text("${text}")`;
+
+  // Anchors with meaningful text
+  if (tag === 'a' && text) return `a:has-text("${text}")`;
+
+  // Other tags with recognizable text
+  if (
+    ['span', 'div', 'p', 'strong', 'li', 'label'].includes(tag) &&
+    text.length > 0 &&
+    text.length < 100
+  ) {
+    return `${tag}:has-text("${text}")`;
   }
 
-  // Check preferred attributes
-  const preferred = preferAttr(el);
-  if (preferred) return preferred;
-
-  // Walk up for the nearest uniquely identifiable ancestor
-  const ancestor = el.closest('button, a, [role="button"], input[type="button"], div, span');
-  if (ancestor && ancestor !== el) return getSmartSelector(ancestor);
-
-  // Fallback to class-based DOM path (excluding auto-generated)
+  // Fallback: build DOM path
   const path = [];
-  let node = el;
-  while (node && node !== document.body) {
-    let segment = node.tagName.toLowerCase();
-
-    // Filter classes to avoid dynamic ones
-    const classList = [...node.classList].filter(cls =>
-      cls.length > 1 && !/^\d+$/.test(cls) && !cls.includes('ng-') && !cls.includes('jsx')
+  let elWalker = targetEl;
+  while (elWalker && elWalker.nodeType === 1 && elWalker !== document.body) {
+    let selector = elWalker.tagName.toLowerCase();
+    const classes = [...elWalker.classList].filter(cls => !/^\d+$/.test(cls));
+    if (classes.length) selector += '.' + classes.map(c => CSS.escape(c)).join('.');
+    const siblings = Array.from(elWalker.parentNode.children).filter(
+      sibling => sibling.tagName === elWalker.tagName
     );
-    if (classList.length > 0) segment += '.' + classList.join('.');
-
-    // Add :nth-of-type if siblings with same tag exist
-    const siblings = Array.from(node.parentNode?.children || []).filter(n => n.tagName === node.tagName);
-    if (siblings.length > 1) {
-      const index = siblings.indexOf(node);
-      segment += `:nth-of-type(${index + 1})`;
-    }
-
-    path.unshift(segment);
-    node = node.parentNode;
+    if (siblings.length > 1) selector += `:nth-of-type(${siblings.indexOf(elWalker) + 1})`;
+    path.unshift(selector);
+    elWalker = elWalker.parentNode;
   }
 
   return path.join(' > ');
-}
-
-function cssEscape(str) {
-  return str.replace(/["\\]/g, '\\$&');
 }

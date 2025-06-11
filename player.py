@@ -45,32 +45,57 @@ async def run():
 
             try:
                 await _perform_action(act, page, selector=selector, value=value, key=key)
-                # Add more cases as needed (e.g., submit)
             except Exception as e:
-                # await page.wait_for_selector(selector)
-                # await _perform_action(act, page, selector=selector, value=value, key=key)
-                print(f"❌ Failed {act} on {selector}: {e}")
+                print(f"❌ Unexpected error on {act} / {selector}: {e}")
 
         print("✅ Replay finished.")
         input()
         await browser.close()
 
-async def _perform_action(action, page, selector=None, value=None, key=None):
-    await asyncio.sleep(1)  # Small delay to mimic human interaction
-    if action == "click":
-        if selector:
-            return await page.click(selector)
-    elif action == "type":
-        if selector and value:
-            return await page.fill(selector, value)
-    elif action == "press":
-        if key:
-            return await page.keyboard.press(key)
-    elif action == "select":
-        if selector and value:
-            return await page.select_option(selector, value)
-    # Add more actions as needed
-    # raise ValueError(f"Unknown action: {action}")
+async def _perform_action(action, page, selector=None, value=None, key=None, retries=3):
+    await asyncio.sleep(1)
+
+    async def try_in_frame(frame, action, selector, value, key):
+        if action == "click":
+            await frame.wait_for_selector(selector, state="visible", timeout=5000)
+            return await frame.click(selector, timeout=5000)
+        elif action == "type":
+            await frame.wait_for_selector(selector, state="attached", timeout=5000)
+            return await frame.fill(selector, value)
+        elif action == "press":
+            return await frame.keyboard.press(key)
+        elif action == "select":
+            await frame.wait_for_selector(selector, state="attached", timeout=5000)
+            return await frame.select_option(selector, value)
+
+    for attempt in range(1, retries + 1):
+        try:
+            # Try on main page
+            await try_in_frame(page, action, selector, value, key)
+            return
+        except Exception as e:
+            print(f"⏳ Attempt {attempt} failed on main page for {action} on {selector}: {e}")
+
+            # Try inside all frames
+            for frame in page.frames:
+                try:
+                    await try_in_frame(frame, action, selector, value, key)
+                    print(f"✅ Success inside frame: {frame.url}")
+                    return
+                except:
+                    continue  # Try next frame
+
+            # Final fallback: force click if it's a click action
+            if action == "click" and attempt == retries:
+                try:
+                    await page.wait_for_selector(selector, state="attached", timeout=3000)
+                    await page.click(selector, force=True, timeout=3000)
+                    print(f"✅ Force click succeeded on main page: {selector}")
+                    return
+                except Exception as fe:
+                    print(f"❌ Force click failed: {fe}")
+
+            await asyncio.sleep(2)
 
 if __name__ == "__main__":
     asyncio.run(run())
