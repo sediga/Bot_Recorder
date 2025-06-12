@@ -1,0 +1,504 @@
+{
+  "http://gmail.com": [
+    {
+      "action": "focus",
+      "selector": "#identifierId",
+      "timestamp": 1749689819385,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "#identifierId",
+      "timestamp": 1749689822630,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#identifierId",
+      "timestamp": 1749689822679,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "div.S7xv8.LZgQXe:nth-of-type(1)",
+      "timestamp": 1749689824332,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "#identifierId",
+      "timestamp": 1749689824336,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "div.S7xv8.LZgQXe:nth-of-type(1)",
+      "timestamp": 1749689824437,
+      "value": null
+    }
+  ],
+  "http://edigatech.com": [
+    {
+      "action": "mousedown",
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700",
+      "timestamp": 1749676679039,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700",
+      "timestamp": 1749676679147,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")",
+      "timestamp": 1749676681558,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")",
+      "timestamp": 1749676681560,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")",
+      "timestamp": 1749676681667,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")",
+      "timestamp": 1749676681669,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1749676684276,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1749676684277,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1749676684367,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1749676684372,
+      "value": null
+    }
+  ],
+  "https://raiserecruiting.com/": [
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Resources\")",
+      "timestamp": 1749662766745,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Resources\")",
+      "timestamp": 1749662766753,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Resources\")",
+      "timestamp": 1749662766791,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "[title=\"Q+A: What problems can Raise Talent Intelligence solve for you?\"]",
+      "timestamp": 1749662776263,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[title=\"Q+A: What problems can Raise Talent Intelligence solve for you?\"]",
+      "timestamp": 1749662776268,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[title=\"Q+A: What problems can Raise Talent Intelligence solve for you?\"]",
+      "timestamp": 1749662776287,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Find a Job\")",
+      "timestamp": 1749662788153,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Find a Job\")",
+      "timestamp": 1749662788158,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Find a Job\")",
+      "timestamp": 1749662788243,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Find a Job\")",
+      "timestamp": 1749662788869,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "button:has-text(\"Close overlay\")",
+      "timestamp": 1749662800259,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Project Control Coordinator\")",
+      "timestamp": 1749662803966,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "button:has-text(\"Close overlay\")",
+      "timestamp": 1749662803978,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Project Control Coordinator\")",
+      "timestamp": 1749662803978,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Project Control Coordinator\")",
+      "timestamp": 1749662804078,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Project Control Coordinator\")",
+      "timestamp": 1749662804131,
+      "value": null
+    }
+  ],
+  "http://google.com": [
+    {
+      "action": "focus",
+      "selector": "#APjFqb",
+      "timestamp": 1749689318662,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "#APjFqb",
+      "timestamp": 1749689319983,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#APjFqb",
+      "timestamp": 1749689320042,
+      "value": null
+    },
+    {
+      "action": "type",
+      "selector": "#APjFqb",
+      "timestamp": 1749689321469,
+      "value": "test"
+    },
+    {
+      "action": "mousedown",
+      "selector": "[role='button']:has-text(\"Stay signed out\")",
+      "timestamp": 1749689323406,
+      "value": null
+    },
+    {
+      "action": "change",
+      "selector": "#APjFqb",
+      "timestamp": 1749689323408,
+      "value": "test"
+    },
+    {
+      "action": "blur",
+      "selector": "#APjFqb",
+      "timestamp": 1749689323409,
+      "value": "test"
+    },
+    {
+      "action": "focus",
+      "selector": "[role='button']:has-text(\"Stay signed out\")",
+      "timestamp": 1749689323416,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[role='button']:has-text(\"Stay signed out\")",
+      "timestamp": 1749689323507,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[role='button']:has-text(\"Stay signed out\")",
+      "timestamp": 1749689323516,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#APjFqb",
+      "timestamp": 1749689323520,
+      "value": "test"
+    },
+    {
+      "action": "mousedown",
+      "selector": "#APjFqb",
+      "timestamp": 1749689324947,
+      "value": "test"
+    },
+    {
+      "action": "click",
+      "selector": "#APjFqb",
+      "timestamp": 1749689325014,
+      "value": "test"
+    },
+    {
+      "action": "mousedown",
+      "selector": "#recaptcha-anchor",
+      "timestamp": 1749689329406,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#recaptcha-anchor",
+      "timestamp": 1749689329408,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#recaptcha-anchor",
+      "timestamp": 1749689329497,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "#recaptcha-anchor",
+      "timestamp": 1749689329504,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[name='c-8h3jimfkxevl']",
+      "timestamp": 1749689329918,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689332490,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689332491,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689332553,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689333306,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689333307,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689333308,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689333408,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689334133,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689334134,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689334135,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689334248,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "#recaptcha-verify-button",
+      "timestamp": 1749689334916,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[aria-label='Image\\ challenge']",
+      "timestamp": 1749689334916,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#recaptcha-verify-button",
+      "timestamp": 1749689334917,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#recaptcha-verify-button",
+      "timestamp": 1749689334968,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "#recaptcha-verify-button",
+      "timestamp": 1749689334973,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#recaptcha-anchor",
+      "timestamp": 1749689335017,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "#recaptcha-anchor",
+      "timestamp": 1749689335038,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[name='c-8h3jimfkxevl']",
+      "timestamp": 1749689335039,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[name='a-8h3jimfkxevl']",
+      "timestamp": 1749689335039,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")",
+      "timestamp": 1749689336997,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")",
+      "timestamp": 1749689337001,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")",
+      "timestamp": 1749689337082,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#search-term",
+      "timestamp": 1749689337789,
+      "value": "test"
+    },
+    {
+      "action": "blur",
+      "selector": "#search-term",
+      "timestamp": 1749689342055,
+      "value": "test"
+    }
+  ],
+  "http://octagoshealth.com": [
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Patients\")",
+      "timestamp": 1749689860448,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Patients\")",
+      "timestamp": 1749689860450,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Patients\")",
+      "timestamp": 1749689860568,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864485,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864487,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864601,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864751,
+      "value": null
+    }
+  ]
+}

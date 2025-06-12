@@ -1,0 +1,46 @@
+{
+  "http://octagoshealth.com": [
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Patients\")",
+      "timestamp": 1749689860448,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Patients\")",
+      "timestamp": 1749689860450,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Patients\")",
+      "timestamp": 1749689860568,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864485,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864487,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864601,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "[role='button']:has-text(\"AcceptAccept\")",
+      "timestamp": 1749689864751,
+      "value": null
+    }
+  ]
+}
