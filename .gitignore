@@ -36,6 +36,7 @@ dataset/live_events.jsonl
 dataset/selector_logs.jsonl
 
 /recorder/ms-playwright/*
+/__pycache__/*
 
 # Logs and temp files
 *.log

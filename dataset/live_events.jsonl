@@ -131,6 +131,7 @@
 {"action": "focus", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864487, "value": null}
 {"action": "click", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864601, "value": null}
 {"action": "blur", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864751, "value": null}
+<<<<<<< HEAD
 {"action": "focus", "selector": "#identifierId", "timestamp": 1749729149557, "value": null}
 {"action": "mousedown", "selector": "#identifierId", "timestamp": 1749729160804, "value": null}
 {"action": "click", "selector": "#identifierId", "timestamp": 1749729160927, "value": null}
@@ -324,3 +325,5 @@
 {"action": "mousedown", "selector": "a:has-text(\"Tech, Internet, Software\")", "timestamp": 1749997390617, "value": null}
 {"action": "focus", "selector": "a:has-text(\"Tech, Internet, Software\")", "timestamp": 1749997390624, "value": null}
 {"action": "click", "selector": "a:has-text(\"Tech, Internet, Software\")", "timestamp": 1749997390695, "value": null}
+=======
+>>>>>>> 8b7952a3a9c65cf7e4423a236f658a96aa8df3ac
