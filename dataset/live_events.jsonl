@@ -1,0 +1,133 @@
+{"action": "mousedown", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700", "timestamp": 1749686336343, "value": null}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700", "timestamp": 1749686336397, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")", "timestamp": 1749686394009, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")", "timestamp": 1749686394012, "value": null}
+{"action": "click", "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")", "timestamp": 1749686394118, "value": null}
+{"action": "blur", "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")", "timestamp": 1749686394121, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1749686400176, "value": null}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1749686400178, "value": null}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1749686400283, "value": null}
+{"action": "blur", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1749686400286, "value": null}
+{"action": "mousedown", "selector": "div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > section.py-12.scroll-mt-20.max-w-4xl.mx-auto.px-4:nth-of-type(2) > h2.text-2xl.font-bold.mb-4.text-indigo-700", "timestamp": 1749686425409, "value": null}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gradient-to-br.from-white.via-blue-50.to-purple-100.text-gray-800 > section.py-12.scroll-mt-20.max-w-4xl.mx-auto.px-4:nth-of-type(2) > h2.text-2xl.font-bold.mb-4.text-indigo-700", "timestamp": 1749686425471, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749686432848, "value": null}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749686432851, "value": null}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749686432980, "value": null}
+{"action": "blur", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749686432986, "value": null}
+{"action": "focus", "selector": "#APjFqb", "timestamp": 1749688939960, "value": null}
+{"action": "blur", "selector": "#APjFqb", "timestamp": 1749688940704, "value": null}
+{"action": "focus", "selector": "div:has-text(\"Sign in to GoogleGet the most from your Google accountStay signed outSign in\")", "timestamp": 1749688940706, "value": null}
+{"action": "mousedown", "selector": "#APjFqb", "timestamp": 1749688941718, "value": null}
+{"action": "blur", "selector": "div:has-text(\"Sign in to GoogleGet the most from your Google accountStay signed outSign in\")", "timestamp": 1749688941719, "value": null}
+{"action": "focus", "selector": "#APjFqb", "timestamp": 1749688941721, "value": null}
+{"action": "click", "selector": "#APjFqb", "timestamp": 1749688941840, "value": null}
+{"action": "type", "selector": "#APjFqb", "timestamp": 1749688943378, "value": "tes"}
+{"action": "mousedown", "selector": "#recaptcha-anchor", "timestamp": 1749688948789, "value": null}
+{"action": "focus", "selector": "#recaptcha-anchor", "timestamp": 1749688948792, "value": null}
+{"action": "click", "selector": "#recaptcha-anchor", "timestamp": 1749688948909, "value": null}
+{"action": "blur", "selector": "#recaptcha-anchor", "timestamp": 1749688948914, "value": null}
+{"action": "focus", "selector": "[name='c-d4k88hqopbhx']", "timestamp": 1749688949386, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951264, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951266, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951375, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951783, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951784, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951785, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688951877, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688952299, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688952300, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688952300, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688952371, "value": null}
+{"action": "mousedown", "selector": "#recaptcha-verify-button", "timestamp": 1749688952817, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688952818, "value": null}
+{"action": "focus", "selector": "#recaptcha-verify-button", "timestamp": 1749688952819, "value": null}
+{"action": "click", "selector": "#recaptcha-verify-button", "timestamp": 1749688952905, "value": null}
+{"action": "blur", "selector": "#recaptcha-verify-button", "timestamp": 1749688952918, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688954846, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688954847, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688954952, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955338, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955338, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955339, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955447, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955946, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955947, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688955947, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956057, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956392, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956393, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956393, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956466, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956920, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956920, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956921, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688956986, "value": null}
+{"action": "mousedown", "selector": "#recaptcha-verify-button", "timestamp": 1749688958402, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749688958402, "value": null}
+{"action": "focus", "selector": "#recaptcha-verify-button", "timestamp": 1749688958402, "value": null}
+{"action": "click", "selector": "#recaptcha-verify-button", "timestamp": 1749688958536, "value": null}
+{"action": "blur", "selector": "#recaptcha-verify-button", "timestamp": 1749688958538, "value": null}
+{"action": "focus", "selector": "#recaptcha-anchor", "timestamp": 1749688958584, "value": null}
+{"action": "blur", "selector": "#recaptcha-anchor", "timestamp": 1749688958600, "value": null}
+{"action": "blur", "selector": "[name='c-d4k88hqopbhx']", "timestamp": 1749688958601, "value": null}
+{"action": "focus", "selector": "[name='a-d4k88hqopbhx']", "timestamp": 1749688958601, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Testing.com: Order Lab Tests and Blood Tests OnlineTesting.comhttps://www.testing.com\")", "timestamp": 1749688963617, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Testing.com: Order Lab Tests and Blood Tests OnlineTesting.comhttps://www.testing.com\")", "timestamp": 1749688963618, "value": null}
+{"action": "click", "selector": "a:has-text(\"Testing.com: Order Lab Tests and Blood Tests OnlineTesting.comhttps://www.testing.com\")", "timestamp": 1749688963670, "value": null}
+{"action": "focus", "selector": "#APjFqb", "timestamp": 1749689318662, "value": null}
+{"action": "mousedown", "selector": "#APjFqb", "timestamp": 1749689319983, "value": null}
+{"action": "click", "selector": "#APjFqb", "timestamp": 1749689320042, "value": null}
+{"action": "type", "selector": "#APjFqb", "timestamp": 1749689321469, "value": "test"}
+{"action": "mousedown", "selector": "[role='button']:has-text(\"Stay signed out\")", "timestamp": 1749689323406, "value": null}
+{"action": "change", "selector": "#APjFqb", "timestamp": 1749689323408, "value": "test"}
+{"action": "blur", "selector": "#APjFqb", "timestamp": 1749689323409, "value": "test"}
+{"action": "focus", "selector": "[role='button']:has-text(\"Stay signed out\")", "timestamp": 1749689323416, "value": null}
+{"action": "click", "selector": "[role='button']:has-text(\"Stay signed out\")", "timestamp": 1749689323507, "value": null}
+{"action": "blur", "selector": "[role='button']:has-text(\"Stay signed out\")", "timestamp": 1749689323516, "value": null}
+{"action": "focus", "selector": "#APjFqb", "timestamp": 1749689323520, "value": "test"}
+{"action": "mousedown", "selector": "#APjFqb", "timestamp": 1749689324947, "value": "test"}
+{"action": "click", "selector": "#APjFqb", "timestamp": 1749689325014, "value": "test"}
+{"action": "mousedown", "selector": "#recaptcha-anchor", "timestamp": 1749689329406, "value": null}
+{"action": "focus", "selector": "#recaptcha-anchor", "timestamp": 1749689329408, "value": null}
+{"action": "click", "selector": "#recaptcha-anchor", "timestamp": 1749689329497, "value": null}
+{"action": "blur", "selector": "#recaptcha-anchor", "timestamp": 1749689329504, "value": null}
+{"action": "focus", "selector": "[name='c-8h3jimfkxevl']", "timestamp": 1749689329918, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689332490, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689332491, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689332553, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689333306, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689333307, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689333308, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689333408, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689334133, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689334134, "value": null}
+{"action": "focus", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689334135, "value": null}
+{"action": "click", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689334248, "value": null}
+{"action": "mousedown", "selector": "#recaptcha-verify-button", "timestamp": 1749689334916, "value": null}
+{"action": "blur", "selector": "[aria-label='Image\\ challenge']", "timestamp": 1749689334916, "value": null}
+{"action": "focus", "selector": "#recaptcha-verify-button", "timestamp": 1749689334917, "value": null}
+{"action": "click", "selector": "#recaptcha-verify-button", "timestamp": 1749689334968, "value": null}
+{"action": "blur", "selector": "#recaptcha-verify-button", "timestamp": 1749689334973, "value": null}
+{"action": "focus", "selector": "#recaptcha-anchor", "timestamp": 1749689335017, "value": null}
+{"action": "blur", "selector": "#recaptcha-anchor", "timestamp": 1749689335038, "value": null}
+{"action": "blur", "selector": "[name='c-8h3jimfkxevl']", "timestamp": 1749689335039, "value": null}
+{"action": "focus", "selector": "[name='a-8h3jimfkxevl']", "timestamp": 1749689335039, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")", "timestamp": 1749689336997, "value": null}
+{"action": "focus", "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")", "timestamp": 1749689337001, "value": null}
+{"action": "click", "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")", "timestamp": 1749689337082, "value": null}
+{"action": "focus", "selector": "#search-term", "timestamp": 1749689337789, "value": "test"}
+{"action": "blur", "selector": "#search-term", "timestamp": 1749689342055, "value": "test"}
+{"action": "focus", "selector": "#identifierId", "timestamp": 1749689805130, "value": null}
+{"action": "focus", "selector": "#identifierId", "timestamp": 1749689819385, "value": null}
+{"action": "mousedown", "selector": "#identifierId", "timestamp": 1749689822630, "value": null}
+{"action": "click", "selector": "#identifierId", "timestamp": 1749689822679, "value": null}
+{"action": "mousedown", "selector": "div.S7xv8.LZgQXe:nth-of-type(1)", "timestamp": 1749689824332, "value": null}
+{"action": "blur", "selector": "#identifierId", "timestamp": 1749689824336, "value": null}
+{"action": "click", "selector": "div.S7xv8.LZgQXe:nth-of-type(1)", "timestamp": 1749689824437, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Patients\")", "timestamp": 1749689860448, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Patients\")", "timestamp": 1749689860450, "value": null}
+{"action": "click", "selector": "a:has-text(\"Patients\")", "timestamp": 1749689860568, "value": null}
+{"action": "mousedown", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864485, "value": null}
+{"action": "focus", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864487, "value": null}
+{"action": "click", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864601, "value": null}
+{"action": "blur", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864751, "value": null}

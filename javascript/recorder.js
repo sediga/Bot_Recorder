@@ -51,6 +51,29 @@ import { getSmartSelector } from './selectorHelper.js';
         value: target.value || undefined,
       });
     }
+    
+      // 🧠 New: Send selector metadata for training AI model
+    if (type === "click" && typeof window.sendLogToPython === "function") {
+      const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
+      const siblingText = Array.from(target.parentElement?.children || [])
+        .filter(sib => sib !== target)
+        .map(sib => sib.innerText.trim())
+        .filter(Boolean);
+
+      window.sendLogToPython({
+        event: "click",
+        selector,
+        elementMeta: {
+          tag: target.tagName.toLowerCase(),
+          attributes: getAttributes(target),
+          innerText: target.innerText.trim(),
+          parentTag,
+          siblingText
+        },
+        timestamp: new Date().toISOString(),
+        pageUrl: window.location.href
+      });
+    }
   };
 
   const escapeQuotes = (str) => str.replace(/"/g, '\\"').replace(/'/g, "\\'");
@@ -83,3 +106,11 @@ import { getSmartSelector } from './selectorHelper.js';
   window.addEventListener("popstate", notifyUrlChange);
   notifyUrlChange();
 })();
+
+function getAttributes(el) {
+  const attrs = {};
+  for (let attr of el.attributes) {
+    attrs[attr.name] = attr.value;
+  }
+  return attrs;
+}

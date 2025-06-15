@@ -1,11 +1,14 @@
 import asyncio
+import sys
 import json
 from pathlib import Path
 from playwright.async_api import async_playwright
 
-async def run():
+async def run(args=None):
+    if args is None:
+        args = sys.argv[1:]
     # Load recorded actions
-    file_path = Path("recorded_actions.json")
+    file_path = Path("recordings/_replay_temp.json")
     if not file_path.exists():
         print("⚠️ recorded_actions.json not found.")
         return
@@ -23,9 +26,9 @@ async def run():
     for idx, url in enumerate(urls):
         print(f"{idx + 1}. {url}")
 
-    selection = input("Enter number to replay (default 1): ").strip()
-    selected_index = int(selection) - 1 if selection else 0
-    selected_url = urls[selected_index]
+    # selection = input("Enter number to replay (default 1): ").strip()
+    # selected_index = int(selection) - 1 if selection else 0
+    selected_url = urls[0]
     actions = recordings[selected_url]
 
     # Start browser and go to URL
