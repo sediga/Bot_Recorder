@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller build artifacts
+/dist/
+/build/
+*.spec
+
+# Nuitka build artifacts
+.nuitka-cache/
+*.build
+*.dist
+*.onefile-build
+*.onefile-temp
+*.exe
+*.bin
+*.manifest
+*.exp
+*.lib
+*.pyd
+*.o
+*.obj
+*.map
+*.res
+*.dll
+*.so
+*.a
+*.dSYM/
+*crash-report.xml
+
+# Recording and runtime artifacts
+recordings/
+dataset/live_events.jsonl
+dataset/selector_logs.jsonl
+
+/recorder/ms-playwright/*
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+*.bak
+
+# Environment
+.env
+.venv/
+venv/
+env/
+ENV/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+
+# VSCode settings
+.vscode/
+
+# Others
+*.msi
+*.zip

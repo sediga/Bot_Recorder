@@ -131,3 +131,196 @@
 {"action": "focus", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864487, "value": null}
 {"action": "click", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864601, "value": null}
 {"action": "blur", "selector": "[role='button']:has-text(\"AcceptAccept\")", "timestamp": 1749689864751, "value": null}
+{"action": "focus", "selector": "#identifierId", "timestamp": 1749729149557, "value": null}
+{"action": "mousedown", "selector": "#identifierId", "timestamp": 1749729160804, "value": null}
+{"action": "click", "selector": "#identifierId", "timestamp": 1749729160927, "value": null}
+{"action": "type", "selector": "#identifierId", "timestamp": 1749729167038, "value": "sreenivasa.goud"}
+{"action": "type", "selector": "#identifierId", "timestamp": 1749729170089, "value": "sreenivasa.goud@gmail.com"}
+{"action": "mousedown", "selector": "button:has-text(\"Next\")", "timestamp": 1749729172133, "value": null}
+{"action": "change", "selector": "#identifierId", "timestamp": 1749729172137, "value": "sreenivasa.goud@gmail.com"}
+{"action": "blur", "selector": "#identifierId", "timestamp": 1749729172138, "value": "sreenivasa.goud@gmail.com"}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729172142, "value": null}
+{"action": "click", "selector": "button:has-text(\"Next\")", "timestamp": 1749729172247, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729172252, "value": null}
+{"action": "focus", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729172254, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729173125, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Try\\ again']", "timestamp": 1749729427366, "value": null}
+{"action": "focus", "selector": "[aria-label='Try\\ again']", "timestamp": 1749729427370, "value": null}
+{"action": "click", "selector": "[aria-label='Try\\ again']", "timestamp": 1749729427517, "value": null}
+{"action": "click", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1)", "timestamp": 1749729427544, "value": null}
+{"action": "mousedown", "selector": "div._main_12dtr_16:nth-of-type(1) > main > section:nth-of-type(1) > div > div._grid_vqvmf_2._wrapper_djoel_2 > div._column_vqvmf_125._content_djoel_40._fixedRightPadding_djoel_91:nth-of-type(1) > div._container_43i96_283._body_43i96_2._lg_43i96_38._body_djoel_100:nth-of-type(2) > div._buttonGroup_dqfj5_2._buttonGroupHorizontal_dqfj5_14.button-group-with-dropdown.button-group.horizontal > gws-dropdown-button > div.label-tracker:nth-of-type(2)", "timestamp": 1749729429650, "value": null}
+{"action": "focus", "selector": "div._main_12dtr_16:nth-of-type(1) > main > section:nth-of-type(1) > div > div._grid_vqvmf_2._wrapper_djoel_2 > div._column_vqvmf_125._content_djoel_40._fixedRightPadding_djoel_91:nth-of-type(1) > div._container_43i96_283._body_43i96_2._lg_43i96_38._body_djoel_100:nth-of-type(2) > div._buttonGroup_dqfj5_2._buttonGroupHorizontal_dqfj5_14.button-group-with-dropdown.button-group.horizontal > gws-dropdown-button", "timestamp": 1749729429659, "value": null}
+{"action": "click", "selector": "div._main_12dtr_16:nth-of-type(1) > main > section:nth-of-type(1) > div > div._grid_vqvmf_2._wrapper_djoel_2 > div._column_vqvmf_125._content_djoel_40._fixedRightPadding_djoel_91:nth-of-type(1) > div._container_43i96_283._body_43i96_2._lg_43i96_38._body_djoel_100:nth-of-type(2) > div._buttonGroup_dqfj5_2._buttonGroupHorizontal_dqfj5_14.button-group-with-dropdown.button-group.horizontal > gws-dropdown-button > div.label-tracker:nth-of-type(2)", "timestamp": 1749729429694, "value": null}
+{"action": "mousedown", "selector": "[aria-label='Gmail\\ -\\ For\\ my\\ personal\\ use']", "timestamp": 1749729431506, "value": null}
+{"action": "blur", "selector": "div._main_12dtr_16:nth-of-type(1) > main > section:nth-of-type(1) > div > div._grid_vqvmf_2._wrapper_djoel_2 > div._column_vqvmf_125._content_djoel_40._fixedRightPadding_djoel_91:nth-of-type(1) > div._container_43i96_283._body_43i96_2._lg_43i96_38._body_djoel_100:nth-of-type(2) > div._buttonGroup_dqfj5_2._buttonGroupHorizontal_dqfj5_14.button-group-with-dropdown.button-group.horizontal > gws-dropdown-button", "timestamp": 1749729431511, "value": null}
+{"action": "focus", "selector": "[aria-label='Gmail\\ -\\ For\\ my\\ personal\\ use']", "timestamp": 1749729431512, "value": null}
+{"action": "click", "selector": "[aria-label='Gmail\\ -\\ For\\ my\\ personal\\ use']", "timestamp": 1749729431616, "value": null}
+{"action": "focus", "selector": "#firstName", "timestamp": 1749729433269, "value": null}
+{"action": "mousedown", "selector": "#firstName", "timestamp": 1749729433844, "value": null}
+{"action": "click", "selector": "#firstName", "timestamp": 1749729433846, "value": null}
+{"action": "type", "selector": "#firstName", "timestamp": 1749729436630, "value": "sreeni"}
+{"action": "mousedown", "selector": "button:has-text(\"Next\")", "timestamp": 1749729438056, "value": null}
+{"action": "change", "selector": "#firstName", "timestamp": 1749729438066, "value": "sreeni"}
+{"action": "blur", "selector": "#firstName", "timestamp": 1749729438068, "value": "sreeni"}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729438076, "value": null}
+{"action": "click", "selector": "button:has-text(\"Next\")", "timestamp": 1749729438168, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729438173, "value": null}
+{"action": "focus", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729438175, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729438909, "value": null}
+{"action": "mousedown", "selector": "div:has-text(\"Month\")", "timestamp": 1749729439823, "value": null}
+{"action": "focus", "selector": "div:has-text(\"Month\")", "timestamp": 1749729439824, "value": null}
+{"action": "click", "selector": "div:has-text(\"Month\")", "timestamp": 1749729439914, "value": null}
+{"action": "blur", "selector": "div:has-text(\"Month\")", "timestamp": 1749729440049, "value": null}
+{"action": "focus", "selector": "[aria-label='Month']", "timestamp": 1749729440050, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1)", "timestamp": 1749729440053, "value": null}
+{"action": "focus", "selector": "li:has-text(\"January\")", "timestamp": 1749729440056, "value": null}
+{"action": "mousedown", "selector": "li:has-text(\"August\")", "timestamp": 1749729441226, "value": null}
+{"action": "blur", "selector": "li:has-text(\"January\")", "timestamp": 1749729441228, "value": null}
+{"action": "focus", "selector": "li:has-text(\"August\")", "timestamp": 1749729441231, "value": null}
+{"action": "click", "selector": "li:has-text(\"August\")", "timestamp": 1749729441320, "value": null}
+{"action": "blur", "selector": "li:has-text(\"August\")", "timestamp": 1749729441352, "value": null}
+{"action": "focus", "selector": "div:has-text(\"MonthAugust\")", "timestamp": 1749729441353, "value": null}
+{"action": "mousedown", "selector": "#day", "timestamp": 1749729442191, "value": null}
+{"action": "blur", "selector": "div:has-text(\"MonthAugust\")", "timestamp": 1749729442195, "value": null}
+{"action": "focus", "selector": "#day", "timestamp": 1749729442205, "value": null}
+{"action": "click", "selector": "#day", "timestamp": 1749729442280, "value": null}
+{"action": "mousedown", "selector": "#year", "timestamp": 1749729443400, "value": null}
+{"action": "change", "selector": "#day", "timestamp": 1749729443401, "value": "12"}
+{"action": "blur", "selector": "#day", "timestamp": 1749729443401, "value": "12"}
+{"action": "focus", "selector": "#year", "timestamp": 1749729443403, "value": null}
+{"action": "click", "selector": "#year", "timestamp": 1749729443500, "value": null}
+{"action": "type", "selector": "#day", "timestamp": 1749729443576, "value": "12"}
+{"action": "type", "selector": "#year", "timestamp": 1749729444536, "value": "1"}
+{"action": "mousedown", "selector": "div:has-text(\"Gender\")", "timestamp": 1749729445747, "value": null}
+{"action": "change", "selector": "#year", "timestamp": 1749729445750, "value": "1987"}
+{"action": "blur", "selector": "#year", "timestamp": 1749729445750, "value": "1987"}
+{"action": "focus", "selector": "div:has-text(\"Gender\")", "timestamp": 1749729445755, "value": null}
+{"action": "type", "selector": "#year", "timestamp": 1749729445794, "value": "1987"}
+{"action": "click", "selector": "div:has-text(\"Gender\")", "timestamp": 1749729445833, "value": null}
+{"action": "blur", "selector": "div:has-text(\"Gender\")", "timestamp": 1749729445971, "value": null}
+{"action": "focus", "selector": "[aria-label='Gender']", "timestamp": 1749729445973, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1)", "timestamp": 1749729445977, "value": null}
+{"action": "focus", "selector": "li:has-text(\"Female\")", "timestamp": 1749729445982, "value": null}
+{"action": "mousedown", "selector": "li:has-text(\"Rather not say\")", "timestamp": 1749729446986, "value": null}
+{"action": "blur", "selector": "li:has-text(\"Female\")", "timestamp": 1749729446992, "value": null}
+{"action": "focus", "selector": "li:has-text(\"Rather not say\")", "timestamp": 1749729447002, "value": null}
+{"action": "click", "selector": "li:has-text(\"Rather not say\")", "timestamp": 1749729447078, "value": null}
+{"action": "blur", "selector": "li:has-text(\"Rather not say\")", "timestamp": 1749729447109, "value": null}
+{"action": "focus", "selector": "div:has-text(\"GenderRather not say\")", "timestamp": 1749729447111, "value": null}
+{"action": "mousedown", "selector": "button:has-text(\"Next\")", "timestamp": 1749729447676, "value": null}
+{"action": "blur", "selector": "div:has-text(\"GenderRather not say\")", "timestamp": 1749729447678, "value": null}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729447681, "value": null}
+{"action": "click", "selector": "button:has-text(\"Next\")", "timestamp": 1749729447768, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729447769, "value": null}
+{"action": "focus", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729447771, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729448617, "value": null}
+{"action": "focus", "selector": "[name='Username']", "timestamp": 1749729448619, "value": null}
+{"action": "type", "selector": "[name='Username']", "timestamp": 1749729453281, "value": "sediga"}
+{"action": "mousedown", "selector": "button:has-text(\"Next\")", "timestamp": 1749729454483, "value": null}
+{"action": "change", "selector": "[name='Username']", "timestamp": 1749729454491, "value": "sediga"}
+{"action": "blur", "selector": "[name='Username']", "timestamp": 1749729454492, "value": "sediga"}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729454498, "value": null}
+{"action": "click", "selector": "button:has-text(\"Next\")", "timestamp": 1749729454546, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729454548, "value": null}
+{"action": "focus", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729454550, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729454830, "value": null}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729454840, "value": null}
+{"action": "mousedown", "selector": "[name='Username']", "timestamp": 1749729456120, "value": "sediga"}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729456122, "value": null}
+{"action": "focus", "selector": "[name='Username']", "timestamp": 1749729456127, "value": "sediga"}
+{"action": "click", "selector": "[name='Username']", "timestamp": 1749729456197, "value": "sediga"}
+{"action": "type", "selector": "[name='Username']", "timestamp": 1749729459325, "value": ""}
+{"action": "type", "selector": "[name='Username']", "timestamp": 1749729462736, "value": "ediga.tech"}
+{"action": "mousedown", "selector": "button:has-text(\"Next\")", "timestamp": 1749729464008, "value": null}
+{"action": "change", "selector": "[name='Username']", "timestamp": 1749729464014, "value": "ediga.tech"}
+{"action": "blur", "selector": "[name='Username']", "timestamp": 1749729464016, "value": "ediga.tech"}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729464024, "value": null}
+{"action": "click", "selector": "button:has-text(\"Next\")", "timestamp": 1749729464089, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729464091, "value": null}
+{"action": "focus", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729464094, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729464909, "value": null}
+{"action": "focus", "selector": "[name='Passwd']", "timestamp": 1749729464915, "value": null}
+{"action": "change", "selector": "[name='Passwd']", "timestamp": 1749729468861, "value": "Duogse!23"}
+{"action": "blur", "selector": "[name='Passwd']", "timestamp": 1749729468862, "value": "Duogse!23"}
+{"action": "focus", "selector": "[name='PasswdAgain']", "timestamp": 1749729468869, "value": null}
+{"action": "type", "selector": "[name='Passwd']", "timestamp": 1749729469119, "value": "Duogse!23"}
+{"action": "type", "selector": "[name='PasswdAgain']", "timestamp": 1749729472171, "value": "Duogse!23"}
+{"action": "mousedown", "selector": "button:has-text(\"Next\")", "timestamp": 1749729473338, "value": null}
+{"action": "change", "selector": "[name='PasswdAgain']", "timestamp": 1749729473348, "value": "Duogse!23"}
+{"action": "blur", "selector": "[name='PasswdAgain']", "timestamp": 1749729473349, "value": "Duogse!23"}
+{"action": "focus", "selector": "button:has-text(\"Next\")", "timestamp": 1749729473354, "value": null}
+{"action": "click", "selector": "button:has-text(\"Next\")", "timestamp": 1749729473409, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Next\")", "timestamp": 1749729473411, "value": null}
+{"action": "focus", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729473414, "value": null}
+{"action": "blur", "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)", "timestamp": 1749729474426, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Sign in\")", "timestamp": 1749729915279, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Sign in\")", "timestamp": 1749729915286, "value": null}
+{"action": "click", "selector": "a:has-text(\"Sign in\")", "timestamp": 1749729915430, "value": null}
+{"action": "mousedown", "selector": "", "timestamp": 1749729921071, "value": null}
+{"action": "focus", "selector": "", "timestamp": 1749729921075, "value": null}
+{"action": "click", "selector": "", "timestamp": 1749729921168, "value": null}
+{"action": "blur", "selector": "", "timestamp": 1749729921177, "value": null}
+{"action": "input", "selector": "", "timestamp": 1749729921306, "value": null}
+{"action": "mousedown", "selector": "", "timestamp": 1749729930319, "value": null}
+{"action": "focus", "selector": "", "timestamp": 1749729930321, "value": null}
+{"action": "click", "selector": "", "timestamp": 1749729930411, "value": null}
+{"action": "blur", "selector": "", "timestamp": 1749729930420, "value": null}
+{"action": "input", "selector": "", "timestamp": 1749729930532, "value": null}
+{"action": "mousedown", "selector": "", "timestamp": 1749729944974, "value": null}
+{"action": "focus", "selector": "", "timestamp": 1749729944978, "value": null}
+{"action": "click", "selector": "", "timestamp": 1749729945068, "value": null}
+{"action": "blur", "selector": "", "timestamp": 1749729945075, "value": null}
+{"action": "input", "selector": "", "timestamp": 1749729945195, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Upload your resume\")", "timestamp": 1749729963657, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Upload your resume\")", "timestamp": 1749729963659, "value": null}
+{"action": "click", "selector": "a:has-text(\"Upload your resume\")", "timestamp": 1749729963781, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Employers / Post Job\")", "timestamp": 1749729968386, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Employers / Post Job\")", "timestamp": 1749729968390, "value": null}
+{"action": "click", "selector": "a:has-text(\"Employers / Post Job\")", "timestamp": 1749729968516, "value": null}
+{"action": "mousedown", "selector": "", "timestamp": 1749729973868, "value": null}
+{"action": "focus", "selector": "", "timestamp": 1749729973873, "value": null}
+{"action": "click", "selector": "", "timestamp": 1749729973998, "value": null}
+{"action": "blur", "selector": "", "timestamp": 1749729974005, "value": null}
+{"action": "input", "selector": "", "timestamp": 1749729974125, "value": null}
+{"action": "mousedown", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > p.text-gray-700", "timestamp": 1749734879855, "value": null}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > p.text-gray-700", "timestamp": 1749734879895, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734883143, "value": null}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734883146, "value": null}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734883226, "value": null}
+{"action": "blur", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734883234, "value": null}
+{"action": "mousedown", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3) > h3.text-xl.font-bold.mb-2.text-indigo-600", "timestamp": 1749734884897, "value": null}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3) > h3.text-xl.font-bold.mb-2.text-indigo-600", "timestamp": 1749734884982, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734886575, "value": null}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734886576, "value": null}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734886685, "value": null}
+{"action": "blur", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1749734886690, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Find a Location\")", "timestamp": 1749936383367, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Find a Location\")", "timestamp": 1749936383375, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Find a Location\")", "timestamp": 1749936385335, "value": null}
+{"action": "click", "selector": "a:has-text(\"Find a Location\")", "timestamp": 1749936385483, "value": null}
+{"action": "blur", "selector": "a:has-text(\"Find a Location\")", "timestamp": 1749936385865, "value": null}
+{"action": "mousedown", "selector": "[role='button']:has-text(\"Accept All Cookies\")", "timestamp": 1749936391943, "value": null}
+{"action": "focus", "selector": "[role='button']:has-text(\"Accept All Cookies\")", "timestamp": 1749936392223, "value": null}
+{"action": "click", "selector": "[role='button']:has-text(\"Accept All Cookies\")", "timestamp": 1749936392233, "value": null}
+{"action": "blur", "selector": "[role='button']:has-text(\"Accept All Cookies\")", "timestamp": 1749936393472, "value": null}
+{"action": "mousedown", "selector": "#use-my-location-button-22", "timestamp": 1749936398285, "value": null}
+{"action": "focus", "selector": "#use-my-location-button-22", "timestamp": 1749936398288, "value": null}
+{"action": "click", "selector": "#use-my-location-button-22", "timestamp": 1749936398423, "value": null}
+{"action": "mousedown", "selector": "#typeahead-input-location-address", "timestamp": 1749936406888, "value": null}
+{"action": "blur", "selector": "#use-my-location-button-26", "timestamp": 1749936406890, "value": null}
+{"action": "focus", "selector": "#typeahead-input-location-address", "timestamp": 1749936406894, "value": null}
+{"action": "click", "selector": "#typeahead-input-location-address", "timestamp": 1749936407059, "value": null}
+{"action": "type", "selector": "#typeahead-input-location-address", "timestamp": 1749936410603, "value": "77494"}
+{"action": "mousedown", "selector": "#typeahead-content-location-address", "timestamp": 1749936411793, "value": null}
+{"action": "change", "selector": "#typeahead-input-location-address", "timestamp": 1749936411795, "value": "77494"}
+{"action": "blur", "selector": "#typeahead-input-location-address", "timestamp": 1749936411796, "value": "77494"}
+{"action": "focus", "selector": "#typeahead-content-location-address", "timestamp": 1749936411801, "value": null}
+{"action": "click", "selector": "#typeahead-content-location-address", "timestamp": 1749936411918, "value": null}
+{"action": "blur", "selector": "#typeahead-content-location-address", "timestamp": 1749936411954, "value": null}
+{"action": "mousedown", "selector": "button:has-text(\"Find Locations\")", "timestamp": 1749936413072, "value": null}
+{"action": "focus", "selector": "button:has-text(\"Find Locations\")", "timestamp": 1749936413077, "value": null}
+{"action": "click", "selector": "button:has-text(\"Find Locations\")", "timestamp": 1749936413189, "value": null}
+{"action": "blur", "selector": "button:has-text(\"Find Locations\")", "timestamp": 1749936413708, "value": null}
+{"action": "mousedown", "selector": "a:has-text(\"Tech, Internet, Software\")", "timestamp": 1749997390617, "value": null}
+{"action": "focus", "selector": "a:has-text(\"Tech, Internet, Software\")", "timestamp": 1749997390624, "value": null}
+{"action": "click", "selector": "a:has-text(\"Tech, Internet, Software\")", "timestamp": 1749997390695, "value": null}

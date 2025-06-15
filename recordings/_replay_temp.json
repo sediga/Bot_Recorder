@@ -1,45 +1,21 @@
 {
-  "http://octagoshealth.com": [
+  "http://test.com": [
     {
       "action": "mousedown",
-      "selector": "a:has-text(\"Patients\")",
-      "timestamp": 1749689860448,
+      "selector": "a:has-text(\"Tech, Internet, Software\")",
+      "timestamp": 1749997390617,
       "value": null
     },
     {
       "action": "focus",
-      "selector": "a:has-text(\"Patients\")",
-      "timestamp": 1749689860450,
+      "selector": "a:has-text(\"Tech, Internet, Software\")",
+      "timestamp": 1749997390624,
       "value": null
     },
     {
       "action": "click",
-      "selector": "a:has-text(\"Patients\")",
-      "timestamp": 1749689860568,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864485,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864487,
-      "value": null
-    },
-    {
-      "action": "click",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864601,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864751,
+      "selector": "a:has-text(\"Tech, Internet, Software\")",
+      "timestamp": 1749997390695,
       "value": null
     }
   ]

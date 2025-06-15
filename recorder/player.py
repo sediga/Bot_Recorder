@@ -1,46 +1,32 @@
+import sys, os
+import logging
 import asyncio
-import sys
 import json
 from pathlib import Path
 from playwright.async_api import async_playwright
 
-async def run(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    # Load recorded actions
-    file_path = Path("recordings/_replay_temp.json")
-    if not file_path.exists():
-        print("⚠️ recorded_actions.json not found.")
-        return
+# Handle PyInstaller _MEIPASS path
 
-    with open(file_path, "r") as f:
-        recordings = json.load(f)
+logger = logging.getLogger(__name__)
 
-    # Pick a URL to replay
-    urls = list(recordings.keys())
-    if not urls:
-        print("⚠️ No recordings found in JSON.")
-        return
+def load_actions(filepath):
+    with open(filepath, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-    print("Available recordings:")
-    for idx, url in enumerate(urls):
-        print(f"{idx + 1}. {url}")
-
-    # selection = input("Enter number to replay (default 1): ").strip()
-    # selected_index = int(selection) - 1 if selection else 0
-    selected_url = urls[0]
-    actions = recordings[selected_url]
-
-    # Start browser and go to URL
+async def replay_actions(url, actions):
+    logger.debug(f"Replaying actions for: {url}")
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False, slow_mo=100)
+        logger.debug("Launching browser...")
+        browser = await p.chromium.launch(headless=False)
+        logger.debug("Creating new browser context...")
         context = await browser.new_context()
+        logger.debug("Creating new page...")
         page = await context.new_page()
-
-        print(f"🔁 Replaying actions for {selected_url}")
-        await page.goto(selected_url)
+        logger.debug(f"Navigating to {url}...")
+        await page.goto(url)
 
         for action in actions:
+            logger.debug(f"Performing action: {action}")
             act = action["action"]
             selector = action.get("selector")
             value = action.get("value")
@@ -49,14 +35,14 @@ async def run(args=None):
             try:
                 await _perform_action(act, page, selector=selector, value=value, key=key)
             except Exception as e:
-                print(f"❌ Unexpected error on {act} / {selector}: {e}")
+                logger.debug(f"Unexpected error on {act} / {selector}: {e}")
 
-        print("✅ Replay finished.")
-        input()
+        logger.debug("Replay complete.")
         await browser.close()
 
 async def _perform_action(action, page, selector=None, value=None, key=None, retries=3):
     await asyncio.sleep(1)
+    logger = logging.getLogger("botflows-agent")
 
     async def try_in_frame(frame, action, selector, value, key):
         if action == "click":
@@ -73,32 +59,44 @@ async def _perform_action(action, page, selector=None, value=None, key=None, ret
 
     for attempt in range(1, retries + 1):
         try:
-            # Try on main page
             await try_in_frame(page, action, selector, value, key)
             return
         except Exception as e:
-            print(f"⏳ Attempt {attempt} failed on main page for {action} on {selector}: {e}")
-
-            # Try inside all frames
+            logger.debug(f"Attempt {attempt} failed on main page for {action} on {selector}: {e}")
             for frame in page.frames:
                 try:
                     await try_in_frame(frame, action, selector, value, key)
-                    print(f"✅ Success inside frame: {frame.url}")
+                    logger.debug(f"Success inside frame: {frame.url}")
                     return
                 except:
-                    continue  # Try next frame
+                    continue
 
-            # Final fallback: force click if it's a click action
             if action == "click" and attempt == retries:
                 try:
                     await page.wait_for_selector(selector, state="attached", timeout=3000)
                     await page.click(selector, force=True, timeout=3000)
-                    print(f"✅ Force click succeeded on main page: {selector}")
+                    logger.debug(f"Force click succeeded on main page: {selector}")
                     return
                 except Exception as fe:
-                    print(f"❌ Force click failed: {fe}")
-
+                    logger.error(f"Force click failed: {fe}")
             await asyncio.sleep(2)
 
-if __name__ == "__main__":
-    asyncio.run(run())
+# ✅ Call this from your API
+async def start_replay(path_to_json: str):
+    path = Path(path_to_json)
+    if not path.exists():
+        raise FileNotFoundError(f"Replay file not found: {path}")
+
+    data = load_actions(path)
+    url = list(data.keys())[0]
+    actions = data[url]
+    await replay_actions(url, actions)
+
+# CLI support
+# if __name__ == "__main__":
+#     logger.debug("player.py executing")
+#     if len(sys.argv) < 2:
+#         logger.debug("Usage: player.py <path_to_json>")
+#         sys.exit(1)
+
+#     asyncio.run(start_replay(sys.argv[1]))

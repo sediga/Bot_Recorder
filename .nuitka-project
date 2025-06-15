@@ -1,0 +1,12 @@
+[Project]
+name = api_server
+main = api_server.py
+
+[IncludeDataFiles]
+recorder/javascript/recorder.bundle.js = recorder/javascript/recorder.bundle.js
+recorder/main.py = recorder/main.py
+recorder/player.py = recorder/player.py
+
+[IncludeDataDirs]
+dataset = dataset
+recordings = recordings
