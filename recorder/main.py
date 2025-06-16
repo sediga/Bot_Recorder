@@ -6,6 +6,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 import sys
 import os
+from common import state
 
 logger = logging.getLogger(__name__)
 recorded_events = []
@@ -32,7 +33,7 @@ def append_event(event):
 async def handle_event(source, event):
     recorded_events.append(event)
     append_event(event)
-    logger.debug("Recorded:", event)
+    logger.debug("Recorded: {event}")
 
 async def handle_log(source, log_data):
     try:
@@ -68,12 +69,6 @@ async def reinject_script(page):
     except Exception as e:
         logger.debug(f"Reinjection failed: {e}")
 
-async def delete_stop_file():
-    stop_file = Path("recordings/stop.flag")
-    if stop_file.exists():
-        logger.debug("Stop flag detected... deleting stop file.")
-        stop_file.unlink(missing_ok=True)
-
 async def wait_for_stop():
     stop_file = Path("recordings/stop.flag")
     logger.debug("Waiting for stop signal...")
@@ -97,6 +92,8 @@ def deduplicate_events(events, time_threshold_ms=200):
 
 # ✅ Call this from API
 async def record(url: str):
+    global recorded_events
+    recorded_events = []  # Reset on each new recording
     logger.debug(f"Recording URL: {url}")
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=False)
@@ -110,9 +107,27 @@ async def record(url: str):
         await inject_script(page)
         await page.goto(url)
 
+        async def wait_for_browser_close():
+            while not page.is_closed():
+                await asyncio.sleep(1)
+            logger.info("Browser page closed.")
+            state.is_recording = False
+            state.current_url = None
+
+        async def wait_for_stop_flag():
+            while state.is_recording:
+                await asyncio.sleep(1)
+            logger.info("Stop flag detected.")
+
         try:
-            await delete_stop_file()
-            await wait_for_stop()
+            await asyncio.wait(
+                [
+                    asyncio.create_task(wait_for_browser_close()),
+                    asyncio.create_task(wait_for_stop_flag())
+                ],
+                return_when=asyncio.FIRST_COMPLETED,
+            )
+
         finally:
             deduped = deduplicate_events(recorded_events)
             recorded_actions_json[url] = deduped

@@ -34,25 +34,43 @@ import { getSmartSelector } from './selectorHelper.js';
       lastTypedElement = target;
       typingDebounce = setTimeout(() => {
         if (lastTypedElement) {
-          window.sendEventToPython({
+          const actionData = {
             action: "type",
             selector: getSmartSelector(lastTypedElement),
             timestamp: Date.now(),
             value: lastTypedElement.value,
+            url: window.location.href
+          };
+
+          window.sendEventToPython(actionData);
+
+          fetch("http://localhost:8000/api/stream_action", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(actionData)
           });
+
           lastTypedElement = null;
         }
       }, 800);
     } else {
-      window.sendEventToPython({
+      const actionData = {
         action: type,
         selector,
         timestamp: now,
         value: target.value || undefined,
+        url: window.location.href
+      };
+
+      window.sendEventToPython(actionData);
+
+      fetch("http://localhost:8000/api/stream_action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(actionData)
       });
     }
-    
-      // 🧠 New: Send selector metadata for training AI model
+    // 🧠 New: Send selector metadata for training AI model
     if (type === "click" && typeof window.sendLogToPython === "function") {
       const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
       const siblingText = Array.from(target.parentElement?.children || [])

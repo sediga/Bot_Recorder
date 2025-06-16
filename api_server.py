@@ -1,15 +1,18 @@
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from recorder.main import record
 from recorder.player import start_replay
+from common import state
 import logging
 import os
 import sys
 import json
-import shutil
+import asyncio
+# --- Global Variables ---
 
 # --- Logging Setup ---
 log_path = Path(__file__).parent / "botflows_agent.log"
@@ -25,6 +28,7 @@ logger = logging.getLogger("botflows-agent")
 
 # --- FastAPI Setup ---
 app = FastAPI()
+connections = []
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,27 +38,58 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-recorder_proc = None
-current_url = None
+
 
 class RecordRequest(BaseModel):
     url: str
 
+import asyncio
+
+@app.websocket("/ws/actions")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    connections.append(websocket)
+    print(f"[WEBSOCKET CONNECTED] Total connections: {len(connections)}")
+    try:
+        while True:
+            await asyncio.sleep(10)  # Keeps connection alive
+    except Exception as e:
+        print("❌ WebSocket disconnected:", e)
+    finally:
+        if websocket in connections:
+            connections.remove(websocket)
+            print(f"[WEBSOCKET REMOVED] Active: {len(connections)}")
+
+@app.post("/api/stream_action")
+async def stream_action(request: Request):
+    action = await request.json()
+    print("[RECEIVED ACTION]", action)
+
+    disconnected = []
+    for ws in connections:
+        try:
+            await ws.send_text(json.dumps(action))
+            print("[BROADCASTED ACTION]", action)
+        except Exception as e:
+            print("❌ Failed to send:", e)
+            disconnected.append(ws)
+
+    for ws in disconnected:
+        connections.remove(ws)
+
+    return {"status": "ok"}
+
 @app.post("/api/record")
 async def start_recording(req: RecordRequest):
-    global recorder_proc, current_url
-    recorder_script_path = os.path.join(os.path.dirname(__file__), "recorder", "main.py")
-
-    if not os.path.exists(recorder_script_path):
-        logger.error(f"main.py not found at {recorder_script_path}")
-        return {"error": f"main.py not found at {recorder_script_path}"}
-
+    state.is_recording = True
+    state.current_url = req.url
     try:
-        logger.info(f"Starting recording for: {req.url}")
-        await record(req.url)
-        current_url = req.url
-        return {"status": "started", "url": current_url}
+        logger.info(f"Starting recording for: {state.current_url}")
+        asyncio.create_task(record(state.current_url))
+        return {"status": "started", "url": state.current_url}
     except Exception as e:
+        state.is_recording = False
+        state.current_url = None
         logger.exception("Failed to launch recorder")
         return {"error": str(e)}
 
@@ -79,7 +114,7 @@ async def replay_by_url(payload: dict):
             json.dump({url: data[url]}, f, indent=2)
             logger.info(f"Temporary replay file created at {temp_path}")
 
-        await start_replay(temp_path)
+        asyncio.create_task(start_replay(temp_path))
         return {"status": "replaying", "url": url}
     except Exception as e:
         logger.exception("Failed during replay")
@@ -91,6 +126,8 @@ def stop_recording():
         stop_file = Path("recordings/stop.flag")
         stop_file.write_text("stop")
         logger.info("Stop flag created.")
+        state.is_recording = False
+        state.current_url = None
         return {"status": "stopping"}
     except Exception as e:
         logger.exception("Error stopping recording")
@@ -98,9 +135,11 @@ def stop_recording():
 
 @app.get("/api/status")
 def get_status():
-    running = recorder_proc and recorder_proc.poll() is None
-    logger.debug(f"Status check: running={running}")
-    return {"running": running, "url": current_url if running else None}
+    return {
+        "running": state.is_recording,
+        "replaying": state.is_replaying,
+        "url": state.current_url if state.is_recording else None
+    }
 
 @app.get("/api/logs/actions")
 def get_recorded_actions():
@@ -144,21 +183,20 @@ def get_recorded_urls():
 # --- Tray App ---
 if __name__ == "__main__":
     import threading
-    import uvicorn
     import pystray
     from pystray import MenuItem as item
     from PIL import Image
     import winreg
+    from uvicorn import Config, Server
 
     icon_instance = None
 
     def start_api():
-        try:
-            logger.info("Launching API server on http://127.0.0.1:8000")
-            uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")
-        except Exception as e:
-            logger.exception("API server failed to start")
-
+        config = Config(app=app, host="localhost", port=8000, log_level="info")
+        server = Server(config=config)
+        logger.info("Launching API server on http://localhost:8000")
+        server.run()
+        
     def quit_app(icon, item):
         logger.info("Quitting Botflows Agent...")
         icon.stop()
@@ -186,7 +224,6 @@ if __name__ == "__main__":
             logger.exception("Failed to remove from startup")
 
     def tray_icon():
-        global icon_instance
         icon_image = Image.new("RGB", (64, 64), color=(100, 150, 255))
         icon = pystray.Icon("BotflowsAgent", icon_image, "Botflows Agent", menu=(
             item("Start with Windows", lambda icon, _: add_to_startup()),

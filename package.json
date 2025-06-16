@@ -1,0 +1,9 @@
+{
+  "name": "botflows-recorder",
+    "scripts": {
+    "build": "esbuild javascript/recorder.js --bundle --outfile=recorder/javascript/recorder.bundle.js --minify"
+    },
+    "devDependencies": {
+        "esbuild": "^0.19.0"
+    }
+}

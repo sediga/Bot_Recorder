@@ -730,75 +730,353 @@
   "http://edigatech.com": [
     {
       "action": "mousedown",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > p.text-gray-700",
-      "timestamp": 1749734879855,
-      "value": null
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3)",
+      "timestamp": 1750096021597,
+      "value": null,
+      "url": "https://edigatech.com/"
     },
     {
       "action": "click",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > p.text-gray-700",
-      "timestamp": 1749734879895,
-      "value": null
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3)",
+      "timestamp": 1750096021682,
+      "value": null,
+      "url": "https://edigatech.com/"
     },
     {
       "action": "mousedown",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734883143,
-      "value": null
+      "timestamp": 1750096023221,
+      "value": null,
+      "url": "https://edigatech.com/freelancing"
     },
     {
       "action": "focus",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734883146,
-      "value": null
+      "timestamp": 1750096023226,
+      "value": null,
+      "url": "https://edigatech.com/freelancing"
     },
     {
       "action": "click",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734883226,
-      "value": null
+      "timestamp": 1750096023308,
+      "value": null,
+      "url": "https://edigatech.com/freelancing"
     },
     {
       "action": "blur",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734883234,
-      "value": null
+      "timestamp": 1750096023315,
+      "value": null,
+      "url": "https://edigatech.com/"
     },
     {
       "action": "mousedown",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3) > h3.text-xl.font-bold.mb-2.text-indigo-600",
-      "timestamp": 1749734884897,
-      "value": null
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700",
+      "timestamp": 1750096026777,
+      "value": null,
+      "url": "https://edigatech.com/"
     },
     {
       "action": "click",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3) > h3.text-xl.font-bold.mb-2.text-indigo-600",
-      "timestamp": 1749734884982,
-      "value": null
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700",
+      "timestamp": 1750096026855,
+      "value": null,
+      "url": "https://edigatech.com/"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")",
+      "timestamp": 1750096033797,
+      "value": null,
+      "url": "https://edigatech.com/training"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")",
+      "timestamp": 1750096033802,
+      "value": null,
+      "url": "https://edigatech.com/training"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")",
+      "timestamp": 1750096033877,
+      "value": null,
+      "url": "https://edigatech.com/training"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")",
+      "timestamp": 1750096033882,
+      "value": null,
+      "url": "https://edigatech.com/training#placement"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096036147,
+      "value": null,
+      "url": "https://edigatech.com/training#placement"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096036148,
+      "value": null,
+      "url": "https://edigatech.com/training#placement"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096036236,
+      "value": null,
+      "url": "https://edigatech.com/training#placement"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096036239,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")",
+      "timestamp": 1750096039259,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")",
+      "timestamp": 1750096039264,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")",
+      "timestamp": 1750096039343,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")",
+      "timestamp": 1750096039347,
+      "value": null,
+      "url": "https://edigatech.com/training#resume-help"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096041504,
+      "value": null,
+      "url": "https://edigatech.com/training#resume-help"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096041505,
+      "value": null,
+      "url": "https://edigatech.com/training#resume-help"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096041570,
+      "value": null,
+      "url": "https://edigatech.com/training#resume-help"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096041573,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Book Call\")",
+      "timestamp": 1750096043286,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Book Call\")",
+      "timestamp": 1750096043289,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Book Call\")",
+      "timestamp": 1750096043351,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Book Call\")",
+      "timestamp": 1750096043355,
+      "value": null,
+      "url": "https://edigatech.com/training#book"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096049619,
+      "value": null,
+      "url": "https://edigatech.com/training#book"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096049624,
+      "value": null,
+      "url": "https://edigatech.com/training#book"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096049699,
+      "value": null,
+      "url": "https://edigatech.com/training#book"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096049703,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"Upload Resume\")",
+      "timestamp": 1750096051383,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Upload Resume\")",
+      "timestamp": 1750096051385,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Upload Resume\")",
+      "timestamp": 1750096051436,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"Upload Resume\")",
+      "timestamp": 1750096051437,
+      "value": null,
+      "url": "https://edigatech.com/training#resume"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096054296,
+      "value": null,
+      "url": "https://edigatech.com/training#resume"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096054299,
+      "value": null,
+      "url": "https://edigatech.com/training#resume"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096054376,
+      "value": null,
+      "url": "https://edigatech.com/training#resume"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"\u2190 Back to Services\")",
+      "timestamp": 1750096054381,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
     },
     {
       "action": "mousedown",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734886575,
-      "value": null
+      "timestamp": 1750096055706,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
     },
     {
       "action": "focus",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734886576,
-      "value": null
+      "timestamp": 1750096055709,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
     },
     {
       "action": "click",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734886685,
-      "value": null
+      "timestamp": 1750096055771,
+      "value": null,
+      "url": "https://edigatech.com/training#services"
     },
     {
       "action": "blur",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1749734886690,
-      "value": null
+      "timestamp": 1750096055779,
+      "value": null,
+      "url": "https://edigatech.com/"
+    },
+    {
+      "action": "mousedown",
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > h3.text-xl.font-bold.mb-2.text-rose-700",
+      "timestamp": 1750096056809,
+      "value": null,
+      "url": "https://edigatech.com/"
+    },
+    {
+      "action": "click",
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > h3.text-xl.font-bold.mb-2.text-rose-700",
+      "timestamp": 1750096056881,
+      "value": null,
+      "url": "https://edigatech.com/"
+    },
+    {
+      "action": "mousedown",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750096058100,
+      "value": null,
+      "url": "https://edigatech.com/recruiters"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750096058105,
+      "value": null,
+      "url": "https://edigatech.com/recruiters"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750096058157,
+      "value": null,
+      "url": "https://edigatech.com/recruiters"
+    },
+    {
+      "action": "blur",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750096058164,
+      "value": null,
+      "url": "https://edigatech.com/"
     }
   ],
   "https://raiserecruiting.com/": [
@@ -903,260 +1181,114 @@
     {
       "action": "focus",
       "selector": "#APjFqb",
-      "timestamp": 1749689318662,
-      "value": null
+      "timestamp": 1750095702575,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
-      "action": "mousedown",
+      "action": "blur",
       "selector": "#APjFqb",
-      "timestamp": 1749689319983,
-      "value": null
+      "timestamp": 1750095703448,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
-      "action": "click",
-      "selector": "#APjFqb",
-      "timestamp": 1749689320042,
-      "value": null
-    },
-    {
-      "action": "type",
-      "selector": "#APjFqb",
-      "timestamp": 1749689321469,
-      "value": "test"
+      "action": "focus",
+      "selector": "div:has-text(\"Sign in to GoogleGet the most from your Google accountStay signed outSign in\")",
+      "timestamp": 1750095703451,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "mousedown",
       "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1749689323406,
-      "value": null
-    },
-    {
-      "action": "change",
-      "selector": "#APjFqb",
-      "timestamp": 1749689323408,
-      "value": "test"
+      "timestamp": 1750095708042,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "blur",
-      "selector": "#APjFqb",
-      "timestamp": 1749689323409,
-      "value": "test"
+      "selector": "div:has-text(\"Sign in to GoogleGet the most from your Google accountStay signed outSign in\")",
+      "timestamp": 1750095708046,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "focus",
       "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1749689323416,
-      "value": null
+      "timestamp": 1750095708049,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "click",
       "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1749689323507,
-      "value": null
+      "timestamp": 1750095708130,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "blur",
       "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1749689323516,
-      "value": null
+      "timestamp": 1750095708143,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "focus",
       "selector": "#APjFqb",
-      "timestamp": 1749689323520,
-      "value": "test"
+      "timestamp": 1750095708152,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "mousedown",
       "selector": "#APjFqb",
-      "timestamp": 1749689324947,
-      "value": "test"
+      "timestamp": 1750095709526,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "click",
       "selector": "#APjFqb",
-      "timestamp": 1749689325014,
-      "value": "test"
+      "timestamp": 1750095709613,
+      "value": null,
+      "url": "https://www.google.com/"
     },
     {
       "action": "mousedown",
-      "selector": "#recaptcha-anchor",
-      "timestamp": 1749689329406,
-      "value": null
+      "selector": "a:has-text(\"Why did this happen?\")",
+      "timestamp": 1750095733191,
+      "value": null,
+      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM"
     },
     {
       "action": "focus",
-      "selector": "#recaptcha-anchor",
-      "timestamp": 1749689329408,
-      "value": null
+      "selector": "a:has-text(\"Why did this happen?\")",
+      "timestamp": 1750095733196,
+      "value": null,
+      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM"
     },
     {
       "action": "click",
-      "selector": "#recaptcha-anchor",
-      "timestamp": 1749689329497,
-      "value": null
+      "selector": "a:has-text(\"Why did this happen?\")",
+      "timestamp": 1750095733288,
+      "value": null,
+      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM"
     },
     {
       "action": "blur",
-      "selector": "#recaptcha-anchor",
-      "timestamp": 1749689329504,
-      "value": null
+      "selector": "a:has-text(\"Why did this happen?\")",
+      "timestamp": 1750095737680,
+      "value": null,
+      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM#"
     },
     {
       "action": "focus",
-      "selector": "[name='c-8h3jimfkxevl']",
-      "timestamp": 1749689329918,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689332490,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689332491,
-      "value": null
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689332553,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689333306,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689333307,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689333308,
-      "value": null
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689333408,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689334133,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689334134,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689334135,
-      "value": null
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689334248,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "#recaptcha-verify-button",
-      "timestamp": 1749689334916,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "[aria-label='Image\\ challenge']",
-      "timestamp": 1749689334916,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "#recaptcha-verify-button",
-      "timestamp": 1749689334917,
-      "value": null
-    },
-    {
-      "action": "click",
-      "selector": "#recaptcha-verify-button",
-      "timestamp": 1749689334968,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "#recaptcha-verify-button",
-      "timestamp": 1749689334973,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "#recaptcha-anchor",
-      "timestamp": 1749689335017,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "#recaptcha-anchor",
-      "timestamp": 1749689335038,
-      "value": null
-    },
-    {
-      "action": "blur",
-      "selector": "[name='c-8h3jimfkxevl']",
-      "timestamp": 1749689335039,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "[name='a-8h3jimfkxevl']",
-      "timestamp": 1749689335039,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")",
-      "timestamp": 1749689336997,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")",
-      "timestamp": 1749689337001,
-      "value": null
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"TEST Definition & MeaningMerriam-Websterhttps://www.merriam-webster.com \u203a dictionary \u203a test\")",
-      "timestamp": 1749689337082,
-      "value": null
-    },
-    {
-      "action": "focus",
-      "selector": "#search-term",
-      "timestamp": 1749689337789,
-      "value": "test"
-    },
-    {
-      "action": "blur",
-      "selector": "#search-term",
-      "timestamp": 1749689342055,
-      "value": "test"
+      "selector": "a:has-text(\"Why did this happen?\")",
+      "timestamp": 1750095946932,
+      "value": null,
+      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM#"
     }
   ],
   "http://octagoshealth.com": [
@@ -1429,24 +1561,298 @@
       "value": null
     }
   ],
-  "http://test.com": [
+  "http://test.com": [],
+  "http://amazon.com": [
     {
       "action": "mousedown",
-      "selector": "a:has-text(\"Tech, Internet, Software\")",
-      "timestamp": 1749997390617,
+      "selector": "a:has-text(\"Sign in\")",
+      "timestamp": 1750011909399,
       "value": null
     },
     {
       "action": "focus",
-      "selector": "a:has-text(\"Tech, Internet, Software\")",
-      "timestamp": 1749997390624,
+      "selector": "a:has-text(\"Sign in\")",
+      "timestamp": 1750011909406,
       "value": null
     },
     {
       "action": "click",
-      "selector": "a:has-text(\"Tech, Internet, Software\")",
-      "timestamp": 1749997390695,
+      "selector": "a:has-text(\"Sign in\")",
+      "timestamp": 1750011909484,
       "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#ap_email_login",
+      "timestamp": 1750011910506,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "#ap_email_login",
+      "timestamp": 1750011913093,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#ap_email_login",
+      "timestamp": 1750011913097,
+      "value": null
+    },
+    {
+      "action": "type",
+      "selector": "#ap_email_login",
+      "timestamp": 1750011917482,
+      "value": "6146193234"
+    },
+    {
+      "action": "mousedown",
+      "selector": "div:nth-of-type(1) > div.a-container.auth-workflow:nth-of-type(1) > div.a-section:nth-of-type(2) > div.a-section.auth-pagelet-container > div.a-box > div.a-box-inner.a-padding-extra-large > div.a-section.a-spacing-none > span.a-declarative > form > span.a-button.a-spacing-top-small.a-button-span12.a-button-primary.aok-relative > span.a-button-inner > input.a-button-input",
+      "timestamp": 1750011917976,
+      "value": null
+    },
+    {
+      "action": "change",
+      "selector": "#ap_email_login",
+      "timestamp": 1750011917978,
+      "value": "6146193234"
+    },
+    {
+      "action": "blur",
+      "selector": "#ap_email_login",
+      "timestamp": 1750011917982,
+      "value": "6146193234"
+    },
+    {
+      "action": "focus",
+      "selector": "div:nth-of-type(1) > div.a-container.auth-workflow:nth-of-type(1) > div.a-section:nth-of-type(2) > div.a-section.auth-pagelet-container > div.a-box > div.a-box-inner.a-padding-extra-large > div.a-section.a-spacing-none > span.a-declarative > form > span.a-button.a-spacing-top-small.a-button-span12.a-button-primary.aok-relative > span.a-button-inner > input.a-button-input",
+      "timestamp": 1750011917988,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "div:nth-of-type(1) > div.a-container.auth-workflow:nth-of-type(1) > div.a-section:nth-of-type(2) > div.a-section.auth-pagelet-container > div.a-box > div.a-box-inner.a-padding-extra-large > div.a-section.a-spacing-none > span.a-declarative > form > span.a-button.a-spacing-top-small.a-button-span12.a-button-primary.aok-relative.a-button-focus > span.a-button-inner > input.a-button-input",
+      "timestamp": 1750011918078,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#ap_password",
+      "timestamp": 1750011918818,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "#ap_password",
+      "timestamp": 1750011930849,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#ap_password",
+      "timestamp": 1750011930911,
+      "value": null
+    },
+    {
+      "action": "type",
+      "selector": "#ap_password",
+      "timestamp": 1750011934228,
+      "value": "Duogse!23"
+    },
+    {
+      "action": "mousedown",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011935236,
+      "value": null
+    },
+    {
+      "action": "change",
+      "selector": "#ap_password",
+      "timestamp": 1750011935238,
+      "value": "Duogse!23"
+    },
+    {
+      "action": "blur",
+      "selector": "#ap_password",
+      "timestamp": 1750011935239,
+      "value": "Duogse!23"
+    },
+    {
+      "action": "focus",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011935244,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011935336,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011935357,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#ap_password",
+      "timestamp": 1750011936662,
+      "value": null
+    },
+    {
+      "action": "mousedown",
+      "selector": "#ap_password",
+      "timestamp": 1750011947855,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#ap_password",
+      "timestamp": 1750011947960,
+      "value": null
+    },
+    {
+      "action": "type",
+      "selector": "#ap_password",
+      "timestamp": 1750011951951,
+      "value": "esgoud123"
+    },
+    {
+      "action": "mousedown",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011952329,
+      "value": null
+    },
+    {
+      "action": "change",
+      "selector": "#ap_password",
+      "timestamp": 1750011952331,
+      "value": "esgoud123"
+    },
+    {
+      "action": "blur",
+      "selector": "#ap_password",
+      "timestamp": 1750011952333,
+      "value": "esgoud123"
+    },
+    {
+      "action": "focus",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011952337,
+      "value": null
+    },
+    {
+      "action": "click",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011952420,
+      "value": null
+    },
+    {
+      "action": "blur",
+      "selector": "#signInSubmit",
+      "timestamp": 1750011952440,
+      "value": null
+    },
+    {
+      "action": "focus",
+      "selector": "#input-box-otp",
+      "timestamp": 1750011954075,
+      "value": null
+    }
+  ],
+  "http://calendly.com": [
+    {
+      "action": "mousedown",
+      "selector": "[data-testid='social-signup-google']",
+      "timestamp": 1750095972081,
+      "value": null,
+      "url": "https://calendly.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "[data-testid='social-signup-google']",
+      "timestamp": 1750095972092,
+      "value": null,
+      "url": "https://calendly.com/"
+    },
+    {
+      "action": "click",
+      "selector": "[data-testid='social-signup-google']",
+      "timestamp": 1750095972110,
+      "value": null,
+      "url": "https://calendly.com/"
+    },
+    {
+      "action": "blur",
+      "selector": "[data-testid='social-signup-google']",
+      "timestamp": 1750095972275,
+      "value": null,
+      "url": "https://calendly.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Sign up free with email.\")",
+      "timestamp": 1750095972466,
+      "value": null,
+      "url": "https://calendly.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "#identifierId",
+      "timestamp": 1750095973623,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "mousedown",
+      "selector": "#identifierId",
+      "timestamp": 1750095976412,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "click",
+      "selector": "#identifierId",
+      "timestamp": 1750095976527,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "blur",
+      "selector": "#identifierId",
+      "timestamp": 1750095980747,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "focus",
+      "selector": "#identifierId",
+      "timestamp": 1750095983902,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "blur",
+      "selector": "#identifierId",
+      "timestamp": 1750095986186,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "focus",
+      "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)",
+      "timestamp": 1750095986192,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/identifier?opparams=%253F&dsh=S-1373925653%3A1750095972606076&access_type=offline&client_id=797340822162.apps.googleusercontent.com&include_granted_scopes=true&o2v=1&prompt=select_account+consent&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&app_domain=https%3A%2F%2Fcalendly.com&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM"
+    },
+    {
+      "action": "blur",
+      "selector": "div.S7xv8.LZgQXe:nth-of-type(1) > div.TcuCfd.NQ5OL:nth-of-type(1) > div.kPY6ve:nth-of-type(3)",
+      "timestamp": 1750095987279,
+      "value": null,
+      "url": "https://accounts.google.com/v3/signin/rejected?access_type=offline&app_domain=https%3A%2F%2Fcalendly.com&client_id=797340822162.apps.googleusercontent.com&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&dsh=S-1373925653%3A1750095972606076&epd=Ac4X3_VcFQkMks_EtZEzewYFzf-kxpvCYULzr6PmlYt39y7UiS8sCrf68Q&flowName=GeneralOAuthFlow&include_granted_scopes=true&o2v=1&opparams=%253F&prompt=select_account%20consent&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&rhlk=le&rrk=46&scope=email%20profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884"
     }
   ]
 }

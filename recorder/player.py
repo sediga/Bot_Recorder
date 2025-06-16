@@ -5,6 +5,7 @@ import sys
 import json
 from pathlib import Path
 from playwright.async_api import async_playwright
+from common import state
 
 # Handle PyInstaller _MEIPASS path
 
@@ -17,6 +18,8 @@ def load_actions(filepath):
 async def replay_actions(url, actions):
     logger.debug(f"Replaying actions for: {url}")
     async with async_playwright() as p:
+        state.is_replaying = True
+        state.current_url = url
         logger.debug("Launching browser...")
         browser = await p.chromium.launch(headless=False)
         logger.debug("Creating new browser context...")
@@ -40,6 +43,7 @@ async def replay_actions(url, actions):
 
         logger.debug("Replay complete.")
         await browser.close()
+        state.is_replaying = False
 
 async def _perform_action(action, page, selector=None, value=None, key=None, retries=3):
     await asyncio.sleep(1)
