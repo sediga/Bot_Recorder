@@ -44,6 +44,11 @@ import { getSmartSelector } from './selectorHelper.js';
 
           window.sendEventToPython(actionData);
 
+          window.parent.postMessage({
+            type: 'recorded-event',
+            data: actionData
+          }, '*');
+
           fetch("http://localhost:8000/api/stream_action", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -64,12 +69,18 @@ import { getSmartSelector } from './selectorHelper.js';
 
       window.sendEventToPython(actionData);
 
+      window.parent.postMessage({
+        type: 'recorded-event',
+        data: actionData
+      }, '*');
+
       fetch("http://localhost:8000/api/stream_action", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actionData)
       });
     }
+
     // 🧠 New: Send selector metadata for training AI model
     if (type === "click" && typeof window.sendLogToPython === "function") {
       const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
@@ -96,7 +107,7 @@ import { getSmartSelector } from './selectorHelper.js';
 
   const escapeQuotes = (str) => str.replace(/"/g, '\\"').replace(/'/g, "\\'");
 
-  ["click", "focus", "blur", "change", "input", 'mousedown'].forEach(type => {
+  ["click", "focus", "change", "input"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
   });
 

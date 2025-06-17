@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from recorder.main import record
-from recorder.player import start_replay
+from recorder.player import replay_flow
 from common import state
 import logging
 import os
@@ -54,7 +54,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             await asyncio.sleep(10)  # Keeps connection alive
     except Exception as e:
-        print("❌ WebSocket disconnected:", e)
+        print("WebSocket disconnected:", e)
     finally:
         if websocket in connections:
             connections.remove(websocket)
@@ -71,7 +71,7 @@ async def stream_action(request: Request):
             await ws.send_text(json.dumps(action))
             print("[BROADCASTED ACTION]", action)
         except Exception as e:
-            print("❌ Failed to send:", e)
+            print("Failed to send:", e)
             disconnected.append(ws)
 
     for ws in disconnected:
@@ -93,31 +93,18 @@ async def start_recording(req: RecordRequest):
         logger.exception("Failed to launch recorder")
         return {"error": str(e)}
 
+from fastapi import Request
+
 @app.post("/api/replay")
-async def replay_by_url(payload: dict):
-    url = payload.get("url")
-    logger.info(f"Replaying actions for URL: {url}")
-    if not url:
-        return {"error": "URL required"}
-
+async def replay_by_json(request: Request):
     try:
-        with open("recordings/recorded_actions.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-            logger.debug("Loaded recorded actions from file.")
+        json_str = await request.body()
+        json_str = json_str.decode("utf-8")
 
-        if url not in data:
-            logger.warning(f"No recorded actions for URL: {url}")
-            return {"error": "URL not found"}
-
-        temp_path = "recordings/_replay_temp.json"
-        with open(temp_path, "w", encoding="utf-8") as f:
-            json.dump({url: data[url]}, f, indent=2)
-            logger.info(f"Temporary replay file created at {temp_path}")
-
-        asyncio.create_task(start_replay(temp_path))
-        return {"status": "replaying", "url": url}
+        asyncio.create_task(replay_flow(json_str))
+        return {"status": "replaying"}
     except Exception as e:
-        logger.exception("Failed during replay")
+        logger.exception("Failed to start replay from JSON string")
         return {"error": str(e)}
 
 @app.post("/api/stop")

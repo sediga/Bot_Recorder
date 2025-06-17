@@ -729,46 +729,60 @@
   ],
   "http://edigatech.com": [
     {
-      "action": "mousedown",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1)",
-      "timestamp": 1750113021598,
-      "value": null,
-      "url": "https://edigatech.com/"
-    },
-    {
       "action": "click",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1)",
-      "timestamp": 1750113021680,
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700",
+      "timestamp": 1750195191126,
       "value": null,
       "url": "https://edigatech.com/"
     },
     {
-      "action": "mousedown",
+      "action": "focus",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750113023352,
+      "timestamp": 1750195192367,
       "value": null,
       "url": "https://edigatech.com/training"
     },
     {
       "action": "focus",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750113023354,
+      "timestamp": 1750195192367,
       "value": null,
       "url": "https://edigatech.com/training"
     },
     {
       "action": "click",
       "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750113023440,
+      "timestamp": 1750195192452,
       "value": null,
       "url": "https://edigatech.com/training"
     },
     {
-      "action": "blur",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750113023448,
+      "action": "click",
+      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > h3.text-xl.font-bold.mb-2.text-rose-700",
+      "timestamp": 1750195206867,
       "value": null,
       "url": "https://edigatech.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750195208381,
+      "value": null,
+      "url": "https://edigatech.com/recruiters"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750195208381,
+      "value": null,
+      "url": "https://edigatech.com/recruiters"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750195208473,
+      "value": null,
+      "url": "https://edigatech.com/recruiters"
     }
   ],
   "https://raiserecruiting.com/": [
