@@ -1,10 +1,12 @@
 from pathlib import Path
+import subprocess
+import tempfile
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from recorder.main import record
+from recorder.record import record
 from recorder.player import replay_flow
 from common import state
 import logging
@@ -123,8 +125,10 @@ def stop_recording():
 @app.get("/api/status")
 def get_status():
     return {
-        "running": state.is_recording,
+        "running": state.is_running,
+        "recording": state.is_recording,
         "replaying": state.is_replaying,
+        "stopped": not (state.is_running or state.is_recording or state.is_replaying),
         "url": state.current_url if state.is_recording else None
     }
 
@@ -178,15 +182,37 @@ if __name__ == "__main__":
 
     icon_instance = None
 
+    lock_file = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
+    if os.path.exists(lock_file):
+        os.remove(lock_file)
+
     def start_api():
         config = Config(app=app, host="localhost", port=8000, log_level="info")
         server = Server(config=config)
         logger.info("Launching API server on http://localhost:8000")
+        state.is_running = True
         server.run()
         
     def quit_app(icon, item):
         logger.info("Quitting Botflows Agent...")
+
+        # Try to close settings window if open
+        try:
+            import psutil
+            for proc in psutil.process_iter(attrs=["pid", "name", "cmdline"]):
+                cmdline = proc.info.get("cmdline") or []
+                if any("config_ui.py" in part for part in cmdline):
+                    logger.info(f"Terminating config_ui.py process (PID: {proc.pid})")
+                    proc.terminate()
+        except Exception as e:
+            logger.warning(f"Could not close settings window: {e}")
+
+        # Always clean up lock file
+        if os.path.exists(lock_file):
+            os.remove(lock_file)
+
         icon.stop()
+        state.is_running = False
         os._exit(0)
 
     def add_to_startup():
@@ -209,12 +235,35 @@ if __name__ == "__main__":
             logger.warning("BotflowsAgent was not in startup.")
         except Exception:
             logger.exception("Failed to remove from startup")
+            
+    def on_settings_click(icon, item):
+        if os.path.exists(lock_file):
+            print("Settings already open.")
+            return
+
+        # Create lock file
+        with open(lock_file, "w") as f:
+            f.write("1")
+
+        # Launch subprocess
+        proc = subprocess.Popen([sys.executable, "ui/config_ui.py"])
+
+        # Remove lock when done
+        def clear_lock():
+            if os.path.exists(lock_file):
+                os.remove(lock_file)
+
+        # Optional cleanup thread (for safety if user closes via X)
+        import threading
+        threading.Thread(target=lambda: (proc.wait(), clear_lock())).start()
+
 
     def tray_icon():
         icon_image = Image.new("RGB", (64, 64), color=(100, 150, 255))
         icon = pystray.Icon("BotflowsAgent", icon_image, "Botflows Agent", menu=(
             item("Start with Windows", lambda icon, _: add_to_startup()),
             item("Remove from Startup", lambda icon, _: remove_from_startup()),
+            item('Settings', on_settings_click),
             item("Quit", quit_app),
         ))
         icon_instance = icon

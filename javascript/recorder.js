@@ -107,7 +107,7 @@ import { getSmartSelector } from './selectorHelper.js';
 
   const escapeQuotes = (str) => str.replace(/"/g, '\\"').replace(/'/g, "\\'");
 
-  ["click", "focus", "change", "input"].forEach(type => {
+  ["click", "change", "input"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
   });
 

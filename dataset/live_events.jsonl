@@ -877,3 +877,136 @@
 {"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750195208381, "value": null, "url": "https://edigatech.com/recruiters"}
 {"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750195208473, "value": null, "url": "https://edigatech.com/recruiters"}
 {"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750195208473, "value": null, "url": "https://edigatech.com/recruiters"}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-400.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(3)", "timestamp": 1750248828426, "value": null, "url": "https://edigatech.com/"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750248829959, "value": null, "url": "https://edigatech.com/freelancing"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750248830031, "value": null, "url": "https://edigatech.com/freelancing"}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700", "timestamp": 1750248850688, "value": null, "url": "https://edigatech.com/"}
+{"action": "focus", "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")", "timestamp": 1750248852435, "value": null, "url": "https://edigatech.com/training"}
+{"action": "click", "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")", "timestamp": 1750248852502, "value": null, "url": "https://edigatech.com/training"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750248854101, "value": null, "url": "https://edigatech.com/training#interviews"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750248854188, "value": null, "url": "https://edigatech.com/training#interviews"}
+{"action": "focus", "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")", "timestamp": 1750248855950, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")", "timestamp": 1750248856057, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750248857913, "value": null, "url": "https://edigatech.com/training#resume-help"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750248857983, "value": null, "url": "https://edigatech.com/training#resume-help"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750248859388, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750248859455, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "p:has-text(\"Hire us for .NET modernization, cloud projects, and automation expertise \u2014 on your terms.\")", "timestamp": 1750248870534, "value": null, "url": "https://edigatech.com/"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750248871933, "value": null, "url": "https://edigatech.com/freelancing"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750248872035, "value": null, "url": "https://edigatech.com/freelancing"}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700", "timestamp": 1750249564502, "value": null, "url": "https://edigatech.com/"}
+{"action": "focus", "selector": "a:has-text(\"Developer Coaching & TrainingHands-on mentorship in .NET, cloud, and clean architecture. Ideal for junior to mid-level developers.\")", "timestamp": 1750249570572, "value": null, "url": "https://edigatech.com/training"}
+{"action": "click", "selector": "a:has-text(\"Developer Coaching & TrainingHands-on mentorship in .NET, cloud, and clean architecture. Ideal for junior to mid-level developers.\")", "timestamp": 1750249570635, "value": null, "url": "https://edigatech.com/training"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249574166, "value": null, "url": "https://edigatech.com/training#coaching"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249574253, "value": null, "url": "https://edigatech.com/training#coaching"}
+{"action": "focus", "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")", "timestamp": 1750249576878, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")", "timestamp": 1750249576953, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249579340, "value": null, "url": "https://edigatech.com/training#interviews"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249579450, "value": null, "url": "https://edigatech.com/training#interviews"}
+{"action": "focus", "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")", "timestamp": 1750249581100, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")", "timestamp": 1750249581201, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249583934, "value": null, "url": "https://edigatech.com/training#resume-help"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249584022, "value": null, "url": "https://edigatech.com/training#resume-help"}
+{"action": "focus", "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")", "timestamp": 1750249585757, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")", "timestamp": 1750249585843, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249590216, "value": null, "url": "https://edigatech.com/training#placement"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249590218, "value": null, "url": "https://edigatech.com/training#placement"}
+{"action": "focus", "selector": "a:has-text(\"Services\")", "timestamp": 1750249593221, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Services\")", "timestamp": 1750249593307, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "a:has-text(\"Book Call\")", "timestamp": 1750249595001, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Book Call\")", "timestamp": 1750249595063, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "[aria-label='Wednesday\\,\\ June\\ 18\\ -\\ Times\\ available']", "timestamp": 1750249603321, "value": null, "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06"}
+{"action": "click", "selector": "[aria-label='Wednesday\\,\\ June\\ 18\\ -\\ Times\\ available']", "timestamp": 1750249603335, "value": null, "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06"}
+{"action": "focus", "selector": "button:has-text(\"11:30am\")", "timestamp": 1750249605201, "value": null, "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"}
+{"action": "click", "selector": "button:has-text(\"11:30am\")", "timestamp": 1750249605310, "value": null, "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"}
+{"action": "focus", "selector": "[aria-label='Next\\ 11\\:30am']", "timestamp": 1750249606486, "value": null, "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"}
+{"action": "click", "selector": "[aria-label='Next\\ 11\\:30am']", "timestamp": 1750249606571, "value": null, "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249611920, "value": null, "url": "https://edigatech.com/training#book"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Services\")", "timestamp": 1750249612007, "value": null, "url": "https://edigatech.com/training#book"}
+{"action": "focus", "selector": "a:has-text(\"Upload Resume\")", "timestamp": 1750249613946, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "click", "selector": "a:has-text(\"Upload Resume\")", "timestamp": 1750249614017, "value": null, "url": "https://edigatech.com/training#services"}
+{"action": "focus", "selector": "a:has-text(\"Upload Resume\")", "timestamp": 1750249616519, "value": null, "url": "https://edigatech.com/training#resume"}
+{"action": "click", "selector": "a:has-text(\"Upload Resume\")", "timestamp": 1750249616599, "value": null, "url": "https://edigatech.com/training#resume"}
+{"action": "focus", "selector": "a:has-text(\"Contact\")", "timestamp": 1750249621800, "value": null, "url": "https://edigatech.com/training#resume"}
+{"action": "click", "selector": "a:has-text(\"Contact\")", "timestamp": 1750249621873, "value": null, "url": "https://edigatech.com/training#resume"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750249623534, "value": null, "url": "https://edigatech.com/training#contact"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750249623640, "value": null, "url": "https://edigatech.com/training#contact"}
+{"action": "click", "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > h3.text-xl.font-bold.mb-2.text-rose-700", "timestamp": 1750249626410, "value": null, "url": "https://edigatech.com/"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750249632969, "value": null, "url": "https://edigatech.com/recruiters"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750249633034, "value": null, "url": "https://edigatech.com/recruiters"}
+{"action": "click", "selector": "p:has-text(\"Hire us for .NET modernization, cloud projects, and automation expertise \u2014 on your terms.\")", "timestamp": 1750249634598, "value": null, "url": "https://edigatech.com/"}
+{"action": "focus", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750249636375, "value": null, "url": "https://edigatech.com/freelancing"}
+{"action": "click", "selector": "a:has-text(\"\u2190 Back to Home\")", "timestamp": 1750249636466, "value": null, "url": "https://edigatech.com/freelancing"}
+{"action": "focus", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750249970177, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750249970187, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750249970319, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750249981812, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750249981842, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "a:has-text(\"New York, NY\")", "timestamp": 1750249988315, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750249989089, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750249990048, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750250007877, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750250008023, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "#downshift-1-input", "timestamp": 1750250049599, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "#downshift-1-input", "timestamp": 1750250049741, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "a:has-text(\"New York, NY\")", "timestamp": 1750250051287, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "div:has-text(\"1 night\")", "timestamp": 1750250061567, "value": "Wed, Jun 18 - Thu, Jun 19", "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "div:has-text(\"1 night\")", "timestamp": 1750250061913, "value": "Wed, Jun 18 - Thu, Jun 19", "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750250062250, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Fri\\ Jun\\ 20\\ 2025']", "timestamp": 1750250066007, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Fri\\ Jun\\ 20\\ 2025']", "timestamp": 1750250066115, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Mon\\ Jun\\ 23\\ 2025']", "timestamp": 1750250067753, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Mon\\ Jun\\ 23\\ 2025']", "timestamp": 1750250067884, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Done']", "timestamp": 1750250069406, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Done']", "timestamp": 1750250069515, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750250071963, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750250072048, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750252781155, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750252781477, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750252781625, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "a:has-text(\"Orlando, FL\")", "timestamp": 1750252787370, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750252788005, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750252788904, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Done']", "timestamp": 1750252802514, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Done']", "timestamp": 1750252802601, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750252806953, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750252807039, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750254579102, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750254579112, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254579249, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254583796, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "a:has-text(\"Orlando, FL\")", "timestamp": 1750254592646, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254598769, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254599940, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Done']", "timestamp": 1750254600713, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Done']", "timestamp": 1750254601142, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750254603082, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750254603193, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750254658269, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750254658306, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254658426, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "a:has-text(\"San Diego, CA\")", "timestamp": 1750254660599, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254663115, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750254663929, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Done']", "timestamp": 1750254664755, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Done']", "timestamp": 1750254665338, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750254669001, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750254669093, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750257252169, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "div:has-text(\"DestinationDates\")", "timestamp": 1750257252255, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750257252409, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "a:has-text(\"Orlando, FL\")", "timestamp": 1750257254673, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[data-testid='ui-library-DropDownModal']", "timestamp": 1750257254968, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "[aria-label='Done']", "timestamp": 1750257256840, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "[aria-label='Done']", "timestamp": 1750257256843, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750257258943, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "click", "selector": "button:has-text(\"Find Hotels\")", "timestamp": 1750257259644, "value": null, "url": "https://www.marriott.com/default.mi"}
+{"action": "focus", "selector": "div:nth-of-type(6) > div:nth-of-type(1)", "timestamp": 1750257311786, "value": null, "url": "https://mail.google.com/mail/u/0/"}
+{"action": "focus", "selector": "div:nth-of-type(6) > div:nth-of-type(1)", "timestamp": 1750262446069, "value": null, "url": "https://mail.google.com/mail/u/0/"}
+{"action": "focus", "selector": "[aria-label='Important']", "timestamp": 1750262451072, "value": null, "url": "https://mail.google.com/mail/u/0/#inbox"}
+{"action": "click", "selector": "[aria-label='Important']", "timestamp": 1750262451125, "value": null, "url": "https://mail.google.com/mail/u/0/#inbox"}
+{"action": "click", "selector": "div:has-text(\"Inbox62,089\")", "timestamp": 1750262459983, "value": null, "url": "https://mail.google.com/mail/u/0/#imp"}
+{"action": "focus", "selector": "div:nth-of-type(6) > div:nth-of-type(1)", "timestamp": 1750262569686, "value": null, "url": "https://mail.google.com/mail/u/0/"}
+{"action": "click", "selector": "span:has-text(\"Drafts\")", "timestamp": 1750262573190, "value": null, "url": "https://mail.google.com/mail/u/0/#inbox"}
+{"action": "focus", "selector": "[aria-label='Inbox\\ 62089\\ unread']", "timestamp": 1750262580648, "value": null, "url": "https://mail.google.com/mail/u/0/#drafts"}
+{"action": "click", "selector": "[aria-label='Inbox\\ 62089\\ unread']", "timestamp": 1750262580712, "value": null, "url": "https://mail.google.com/mail/u/0/#drafts"}

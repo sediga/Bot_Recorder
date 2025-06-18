@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Union
 from playwright.async_api import async_playwright, Page
 from common import state
+from common.browserutil import launch_chrome
 
 logger = logging.getLogger("botflows-player")
 logging.basicConfig(level=logging.DEBUG)
@@ -79,14 +80,14 @@ async def replay_flow(json_str: str):
     flow = json.loads(json_str)
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False, channel="chrome")  # Real Chrome
-        context = await browser.new_context()
+        browser = await launch_chrome(p)  # use unified method
+        context = browser.contexts[0] if browser.contexts else await browser.new_context()
         page = await context.new_page()
 
         for step in flow:
             await handle_step(step, page)
 
-        logger.info("✅ Replay complete.")
+        logger.info("Replay complete.")
         await browser.close()
         state.is_replaying = False
 

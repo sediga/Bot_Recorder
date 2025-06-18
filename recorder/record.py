@@ -9,7 +9,9 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 import sys
 import os
+from ui.config_ui import load_config
 from common import state
+from common.browserutil import launch_chrome, wait_for_debug_port
 
 logger = logging.getLogger(__name__)
 recorded_events = []
@@ -68,50 +70,6 @@ async def reinject_script(page):
     except Exception as e:
         logger.error(f"Reinjection failed: {e}")
 
-def is_chrome_running_with_debug(port=9222):
-    for proc in psutil.process_iter(attrs=["name", "cmdline"]):
-        try:
-            if "chrome.exe" in proc.info["name"].lower():
-                if f"--remote-debugging-port={port}" in " ".join(proc.info["cmdline"]).lower():
-                    return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            continue
-    return False
-
-def is_port_open(host="localhost", port=9222):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.settimeout(0.5)
-        try:
-            sock.connect((host, port))
-            return True
-        except socket.error:
-            return False
-
-def launch_chrome_debug(port=9222):
-    user_profile_dir = "C:\\Users\\sreen\\AppData\\Local\\Botflows\\ChromeProfile"
-    os.makedirs(user_profile_dir, exist_ok=True)
-
-    if not is_chrome_running_with_debug(port):
-        subprocess.Popen([
-            "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-            f"--remote-debugging-port={port}",
-            f"--user-data-dir={user_profile_dir}",
-            "--no-first-run",
-            "--no-default-browser-check"
-        ])
-        logger.info("Launched Chrome with debugging port and user profile")
-    else:
-        logger.info("Chrome already running with required debugging port")
-
-def wait_until_chrome_ready(timeout=10):
-    logger.info("Waiting for Chrome CDP port to be available...")
-    for _ in range(timeout * 2):
-        if is_port_open("localhost", 9222):
-            logger.info("Chrome is ready")
-            return
-        time.sleep(0.5)
-    raise RuntimeError("Chrome with --remote-debugging-port=9222 not responding")
-
 def deduplicate_events(events, threshold_ms=200):
     seen, deduped = [], []
     for event in events:
@@ -130,11 +88,9 @@ async def record(url: str):
     recorded_events = []
     logger.info(f"Starting recording session: {url}")
 
-    launch_chrome_debug()
-    wait_until_chrome_ready()
-
     async with async_playwright() as p:
-        browser = await p.chromium.connect_over_cdp("http://localhost:9222")
+        browser = await launch_chrome(p)  # unified method handles both modes
+
         context = browser.contexts[0] if browser.contexts else await browser.new_context(no_viewport=True)
 
         for tab in context.pages:
@@ -153,17 +109,20 @@ async def record(url: str):
             Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
             Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
         """)
+
         await inject_script(page)
         await page.goto(url)
 
         async def wait_for_tab_close():
             while not page.is_closed():
                 await asyncio.sleep(1)
+            state.is_recording = False
             logger.info("Tab closed")
 
         async def wait_for_stop_flag():
             while state.is_recording:
                 await asyncio.sleep(1)
+            state.is_recording = False
             logger.info("Recording manually stopped")
 
         try:
