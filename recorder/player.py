@@ -1,41 +1,43 @@
 import asyncio
 import json
 import logging
-import os
 from pathlib import Path
-from typing import List, Union
 from playwright.async_api import async_playwright, Page
 from common import state
 from common.browserutil import launch_chrome
 
 logger = logging.getLogger("botflows-player")
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
+
 
 async def _perform_action(page: Page, action: str, selector=None, value=None, key=None, retries=3):
     await asyncio.sleep(1)
 
-    async def try_action(target_page):
+    async def try_action(target_page: Page, sel):
         if action == "click":
-            await target_page.wait_for_selector(selector, state="visible", timeout=5000)
-            return await target_page.click(selector, timeout=5000)
+            await target_page.wait_for_selector(sel, state="visible", timeout=5000)
+            return await target_page.click(sel, timeout=5000)
         elif action == "type":
-            await target_page.wait_for_selector(selector, state="attached", timeout=5000)
-            return await target_page.fill(selector, value)
+            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
+            await target_page.focus(sel)
+            return await target_page.fill(sel, value or "")
         elif action == "press":
             return await target_page.keyboard.press(key)
         elif action == "select":
-            await target_page.wait_for_selector(selector, state="attached", timeout=5000)
-            return await target_page.select_option(selector, value)
+            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
+            return await target_page.select_option(sel, value)
         elif action in ["mousedown", "focus", "blur"]:
-            await target_page.wait_for_selector(selector, state="attached", timeout=5000)
-            return await target_page.dispatch_event(selector, action)
+            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
+            return await target_page.dispatch_event(sel, action)
 
     for attempt in range(1, retries + 1):
         try:
-            await try_action(page)
+            await try_action(page, selector)
+            logger.info(f"✅ Action '{action}' succeeded on attempt {attempt}: {selector}")
             return
         except Exception as e:
-            logger.warning(f"Attempt {attempt} failed on main page: {action} / {selector} => {e}")
+            logger.warning(f"⚠️ Attempt {attempt} failed: {action} / {selector} => {e}")
+
             text_hint = None
             if ":has-text(" in selector:
                 try:
@@ -43,66 +45,59 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                 except:
                     pass
 
-            # Try fallback with get_by_text
             if action == "click" and text_hint:
-                try:
-                    await page.get_by_text(text_hint, exact=True).click(timeout=3000)
-                    logger.info(f"[Fallback] Used get_by_text: {text_hint}")
-                    return
-                except Exception as ge:
-                    logger.debug(f"[Fallback] get_by_text failed: {ge}")
-
-                try:
-                    await page.get_by_role("button", name=text_hint).click(timeout=3000)
-                    logger.info(f"[Fallback] Used get_by_role: {text_hint}")
-                    return
-                except Exception as ge2:
-                    logger.debug(f"[Fallback] get_by_role failed: {ge2}")
-
-                # Try common tags with text match
-                for tag in ["a", "button", "div", "span"]:
+                for fallback in [
+                    lambda p: p.get_by_text(text_hint, exact=True),
+                    lambda p: p.get_by_role("button", name=text_hint),
+                    lambda p: p.locator(f"a:has-text('{text_hint}')"),
+                    lambda p: p.locator(f"div:has-text('{text_hint}')"),
+                    lambda p: p.locator(f"span:has-text('{text_hint}')"),
+                ]:
                     try:
-                        candidate = page.locator(f"{tag}:has-text('{text_hint}')")
-                        if await candidate.count() == 1:
-                            await candidate.first.click(timeout=3000)
-                            logger.info(f"[Fallback] Used {tag}:has-text('{text_hint}')")
-                            return
-                    except Exception as se:
-                        logger.debug(f"[Fallback] {tag} tag failed: {se}")
+                        candidate = fallback(page)
+                        await candidate.first.click(timeout=3000)
+                        logger.info(f"[Fallback] Click worked using text match: {text_hint}")
+                        return
+                    except Exception:
+                        continue
 
-            # Try in frames
             for frame in page.frames:
+                if frame == page.main_frame:
+                    continue
                 try:
-                    await try_action(frame)
-                    logger.debug(f"Success inside frame: {frame.url}")
+                    await try_action(frame, selector)
+                    logger.info(f"[Frame] Success inside: {frame.url}")
                     return
                 except:
                     continue
 
-            # Last resort: force click
             if action == "click" and attempt == retries:
                 try:
                     await page.click(selector, force=True, timeout=3000)
-                    logger.info(f"[Force Click] Fallback succeeded: {selector}")
+                    logger.info(f"[Force Click] Succeeded: {selector}")
                     return
                 except Exception as fe:
                     logger.error(f"[Force Click] Failed: {fe}")
 
             await asyncio.sleep(1)
 
+
 async def handle_step(step: dict, page: Page):
-    if step["type"] == "uiAction":
+    step_type = step.get("type")
+    selector = step.get("improvedSelector") or step.get("selector")
+
+    if step_type == "uiAction":
         await _perform_action(
             page,
-            step.get("action"),
-            step.get("selector"),
-            step.get("value"),
-            step.get("key")
+            action=step.get("action"),
+            selector=selector,
+            value=step.get("value"),
+            key=step.get("key")
         )
-    elif step["type"] == "navigate":
+    elif step_type == "navigate":
         await page.goto(step["url"])
         await asyncio.sleep(1)
-    elif step["type"] == "counterloop" and step.get("action") == "counterloop":
+    elif step_type == "counterloop" and step.get("action") == "counterloop":
         count = step.get("criteria", {}).get("count", 1)
         logger.info(f"⟳ Starting loop '{step.get('source')}' for {count} iterations")
         for i in range(count):
@@ -116,17 +111,17 @@ async def replay_flow(json_str: str):
     flow = json.loads(json_str)
 
     async with async_playwright() as p:
-        browser = await launch_chrome(p)  # use unified method
+        browser = await launch_chrome(p)
         context = browser.contexts[0] if browser.contexts else await browser.new_context()
         page = await context.new_page()
 
         for step in flow:
             await handle_step(step, page)
 
-        logger.info("Replay complete.")
+        logger.info("🎉 Replay complete.")
         await browser.close()
         state.is_replaying = False
 
 
-# Example usage for wiring later:
+# Example usage:
 # asyncio.run(replay_flow(Path("recordings/final_flow.json").read_text()))

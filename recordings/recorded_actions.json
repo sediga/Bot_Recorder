@@ -29,7 +29,410 @@
       "url": "https://mail.google.com/mail/u/0/#drafts"
     }
   ],
-  "http://edigatech.com": [],
+  "http://edigatech.com": [
+    {
+      "action": "click",
+      "selector": "div.cursor-pointer.border-t-4.border-indigo-600:has-text(\"Developer Coaching & Training\"):nth-of-type(4)",
+      "timestamp": 1750345565161,
+      "value": null,
+      "url": "https://edigatech.com/",
+      "tagName": "H3",
+      "classList": [
+        "text-xl",
+        "font-bold",
+        "mb-2",
+        "text-indigo-700"
+      ],
+      "attributes": {
+        "class": "text-xl font-bold mb-2 text-indigo-700"
+      },
+      "innerText": "Developer Coaching & Training",
+      "elementText": "Developer Coaching & Training"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Mock Interviews\")",
+      "timestamp": 1750345567085,
+      "value": null,
+      "url": "https://edigatech.com/training",
+      "tagName": "A",
+      "classList": [
+        "flex",
+        "items-start",
+        "bg-white",
+        "rounded-2xl",
+        "shadow",
+        "border-l-4",
+        "border-t-4",
+        "border-indigo-500",
+        "p-6",
+        "hover:shadow-lg",
+        "transition"
+      ],
+      "attributes": {
+        "href": "#interviews",
+        "class": "flex items-start bg-white rounded-2xl shadow  border-l-4 border-t-4 border-indigo-500 p-6 hover:shadow-lg transition"
+      },
+      "innerText": "Mock Interviews\n\nSimulated interviews, real feedback \u2014 now with no upfront cost.",
+      "elementText": "Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost."
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label=\"Close\"]",
+      "timestamp": 1750345574612,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06",
+      "tagName": "BUTTON",
+      "classList": [
+        "onetrust-close-btn-handler",
+        "onetrust-close-btn-ui",
+        "banner-close-button",
+        "ot-close-icon"
+      ],
+      "attributes": {
+        "class": "onetrust-close-btn-handler onetrust-close-btn-ui banner-close-button ot-close-icon",
+        "style": "background-image: url(\"https://cdn.cookielaw.org/logos/static/ot_close.svg\");",
+        "aria-label": "Close"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label=\"Thursday\\,\\ June\\ 19\\ -\\ Times\\ available\"]",
+      "timestamp": 1750345576967,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06",
+      "tagName": "BUTTON",
+      "classList": [
+        "uvkj3lh",
+        "iLlmw9nvWQp6MsANxMu_",
+        "YBk_05kSoCgdRq6mMLO0",
+        "XXKN9NWALj8Xe4ed0s7r"
+      ],
+      "attributes": {
+        "aria-current": "date",
+        "aria-label": "Thursday, June 19 - Times available",
+        "class": "uvkj3lh iLlmw9nvWQp6MsANxMu_ YBk_05kSoCgdRq6mMLO0 XXKN9NWALj8Xe4ed0s7r",
+        "type": "button"
+      },
+      "innerText": "19",
+      "elementText": "19"
+    },
+    {
+      "action": "click",
+      "selector": "button:has-text(\"2:30pm\")",
+      "timestamp": 1750345578188,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "BUTTON",
+      "classList": [
+        "uvkj3lh",
+        "a_kkgWd9QJFsCurLPfA_",
+        "Fsp7mxcg9sbu8L8IyH_K",
+        "_jYiR9T_piWilfmGslIg",
+        "_hOCj_sBOEZ7LFd5ZO9h"
+      ],
+      "attributes": {
+        "data-container": "time-button",
+        "data-start-time": "2:30pm",
+        "class": "uvkj3lh a_kkgWd9QJFsCurLPfA_ Fsp7mxcg9sbu8L8IyH_K _jYiR9T_piWilfmGslIg _hOCj_sBOEZ7LFd5ZO9h",
+        "type": "button"
+      },
+      "innerText": "2:30pm",
+      "elementText": "2:30pm"
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label=\"Next\\ 2\\:30pm\"]",
+      "timestamp": 1750345579239,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "BUTTON",
+      "classList": [
+        "uvkj3lh",
+        "y9_mQD7Hd4ZLZ4SUzgyw",
+        "jyr1fbkKIhuAcffh_VRx",
+        "VfCFnsGvnnkn_bFdwv5V",
+        "_jYiR9T_piWilfmGslIg",
+        "_hOCj_sBOEZ7LFd5ZO9h"
+      ],
+      "attributes": {
+        "aria-label": "Next 2:30pm",
+        "role": "button",
+        "class": "uvkj3lh y9_mQD7Hd4ZLZ4SUzgyw jyr1fbkKIhuAcffh_VRx VfCFnsGvnnkn_bFdwv5V _jYiR9T_piWilfmGslIg _hOCj_sBOEZ7LFd5ZO9h",
+        "type": "button"
+      },
+      "innerText": "Next",
+      "elementText": "Next"
+    },
+    {
+      "action": "focus",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345580656,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "text",
+        "maxlength": "155",
+        "autocomplete": "name",
+        "id": "full_name_input",
+        "name": "full_name",
+        "autocorrect": "off",
+        "aria-invalid": "false"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345580792,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "text",
+        "maxlength": "155",
+        "autocomplete": "name",
+        "id": "full_name_input",
+        "name": "full_name",
+        "autocorrect": "off",
+        "aria-invalid": "false"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345581974,
+      "value": "test",
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "text",
+        "maxlength": "155",
+        "autocomplete": "name",
+        "id": "full_name_input",
+        "name": "full_name",
+        "autocorrect": "off",
+        "aria-invalid": "false",
+        "value": "test"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "focus",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345581976,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "email",
+        "maxlength": "255",
+        "autocomplete": "email",
+        "id": "email_input",
+        "name": "email",
+        "autocorrect": "off",
+        "aria-invalid": "false"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345582044,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "email",
+        "maxlength": "255",
+        "autocomplete": "email",
+        "id": "email_input",
+        "name": "email",
+        "autocorrect": "off",
+        "aria-invalid": "false"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345581416,
+      "value": "test",
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "text",
+        "maxlength": "155",
+        "autocomplete": "name",
+        "id": "full_name_input",
+        "name": "full_name",
+        "autocorrect": "off",
+        "aria-invalid": "false",
+        "value": "tes"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345582236,
+      "value": "t",
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "email",
+        "maxlength": "255",
+        "autocomplete": "email",
+        "id": "email_input",
+        "name": "email",
+        "autocorrect": "off",
+        "aria-invalid": "false"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345583756,
+      "value": null,
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "email",
+        "maxlength": "255",
+        "autocomplete": "email",
+        "id": "email_input",
+        "name": "email",
+        "autocorrect": "off",
+        "aria-invalid": "false",
+        "value": "t"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345584839,
+      "value": "sreenivasa@edigatech.com",
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "email",
+        "maxlength": "255",
+        "autocomplete": "email",
+        "id": "email_input",
+        "name": "email",
+        "autocorrect": "off",
+        "aria-invalid": "false",
+        "value": "sreenivasa@edigatech.com"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
+      "timestamp": 1750345584824,
+      "value": "sreenivasa@edigatech.com",
+      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
+      "tagName": "INPUT",
+      "classList": [
+        "i167bxqy",
+        "i1uya22c"
+      ],
+      "attributes": {
+        "class": "i167bxqy i1uya22c",
+        "type": "email",
+        "maxlength": "255",
+        "autocomplete": "email",
+        "id": "email_input",
+        "name": "email",
+        "autocorrect": "off",
+        "aria-invalid": "false"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750345587340,
+      "value": null,
+      "url": "https://edigatech.com/training#interviews",
+      "tagName": "A",
+      "classList": [
+        "text-sm",
+        "text-indigo-600",
+        "hover:text-indigo-800",
+        "transition",
+        "font-medium"
+      ],
+      "attributes": {
+        "class": "text-sm text-indigo-600 hover:text-indigo-800 transition font-medium",
+        "href": "/",
+        "data-discover": "true"
+      },
+      "innerText": "\u2190 Back to Home",
+      "elementText": "\u2190 Back to Home"
+    }
+  ],
   "https://raiserecruiting.com/": [
     {
       "action": "mousedown",

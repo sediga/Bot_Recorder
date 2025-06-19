@@ -67,7 +67,7 @@ export function collectAllElementsForSelectorAnalysis(limit = 1000) {
   });
 
   // ⚠️ Adjust threshold if needed
-  return scored.filter(el => el.Score >= 10);
+  return scored.filter(el => el.Score >= 3);
 }
 
 export function getSelectorAnalysisPayload(limit = 1000) {

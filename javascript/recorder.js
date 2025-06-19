@@ -44,27 +44,38 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
     const selector = getSmartSelector(target);
     const now = Date.now();
 
-    if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 150) return;
-    if (type === "focus" && selector === lastFocus.selector && now - lastFocus.timestamp < 150) return;
+    if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 80) return;
+    if (type === "focus") {
+      const tag = target.tagName.toLowerCase();
+      const isFormField = ["input", "textarea", "select"].includes(tag);
 
-    if (type === "click") lastClick = { selector, timestamp: now };
+      if (!isFormField) return; // Don't log focus unless it's a field
+    }
+      if (type === "click") lastClick = { selector, timestamp: now };
     if (type === "focus") lastFocus = { selector, timestamp: now };
+
+    // Common metadata
+    const actionData = {
+      action: type === "input" ? "type" : type,
+      selector,
+      timestamp: now,
+      value: target.value || null,
+      url: window.location.href,
+      tagName: target.tagName || null,
+      classList: Array.from(target.classList || []),
+      attributes: getAllAttributes(target),
+      innerText: target.innerText || null,
+      elementText: target.textContent || null
+    };
 
     if (type === "input" && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
       clearTimeout(typingDebounce);
       lastTypedElement = target;
+
       typingDebounce = setTimeout(() => {
         if (lastTypedElement) {
-          const actionData = {
-            action: "type",
-            selector: getSmartSelector(lastTypedElement),
-            timestamp: Date.now(),
-            value: lastTypedElement.value,
-            url: window.location.href
-          };
-
           window.sendEventToPython(actionData);
-          window.parent.postMessage({ type: 'recorded-event', data: actionData }, '*');
+          window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
 
           fetch("http://localhost:8000/api/stream_action", {
             method: "POST",
@@ -76,16 +87,9 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
         }
       }, 800);
     } else {
-      const actionData = {
-        action: type,
-        selector,
-        timestamp: now,
-        value: target.value || undefined,
-        url: window.location.href
-      };
-
+      // Non-typing actions
       window.sendEventToPython(actionData);
-      window.parent.postMessage({ type: 'recorded-event', data: actionData }, '*');
+      window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
 
       fetch("http://localhost:8000/api/stream_action", {
         method: "POST",
@@ -94,6 +98,7 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
       });
     }
 
+    // Optional log event
     if (type === "click" && typeof window.sendLogToPython === "function") {
       const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
       const siblingText = Array.from(target.parentElement?.children || [])
@@ -107,7 +112,7 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
         elementMeta: {
           tag: target.tagName.toLowerCase(),
           attributes: getAllAttributes(target),
-          innerText: target.innerText.trim(),
+          innerText: target.innerText?.trim(),
           parentTag,
           siblingText
         },
@@ -116,6 +121,7 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
       });
     }
   };
+
 
   ["click", "focus", "change", "input"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
