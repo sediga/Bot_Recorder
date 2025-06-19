@@ -11,7 +11,6 @@ from common.browserutil import launch_chrome
 logger = logging.getLogger("botflows-player")
 logging.basicConfig(level=logging.DEBUG)
 
-
 async def _perform_action(page: Page, action: str, selector=None, value=None, key=None, retries=3):
     await asyncio.sleep(1)
 
@@ -37,6 +36,41 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
             return
         except Exception as e:
             logger.warning(f"Attempt {attempt} failed on main page: {action} / {selector} => {e}")
+            text_hint = None
+            if ":has-text(" in selector:
+                try:
+                    text_hint = selector.split(":has-text(")[1].split(")")[0].strip('"').strip("'")
+                except:
+                    pass
+
+            # Try fallback with get_by_text
+            if action == "click" and text_hint:
+                try:
+                    await page.get_by_text(text_hint, exact=True).click(timeout=3000)
+                    logger.info(f"[Fallback] Used get_by_text: {text_hint}")
+                    return
+                except Exception as ge:
+                    logger.debug(f"[Fallback] get_by_text failed: {ge}")
+
+                try:
+                    await page.get_by_role("button", name=text_hint).click(timeout=3000)
+                    logger.info(f"[Fallback] Used get_by_role: {text_hint}")
+                    return
+                except Exception as ge2:
+                    logger.debug(f"[Fallback] get_by_role failed: {ge2}")
+
+                # Try common tags with text match
+                for tag in ["a", "button", "div", "span"]:
+                    try:
+                        candidate = page.locator(f"{tag}:has-text('{text_hint}')")
+                        if await candidate.count() == 1:
+                            await candidate.first.click(timeout=3000)
+                            logger.info(f"[Fallback] Used {tag}:has-text('{text_hint}')")
+                            return
+                    except Exception as se:
+                        logger.debug(f"[Fallback] {tag} tag failed: {se}")
+
+            # Try in frames
             for frame in page.frames:
                 try:
                     await try_action(frame)
@@ -44,15 +78,17 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                     return
                 except:
                     continue
+
+            # Last resort: force click
             if action == "click" and attempt == retries:
                 try:
                     await page.click(selector, force=True, timeout=3000)
-                    logger.info(f"Force click succeeded: {selector}")
+                    logger.info(f"[Force Click] Fallback succeeded: {selector}")
                     return
                 except Exception as fe:
-                    logger.error(f"Force click failed: {fe}")
-            await asyncio.sleep(1)
+                    logger.error(f"[Force Click] Failed: {fe}")
 
+            await asyncio.sleep(1)
 
 async def handle_step(step: dict, page: Page):
     if step["type"] == "uiAction":

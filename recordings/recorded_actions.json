@@ -29,309 +29,7 @@
       "url": "https://mail.google.com/mail/u/0/#drafts"
     }
   ],
-  "http://edigatech.com": [
-    {
-      "action": "click",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-indigo-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(1) > h3.text-xl.font-bold.mb-2.text-indigo-700",
-      "timestamp": 1750249564502,
-      "value": null,
-      "url": "https://edigatech.com/"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Developer Coaching & TrainingHands-on mentorship in .NET, cloud, and clean architecture. Ideal for junior to mid-level developers.\")",
-      "timestamp": 1750249570572,
-      "value": null,
-      "url": "https://edigatech.com/training"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Developer Coaching & TrainingHands-on mentorship in .NET, cloud, and clean architecture. Ideal for junior to mid-level developers.\")",
-      "timestamp": 1750249570635,
-      "value": null,
-      "url": "https://edigatech.com/training"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249574166,
-      "value": null,
-      "url": "https://edigatech.com/training#coaching"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249574253,
-      "value": null,
-      "url": "https://edigatech.com/training#coaching"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")",
-      "timestamp": 1750249576878,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost.\")",
-      "timestamp": 1750249576953,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249579340,
-      "value": null,
-      "url": "https://edigatech.com/training#interviews"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249579450,
-      "value": null,
-      "url": "https://edigatech.com/training#interviews"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")",
-      "timestamp": 1750249581100,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Resume & LinkedIn HelpOptimize your job application assets and online presence.\")",
-      "timestamp": 1750249581201,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249583934,
-      "value": null,
-      "url": "https://edigatech.com/training#resume-help"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249584022,
-      "value": null,
-      "url": "https://edigatech.com/training#resume-help"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")",
-      "timestamp": 1750249585757,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Job PlacementGet hired through our partner companies and trusted network.\")",
-      "timestamp": 1750249585843,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249590216,
-      "value": null,
-      "url": "https://edigatech.com/training#placement"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249590218,
-      "value": null,
-      "url": "https://edigatech.com/training#placement"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Services\")",
-      "timestamp": 1750249593221,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Services\")",
-      "timestamp": 1750249593307,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Book Call\")",
-      "timestamp": 1750249595001,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Book Call\")",
-      "timestamp": 1750249595063,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "focus",
-      "selector": "[aria-label='Wednesday\\,\\ June\\ 18\\ -\\ Times\\ available']",
-      "timestamp": 1750249603321,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06"
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label='Wednesday\\,\\ June\\ 18\\ -\\ Times\\ available']",
-      "timestamp": 1750249603335,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06"
-    },
-    {
-      "action": "focus",
-      "selector": "button:has-text(\"11:30am\")",
-      "timestamp": 1750249605201,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"
-    },
-    {
-      "action": "click",
-      "selector": "button:has-text(\"11:30am\")",
-      "timestamp": 1750249605310,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"
-    },
-    {
-      "action": "focus",
-      "selector": "[aria-label='Next\\ 11\\:30am']",
-      "timestamp": 1750249606486,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label='Next\\ 11\\:30am']",
-      "timestamp": 1750249606571,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-18"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249611920,
-      "value": null,
-      "url": "https://edigatech.com/training#book"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Services\")",
-      "timestamp": 1750249612007,
-      "value": null,
-      "url": "https://edigatech.com/training#book"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Upload Resume\")",
-      "timestamp": 1750249613946,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Upload Resume\")",
-      "timestamp": 1750249614017,
-      "value": null,
-      "url": "https://edigatech.com/training#services"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Upload Resume\")",
-      "timestamp": 1750249616519,
-      "value": null,
-      "url": "https://edigatech.com/training#resume"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Upload Resume\")",
-      "timestamp": 1750249616599,
-      "value": null,
-      "url": "https://edigatech.com/training#resume"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"Contact\")",
-      "timestamp": 1750249621800,
-      "value": null,
-      "url": "https://edigatech.com/training#resume"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Contact\")",
-      "timestamp": 1750249621873,
-      "value": null,
-      "url": "https://edigatech.com/training#resume"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750249623534,
-      "value": null,
-      "url": "https://edigatech.com/training#contact"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750249623640,
-      "value": null,
-      "url": "https://edigatech.com/training#contact"
-    },
-    {
-      "action": "click",
-      "selector": "div > div.min-h-screen.bg-gray-50.text-gray-800 > section.text-center.py-16.px-4:nth-of-type(2) > div.grid.md\\:grid-cols-3.gap-8.max-w-6xl.mx-auto > div.cursor-pointer.border-t-4.border-rose-600.bg-white.p-6.rounded-xl.shadow-md.hover\\:shadow-lg.transition:nth-of-type(2) > h3.text-xl.font-bold.mb-2.text-rose-700",
-      "timestamp": 1750249626410,
-      "value": null,
-      "url": "https://edigatech.com/"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750249632969,
-      "value": null,
-      "url": "https://edigatech.com/recruiters"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750249633034,
-      "value": null,
-      "url": "https://edigatech.com/recruiters"
-    },
-    {
-      "action": "click",
-      "selector": "p:has-text(\"Hire us for .NET modernization, cloud projects, and automation expertise \u2014 on your terms.\")",
-      "timestamp": 1750249634598,
-      "value": null,
-      "url": "https://edigatech.com/"
-    },
-    {
-      "action": "focus",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750249636375,
-      "value": null,
-      "url": "https://edigatech.com/freelancing"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750249636466,
-      "value": null,
-      "url": "https://edigatech.com/freelancing"
-    }
-  ],
+  "http://edigatech.com": [],
   "https://raiserecruiting.com/": [
     {
       "action": "mousedown",
@@ -434,220 +132,195 @@
     {
       "action": "focus",
       "selector": "#APjFqb",
-      "timestamp": 1750095702575,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "blur",
-      "selector": "#APjFqb",
-      "timestamp": 1750095703448,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "focus",
-      "selector": "div:has-text(\"Sign in to GoogleGet the most from your Google accountStay signed outSign in\")",
-      "timestamp": 1750095703451,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "mousedown",
-      "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1750095708042,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "blur",
-      "selector": "div:has-text(\"Sign in to GoogleGet the most from your Google accountStay signed outSign in\")",
-      "timestamp": 1750095708046,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "focus",
-      "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1750095708049,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "click",
-      "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1750095708130,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "blur",
-      "selector": "[role='button']:has-text(\"Stay signed out\")",
-      "timestamp": 1750095708143,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "focus",
-      "selector": "#APjFqb",
-      "timestamp": 1750095708152,
-      "value": null,
-      "url": "https://www.google.com/"
-    },
-    {
-      "action": "mousedown",
-      "selector": "#APjFqb",
-      "timestamp": 1750095709526,
+      "timestamp": 1750263437816,
       "value": null,
       "url": "https://www.google.com/"
     },
     {
       "action": "click",
       "selector": "#APjFqb",
-      "timestamp": 1750095709613,
+      "timestamp": 1750263441032,
       "value": null,
       "url": "https://www.google.com/"
     },
     {
-      "action": "mousedown",
-      "selector": "a:has-text(\"Why did this happen?\")",
-      "timestamp": 1750095733191,
-      "value": null,
-      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM"
+      "action": "type",
+      "selector": "#APjFqb",
+      "timestamp": 1750263442655,
+      "value": "test",
+      "url": "https://www.google.com/"
     },
     {
       "action": "focus",
-      "selector": "a:has-text(\"Why did this happen?\")",
-      "timestamp": 1750095733196,
+      "selector": "a:has-text(\"Speedtest by Ookla - The Global Broadband Speed TestSpeedtest by Ooklahttps://www.speedtest.net\")",
+      "timestamp": 1750263449039,
       "value": null,
-      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM"
+      "url": "https://www.google.com/search?q=test&sca_esv=7b640742644021d7&sxsrf=AE3TifMjGgEb3F6yc_DJFCA7MlCURUrKSw%3A1750263437225&source=hp&ei=jeZSaODcC_Wuur8PkfymgAQ&iflsig=AOw8s4IAAAAAaFL0nccYHxMTEE2QjchadNFjTpj65FyB&ved=0ahUKEwig17-zr_uNAxV1l-4BHRG-CUAQ4dUDCBk&uact=5&oq=test&gs_lp=Egdnd3Mtd2l6IgR0ZXN0MgsQABiABBixAxiDATIIEAAYgAQYsQMyCxAAGIAEGLEDGIMBMggQABiABBixAzIIEAAYgAQYsQMyCBAAGIAEGLEDMgsQLhiABBjRAxjHATIIEAAYgAQYsQMyCBAAGIAEGLEDMgsQABiABBixAxiDAUi2D1C7A1jBBXABeACQAQCYAaMCoAGEB6oBBTAuMS4zuAEDyAEA-AEBmAIFoALGB6gCCsICBxAjGCcY6gLCAg0QLhjRAxjHARgnGOoCwgIKEC4YgAQYJxiKBcICChAjGIAEGCcYigXCAgoQIxjwBRgnGMkCwgIOEC4YgAQYsQMY0QMYxwHCAg4QLhiABBixAxiDARiKBcICCxAuGIAEGLEDGIMBwgIREC4YgAQYsQMY0QMYgwEYxwHCAggQLhiABBixA8ICBRAuGIAEwgIFEAAYgATCAg4QLhiABBjHARiOBRivAcICCxAuGIAEGLEDGIoFmAMj8QXE85XzE__zupIHBTEuMS4zoAenPbIHBTAuMS4zuAeiB8IHBzItMy4xLjHIBzk&sclient=gws-wiz"
     },
     {
       "action": "click",
-      "selector": "a:has-text(\"Why did this happen?\")",
-      "timestamp": 1750095733288,
+      "selector": "a:has-text(\"Speedtest by Ookla - The Global Broadband Speed TestSpeedtest by Ooklahttps://www.speedtest.net\")",
+      "timestamp": 1750263449150,
       "value": null,
-      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM"
-    },
-    {
-      "action": "blur",
-      "selector": "a:has-text(\"Why did this happen?\")",
-      "timestamp": 1750095737680,
-      "value": null,
-      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM#"
+      "url": "https://www.google.com/search?q=test&sca_esv=7b640742644021d7&sxsrf=AE3TifMjGgEb3F6yc_DJFCA7MlCURUrKSw%3A1750263437225&source=hp&ei=jeZSaODcC_Wuur8PkfymgAQ&iflsig=AOw8s4IAAAAAaFL0nccYHxMTEE2QjchadNFjTpj65FyB&ved=0ahUKEwig17-zr_uNAxV1l-4BHRG-CUAQ4dUDCBk&uact=5&oq=test&gs_lp=Egdnd3Mtd2l6IgR0ZXN0MgsQABiABBixAxiDATIIEAAYgAQYsQMyCxAAGIAEGLEDGIMBMggQABiABBixAzIIEAAYgAQYsQMyCBAAGIAEGLEDMgsQLhiABBjRAxjHATIIEAAYgAQYsQMyCBAAGIAEGLEDMgsQABiABBixAxiDAUi2D1C7A1jBBXABeACQAQCYAaMCoAGEB6oBBTAuMS4zuAEDyAEA-AEBmAIFoALGB6gCCsICBxAjGCcY6gLCAg0QLhjRAxjHARgnGOoCwgIKEC4YgAQYJxiKBcICChAjGIAEGCcYigXCAgoQIxjwBRgnGMkCwgIOEC4YgAQYsQMY0QMYxwHCAg4QLhiABBixAxiDARiKBcICCxAuGIAEGLEDGIMBwgIREC4YgAQYsQMY0QMYgwEYxwHCAggQLhiABBixA8ICBRAuGIAEwgIFEAAYgATCAg4QLhiABBjHARiOBRivAcICCxAuGIAEGLEDGIoFmAMj8QXE85XzE__zupIHBTEuMS4zoAenPbIHBTAuMS4zuAeiB8IHBzItMy4xLjHIBzk&sclient=gws-wiz"
     },
     {
       "action": "focus",
-      "selector": "a:has-text(\"Why did this happen?\")",
-      "timestamp": 1750095946932,
+      "selector": "[aria-label='start\\ speed\\ test\\ -\\ connection\\ type\\ multi']",
+      "timestamp": 1750263458083,
       "value": null,
-      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcoastal%2Bcarolina%2Bbaseball%2Bgame%26sca_esv%3D312756044e0986bb%26source%3Dhp%26ei%3DVFdQaIanHtX0kPIPl5ro8Q4%26iflsig%3DAOw8s4IAAAAAaFBlZKUBfHm3pYtg9VMpFL3mzMNe60S3%26gs_ss%3D1%26oq%3D%26gs_lp%3DEgdnd3Mtd2l6IgAqAggAMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BMgoQABgDGOoCGI8BSPceUABYAHABeACQAQCYAQCgAQCqAQC4AQPIAQCYAgGgAheoAgqYAxfxBUm74YSenJh8kgcBMaAHALIHALgHAMIHAzQtMcgHFA%26sclient%3Dgws-wiz%26sei%3DYVdQaOPNHLzDp84Pzc-2oAI&q=EhAmBqMAkAuRMHwMeiujGIDNGOGuwcIGIjC0gEEXmV1cyzQHVyc1L_wKzNlUqSmhnrMDeurUTCN0-S_BPyd-UjDFMNe2o3G0ooEyAVJaAUM#"
+      "url": "https://www.speedtest.net/"
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label='start\\ speed\\ test\\ -\\ connection\\ type\\ multi']",
+      "timestamp": 1750263458088,
+      "value": null,
+      "url": "https://www.speedtest.net/"
     }
   ],
   "http://octagoshealth.com": [
     {
-      "action": "mousedown",
-      "selector": "a:has-text(\"Patients\")",
-      "timestamp": 1749689860448,
-      "value": null
-    },
-    {
       "action": "focus",
-      "selector": "a:has-text(\"Patients\")",
-      "timestamp": 1749689860450,
-      "value": null
+      "selector": "a:has-text(\"Book a Demo\")",
+      "timestamp": 1750267452134,
+      "value": null,
+      "url": "https://www.octagos.com/"
     },
     {
       "action": "click",
-      "selector": "a:has-text(\"Patients\")",
-      "timestamp": 1749689860568,
-      "value": null
-    },
-    {
-      "action": "mousedown",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864485,
-      "value": null
+      "selector": "a:has-text(\"Book a Demo\")",
+      "timestamp": 1750267452291,
+      "value": null,
+      "url": "https://www.octagos.com/"
     },
     {
       "action": "focus",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864487,
-      "value": null
+      "selector": "#first-name",
+      "timestamp": 1750267456310,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo"
     },
     {
       "action": "click",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864601,
-      "value": null
+      "selector": "#first-name",
+      "timestamp": 1750267456425,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo"
     },
     {
-      "action": "blur",
-      "selector": "[role='button']:has-text(\"AcceptAccept\")",
-      "timestamp": 1749689864751,
-      "value": null
+      "action": "type",
+      "selector": "#first-name",
+      "timestamp": 1750267458471,
+      "value": "test",
+      "url": "https://www.octagos.com/company/book-a-demo"
     }
   ],
   "http://indeed.com": [
     {
-      "action": "mousedown",
-      "selector": "#text-input-what",
-      "timestamp": 1749924162285,
-      "value": null
-    },
-    {
       "action": "focus",
       "selector": "#text-input-what",
-      "timestamp": 1749924162291,
-      "value": null
+      "timestamp": 1750264765572,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
       "action": "click",
       "selector": "#text-input-what",
-      "timestamp": 1749924162425,
-      "value": null
+      "timestamp": 1750264765658,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
-      "action": "type",
+      "action": "click",
       "selector": "#text-input-what",
-      "timestamp": 1749924164894,
-      "value": "c"
+      "timestamp": 1750264768629,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
-      "action": "type",
+      "action": "click",
       "selector": "#text-input-what",
-      "timestamp": 1749924166760,
-      "value": "c#"
+      "timestamp": 1750264783639,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
-      "action": "mousedown",
-      "selector": "button:has-text(\"Search\")",
-      "timestamp": 1749924169406,
-      "value": null
+      "action": "click",
+      "selector": "#what-autocomplete-suggestions-body--0",
+      "timestamp": 1750264786006,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
-      "action": "change",
+      "action": "focus",
+      "selector": "#text-input-where",
+      "timestamp": 1750264786055,
+      "value": "Katy, TX",
+      "url": "https://www.indeed.com/"
+    },
+    {
+      "action": "focus",
       "selector": "#text-input-what",
-      "timestamp": 1749924169408,
-      "value": "c#"
+      "timestamp": 1750264789920,
+      "value": "hiring immediately",
+      "url": "https://www.indeed.com/"
     },
     {
-      "action": "blur",
+      "action": "click",
       "selector": "#text-input-what",
-      "timestamp": 1749924169409,
-      "value": "c#"
+      "timestamp": 1750264789979,
+      "value": "hiring immediately",
+      "url": "https://www.indeed.com/"
+    },
+    {
+      "action": "click",
+      "selector": "#what-autocomplete-suggestions-body--0",
+      "timestamp": 1750264792149,
+      "value": null,
+      "url": "https://www.indeed.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "#text-input-where",
+      "timestamp": 1750264792186,
+      "value": "Katy, TX",
+      "url": "https://www.indeed.com/"
+    },
+    {
+      "action": "click",
+      "selector": "#where-autocomplete-suggestions--0",
+      "timestamp": 1750264793631,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
       "action": "focus",
       "selector": "button:has-text(\"Search\")",
-      "timestamp": 1749924169426,
-      "value": null
+      "timestamp": 1750264796456,
+      "value": null,
+      "url": "https://www.indeed.com/"
     },
     {
       "action": "click",
       "selector": "button:has-text(\"Search\")",
-      "timestamp": 1749924169452,
-      "value": null
+      "timestamp": 1750264796533,
+      "value": null,
+      "url": "https://www.indeed.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "a:has-text(\"Troubleshooting Cloudflare Errors\")",
+      "timestamp": 1750264799285,
+      "value": null,
+      "url": "https://www.indeed.com/jobs?q=hiring%20immediately&l=Katy%2C%20TX&from=searchOnHP%2CrelatedQueries%2Cwhereautocomplete"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Troubleshooting Cloudflare Errors\")",
+      "timestamp": 1750264799449,
+      "value": null,
+      "url": "https://www.indeed.com/jobs?q=hiring%20immediately&l=Katy%2C%20TX&from=searchOnHP%2CrelatedQueries%2Cwhereautocomplete"
     }
   ],
   "http://carenow.com": [
@@ -1108,5 +781,37 @@
       "url": "https://accounts.google.com/v3/signin/rejected?access_type=offline&app_domain=https%3A%2F%2Fcalendly.com&client_id=797340822162.apps.googleusercontent.com&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAOlGt4CZEKn3DnI10EC1Ri2hsq6XN3gS18AfrvxD4E0SzCKTj4XD3o06zcJgsYGwRVf3kPk6mZSWl11e68nLt3q9_-G8HveMJrN6dAW9hf_cHOBrANgNNpr2CLitlGiiU2qrV99u6pFrtvCWZeRAEaJYbne7VRE3Bu15bLpv4ZEfljo7pcs6nONWaVi34Is4R2AYDOYvAQV5vWoJvjX3YaiM1CP8bk9sbpV_2_Pqs89WqZ-WQIQmhgzOc5IOkzewrU5BeaB0sva_hcGbhIcC_PbL0e8kkP6tBWLFD5HN-WrjcC5-5KhD7zcR6pKrWto7aOdQzt_ElmCFFC32mwwj7LCBIkcmlRRGrs6f6gVQRj9FS57C6DcSj5l9UsuJmpu4SywmkNeDVq9faT2PMArB9HBFw0C6owpKPnDGJEGgbSGR2dsfbA%26flowName%3DGeneralOAuthFlow%26as%3DS-1373925653%253A1750095972606076%26client_id%3D797340822162.apps.googleusercontent.com%23&dsh=S-1373925653%3A1750095972606076&epd=Ac4X3_VcFQkMks_EtZEzewYFzf-kxpvCYULzr6PmlYt39y7UiS8sCrf68Q&flowName=GeneralOAuthFlow&include_granted_scopes=true&o2v=1&opparams=%253F&prompt=select_account%20consent&rart=ANgoxceJh3YjIFj5wLmxsZ5v8eiNyfzRp6vBlv1bPr7Cqdsxi7OKvhyRcbPHmzfbDAixQPX-SGmClSJ9szKM_qBG471EWTW2uRcwMrj7FkvtpVITGTiwbiM&redirect_uri=https%3A%2F%2Fcalendly.com%2Fusers%2Fauth%2Fgoogle_oauth2%2Fcallback&response_type=code&rhlk=le&rrk=46&scope=email%20profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&service=lso&state=74de5eb0a55e3ef1f0e8cf0e4182effb83a7744a94948884"
     }
   ],
-  "http://marriott.com": []
+  "http://marriott.com": [],
+  "http://ladders.org": [],
+  "http://linkedin.com": [
+    {
+      "action": "focus",
+      "selector": "[role='button']:has-text(\"Continue with GoogleContinue with Google\")",
+      "timestamp": 1750264007846,
+      "value": null,
+      "url": "https://www.linkedin.com/"
+    },
+    {
+      "action": "click",
+      "selector": "[role='button']:has-text(\"Continue with GoogleContinue with Google\")",
+      "timestamp": 1750264007867,
+      "value": null,
+      "url": "https://www.linkedin.com/"
+    },
+    {
+      "action": "focus",
+      "selector": "#ember31",
+      "timestamp": 1750264029350,
+      "value": null,
+      "url": "https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit"
+    },
+    {
+      "action": "click",
+      "selector": "#ember31",
+      "timestamp": 1750264029397,
+      "value": null,
+      "url": "https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit"
+    }
+  ],
+  "http://octagos.com": []
 }

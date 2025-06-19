@@ -165,8 +165,8 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
             "--no-first-run",
             "--no-default-browser-check"
         ])
-        logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
         wait_for_debug_port(port)
+        logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
     else:
         logger.info(f"Reusing existing Chrome with --remote-debugging-port={port}")
 

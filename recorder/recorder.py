@@ -1,17 +1,12 @@
 import logging
 import asyncio
 import json
-import subprocess
-import psutil
-import time
-import socket
 from pathlib import Path
 from playwright.async_api import async_playwright
 import sys
 import os
-from ui.config_ui import load_config
 from common import state
-from common.browserutil import launch_chrome, wait_for_debug_port
+from common.browserutil import launch_chrome
 
 logger = logging.getLogger(__name__)
 recorded_events = []

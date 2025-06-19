@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from recorder.record import record
+from recorder.recorder import record
 from recorder.player import replay_flow
 from common import state
 import logging
@@ -14,6 +14,7 @@ import os
 import sys
 import json
 import asyncio
+import httpx
 # --- Global Variables ---
 
 # --- Logging Setup ---
@@ -46,6 +47,24 @@ class RecordRequest(BaseModel):
     url: str
 
 import asyncio
+
+@app.post("/api/snapshot")
+async def forward_snapshot(request: Request):
+    try:
+        payload = await request.json()
+
+        async with httpx.AsyncClient() as client:
+            print(f'[FORWARDING SNAPSHOT] Forwarding to .NET backend : {json.dumps(payload, indent=2)}')
+            res = await client.post(
+                "http://localhost:5000/api/SelectorAnalysis/submit",  # Adjust port if needed
+                headers={ "Content-Type": "application/json",
+                         "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"},
+                json=payload
+            )
+            return {"status": "forwarded", "result": res.json()}
+    except Exception as e:
+        logger.exception("Failed to forward snapshot to .NET backend")
+        return {"error": str(e)}
 
 @app.websocket("/ws/actions")
 async def websocket_endpoint(websocket: WebSocket):
