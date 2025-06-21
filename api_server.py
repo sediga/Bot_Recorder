@@ -9,6 +9,10 @@ from fastapi.responses import JSONResponse
 from recorder.recorder import record
 from recorder.player import replay_flow
 from common import state
+from typing import Optional
+from common import state
+from common import selectorHelper
+
 import logging
 import os
 import sys
@@ -46,26 +50,6 @@ app.add_middleware(
 class RecordRequest(BaseModel):
     url: str
 
-import asyncio
-
-@app.post("/api/snapshot")
-async def forward_snapshot(request: Request):
-    try:
-        payload = await request.json()
-
-        async with httpx.AsyncClient() as client:
-            print(f'[FORWARDING SNAPSHOT] Forwarding to .NET backend : {json.dumps(payload, indent=2)}')
-            res = await client.post(
-                "http://localhost:5000/api/SelectorAnalysis/submit",  # Adjust port if needed
-                headers={ "Content-Type": "application/json",
-                         "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"},
-                json=payload
-            )
-            return {"status": "forwarded", "result": res.json()}
-    except Exception as e:
-        logger.exception("Failed to forward snapshot to .NET backend")
-        return {"error": str(e)}
-
 @app.websocket("/ws/actions")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -84,7 +68,9 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/api/stream_action")
 async def stream_action(request: Request):
     action = await request.json()
-    print("[RECEIVED ACTION]", action)
+    # print("[RECEIVED ACTION]", action)
+    # improved_action = await selectorHelper.validate_and_enrich_selector(action)
+    # print("[IMPROVED ACTION]", improved_action)
 
     disconnected = []
     for ws in connections:

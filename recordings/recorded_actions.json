@@ -29,410 +29,7 @@
       "url": "https://mail.google.com/mail/u/0/#drafts"
     }
   ],
-  "http://edigatech.com": [
-    {
-      "action": "click",
-      "selector": "div.cursor-pointer.border-t-4.border-indigo-600:has-text(\"Developer Coaching & Training\"):nth-of-type(4)",
-      "timestamp": 1750345565161,
-      "value": null,
-      "url": "https://edigatech.com/",
-      "tagName": "H3",
-      "classList": [
-        "text-xl",
-        "font-bold",
-        "mb-2",
-        "text-indigo-700"
-      ],
-      "attributes": {
-        "class": "text-xl font-bold mb-2 text-indigo-700"
-      },
-      "innerText": "Developer Coaching & Training",
-      "elementText": "Developer Coaching & Training"
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"Mock Interviews\")",
-      "timestamp": 1750345567085,
-      "value": null,
-      "url": "https://edigatech.com/training",
-      "tagName": "A",
-      "classList": [
-        "flex",
-        "items-start",
-        "bg-white",
-        "rounded-2xl",
-        "shadow",
-        "border-l-4",
-        "border-t-4",
-        "border-indigo-500",
-        "p-6",
-        "hover:shadow-lg",
-        "transition"
-      ],
-      "attributes": {
-        "href": "#interviews",
-        "class": "flex items-start bg-white rounded-2xl shadow  border-l-4 border-t-4 border-indigo-500 p-6 hover:shadow-lg transition"
-      },
-      "innerText": "Mock Interviews\n\nSimulated interviews, real feedback \u2014 now with no upfront cost.",
-      "elementText": "Mock InterviewsSimulated interviews, real feedback \u2014 now with no upfront cost."
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label=\"Close\"]",
-      "timestamp": 1750345574612,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06",
-      "tagName": "BUTTON",
-      "classList": [
-        "onetrust-close-btn-handler",
-        "onetrust-close-btn-ui",
-        "banner-close-button",
-        "ot-close-icon"
-      ],
-      "attributes": {
-        "class": "onetrust-close-btn-handler onetrust-close-btn-ui banner-close-button ot-close-icon",
-        "style": "background-image: url(\"https://cdn.cookielaw.org/logos/static/ot_close.svg\");",
-        "aria-label": "Close"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label=\"Thursday\\,\\ June\\ 19\\ -\\ Times\\ available\"]",
-      "timestamp": 1750345576967,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06",
-      "tagName": "BUTTON",
-      "classList": [
-        "uvkj3lh",
-        "iLlmw9nvWQp6MsANxMu_",
-        "YBk_05kSoCgdRq6mMLO0",
-        "XXKN9NWALj8Xe4ed0s7r"
-      ],
-      "attributes": {
-        "aria-current": "date",
-        "aria-label": "Thursday, June 19 - Times available",
-        "class": "uvkj3lh iLlmw9nvWQp6MsANxMu_ YBk_05kSoCgdRq6mMLO0 XXKN9NWALj8Xe4ed0s7r",
-        "type": "button"
-      },
-      "innerText": "19",
-      "elementText": "19"
-    },
-    {
-      "action": "click",
-      "selector": "button:has-text(\"2:30pm\")",
-      "timestamp": 1750345578188,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "BUTTON",
-      "classList": [
-        "uvkj3lh",
-        "a_kkgWd9QJFsCurLPfA_",
-        "Fsp7mxcg9sbu8L8IyH_K",
-        "_jYiR9T_piWilfmGslIg",
-        "_hOCj_sBOEZ7LFd5ZO9h"
-      ],
-      "attributes": {
-        "data-container": "time-button",
-        "data-start-time": "2:30pm",
-        "class": "uvkj3lh a_kkgWd9QJFsCurLPfA_ Fsp7mxcg9sbu8L8IyH_K _jYiR9T_piWilfmGslIg _hOCj_sBOEZ7LFd5ZO9h",
-        "type": "button"
-      },
-      "innerText": "2:30pm",
-      "elementText": "2:30pm"
-    },
-    {
-      "action": "click",
-      "selector": "[aria-label=\"Next\\ 2\\:30pm\"]",
-      "timestamp": 1750345579239,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "BUTTON",
-      "classList": [
-        "uvkj3lh",
-        "y9_mQD7Hd4ZLZ4SUzgyw",
-        "jyr1fbkKIhuAcffh_VRx",
-        "VfCFnsGvnnkn_bFdwv5V",
-        "_jYiR9T_piWilfmGslIg",
-        "_hOCj_sBOEZ7LFd5ZO9h"
-      ],
-      "attributes": {
-        "aria-label": "Next 2:30pm",
-        "role": "button",
-        "class": "uvkj3lh y9_mQD7Hd4ZLZ4SUzgyw jyr1fbkKIhuAcffh_VRx VfCFnsGvnnkn_bFdwv5V _jYiR9T_piWilfmGslIg _hOCj_sBOEZ7LFd5ZO9h",
-        "type": "button"
-      },
-      "innerText": "Next",
-      "elementText": "Next"
-    },
-    {
-      "action": "focus",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345580656,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "text",
-        "maxlength": "155",
-        "autocomplete": "name",
-        "id": "full_name_input",
-        "name": "full_name",
-        "autocorrect": "off",
-        "aria-invalid": "false"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "click",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345580792,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "text",
-        "maxlength": "155",
-        "autocomplete": "name",
-        "id": "full_name_input",
-        "name": "full_name",
-        "autocorrect": "off",
-        "aria-invalid": "false"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "change",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345581974,
-      "value": "test",
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "text",
-        "maxlength": "155",
-        "autocomplete": "name",
-        "id": "full_name_input",
-        "name": "full_name",
-        "autocorrect": "off",
-        "aria-invalid": "false",
-        "value": "test"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "focus",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345581976,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "email",
-        "maxlength": "255",
-        "autocomplete": "email",
-        "id": "email_input",
-        "name": "email",
-        "autocorrect": "off",
-        "aria-invalid": "false"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "click",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345582044,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "email",
-        "maxlength": "255",
-        "autocomplete": "email",
-        "id": "email_input",
-        "name": "email",
-        "autocorrect": "off",
-        "aria-invalid": "false"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "type",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345581416,
-      "value": "test",
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "text",
-        "maxlength": "155",
-        "autocomplete": "name",
-        "id": "full_name_input",
-        "name": "full_name",
-        "autocorrect": "off",
-        "aria-invalid": "false",
-        "value": "tes"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "type",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345582236,
-      "value": "t",
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "email",
-        "maxlength": "255",
-        "autocomplete": "email",
-        "id": "email_input",
-        "name": "email",
-        "autocorrect": "off",
-        "aria-invalid": "false"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "type",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345583756,
-      "value": null,
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "email",
-        "maxlength": "255",
-        "autocomplete": "email",
-        "id": "email_input",
-        "name": "email",
-        "autocorrect": "off",
-        "aria-invalid": "false",
-        "value": "t"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "change",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345584839,
-      "value": "sreenivasa@edigatech.com",
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "email",
-        "maxlength": "255",
-        "autocomplete": "email",
-        "id": "email_input",
-        "name": "email",
-        "autocorrect": "off",
-        "aria-invalid": "false",
-        "value": "sreenivasa@edigatech.com"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "type",
-      "selector": "body.gmem4bt.b1g49gfi.tax84oi:has-text(\"*\")",
-      "timestamp": 1750345584824,
-      "value": "sreenivasa@edigatech.com",
-      "url": "https://calendly.com/sreenivasa-edigatech/30min/2025-06-19T14:30:00-05:00?embed_domain=edigatech.com&embed_type=Inline&primary_color=4f46e5&month=2025-06&date=2025-06-19",
-      "tagName": "INPUT",
-      "classList": [
-        "i167bxqy",
-        "i1uya22c"
-      ],
-      "attributes": {
-        "class": "i167bxqy i1uya22c",
-        "type": "email",
-        "maxlength": "255",
-        "autocomplete": "email",
-        "id": "email_input",
-        "name": "email",
-        "autocorrect": "off",
-        "aria-invalid": "false"
-      },
-      "innerText": null,
-      "elementText": null
-    },
-    {
-      "action": "click",
-      "selector": "a:has-text(\"\u2190 Back to Home\")",
-      "timestamp": 1750345587340,
-      "value": null,
-      "url": "https://edigatech.com/training#interviews",
-      "tagName": "A",
-      "classList": [
-        "text-sm",
-        "text-indigo-600",
-        "hover:text-indigo-800",
-        "transition",
-        "font-medium"
-      ],
-      "attributes": {
-        "class": "text-sm text-indigo-600 hover:text-indigo-800 transition font-medium",
-        "href": "/",
-        "data-discover": "true"
-      },
-      "innerText": "\u2190 Back to Home",
-      "elementText": "\u2190 Back to Home"
-    }
-  ],
+  "http://edigatech.com": [],
   "https://raiserecruiting.com/": [
     {
       "action": "mousedown",
@@ -584,39 +181,1075 @@
   ],
   "http://octagoshealth.com": [
     {
-      "action": "focus",
-      "selector": "a:has-text(\"Book a Demo\")",
-      "timestamp": 1750267452134,
-      "value": null,
-      "url": "https://www.octagos.com/"
-    },
-    {
       "action": "click",
       "selector": "a:has-text(\"Book a Demo\")",
-      "timestamp": 1750267452291,
+      "timestamp": 1750465265798,
       "value": null,
-      "url": "https://www.octagos.com/"
+      "url": "https://www.octagos.com/",
+      "tagName": "A",
+      "classList": [
+        "btn-main-wrapper",
+        "w-variant-97e6079e-9ba3-5220-4cfb-fe5a712dc6a5",
+        "w-inline-block"
+      ],
+      "attributes": {
+        "data-disabled": "false",
+        "data-btn": "wrap",
+        "data-button-style": "solid",
+        "data-button-width": "hug",
+        "data-wf--button-main--size": "large",
+        "href": "/company/book-a-demo",
+        "class": "btn-main-wrapper w-variant-97e6079e-9ba3-5220-4cfb-fe5a712dc6a5 w-inline-block"
+      },
+      "innerText": "Book a Demo\nBook a Demo",
+      "elementText": "Book a DemoBook a Demo"
     },
     {
       "action": "focus",
       "selector": "#first-name",
-      "timestamp": 1750267456310,
+      "timestamp": 1750465268189,
       "value": null,
-      "url": "https://www.octagos.com/company/book-a-demo"
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "First-Name",
+        "data-name": "First Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "first-name"
+      },
+      "innerText": null,
+      "elementText": null
     },
     {
       "action": "click",
       "selector": "#first-name",
-      "timestamp": 1750267456425,
+      "timestamp": 1750465268257,
       "value": null,
-      "url": "https://www.octagos.com/company/book-a-demo"
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "First-Name",
+        "data-name": "First Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "first-name"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "#first-name",
+      "timestamp": 1750465273995,
+      "value": "test",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "First-Name",
+        "data-name": "First Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "first-name"
+      },
+      "innerText": null,
+      "elementText": null
     },
     {
       "action": "type",
       "selector": "#first-name",
-      "timestamp": 1750267458471,
+      "timestamp": 1750465274048,
       "value": "test",
-      "url": "https://www.octagos.com/company/book-a-demo"
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "First-Name",
+        "data-name": "First Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "first-name",
+        "data-gtm-form-interact-field-id": "0"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "focus",
+      "selector": "#last-name",
+      "timestamp": 1750465274052,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Last-Name",
+        "data-name": "Last Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "last-name"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "#last-name",
+      "timestamp": 1750465274059,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Last-Name",
+        "data-name": "Last Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "last-name"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "#last-name",
+      "timestamp": 1750465293265,
+      "value": "test",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Last-Name",
+        "data-name": "Last Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "last-name"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "#last-name",
+      "timestamp": 1750465293272,
+      "value": "test",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Last-Name",
+        "data-name": "Last Name",
+        "placeholder": " ",
+        "type": "text",
+        "id": "last-name",
+        "data-gtm-form-interact-field-id": "1"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label=\"Close\\ Cookie\\ Banner\"]",
+      "timestamp": 1750465293335,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "A",
+      "classList": [
+        "fs-cc_close-button",
+        "w-inline-block"
+      ],
+      "attributes": {
+        "aria-label": "Close Cookie Banner",
+        "fs-cc": "close",
+        "href": "#",
+        "class": "fs-cc_close-button w-inline-block",
+        "role": "button",
+        "tabindex": "0"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "[aria-label=\"Close\\ Cookie\\ Banner\"]",
+      "timestamp": 1750465326264,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "A",
+      "classList": [
+        "fs-cc_close-button",
+        "w-inline-block"
+      ],
+      "attributes": {
+        "aria-label": "Close Cookie Banner",
+        "fs-cc": "close",
+        "href": "#",
+        "class": "fs-cc_close-button w-inline-block",
+        "role": "button",
+        "tabindex": "0"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "focus",
+      "selector": "#email",
+      "timestamp": 1750465355982,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Email",
+        "data-name": "Email",
+        "placeholder": " ",
+        "type": "email",
+        "id": "email"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "#email",
+      "timestamp": 1750465356115,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Email",
+        "data-name": "Email",
+        "placeholder": " ",
+        "type": "email",
+        "id": "email"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "#email",
+      "timestamp": 1750465367188,
+      "value": "test.test@test.com",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Email",
+        "data-name": "Email",
+        "placeholder": " ",
+        "type": "email",
+        "id": "email"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "#email",
+      "timestamp": 1750465367190,
+      "value": "test.test@test.com",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Email",
+        "data-name": "Email",
+        "placeholder": " ",
+        "type": "email",
+        "id": "email",
+        "data-gtm-form-interact-field-id": "2"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "focus",
+      "selector": "#phone",
+      "timestamp": 1750465367193,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Phone",
+        "data-name": "Phone",
+        "placeholder": " ",
+        "type": "tel",
+        "id": "phone"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "#phone",
+      "timestamp": 1750465367302,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Phone",
+        "data-name": "Phone",
+        "placeholder": " ",
+        "type": "tel",
+        "id": "phone"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "#phone",
+      "timestamp": 1750465371532,
+      "value": "123456789",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Phone",
+        "data-name": "Phone",
+        "placeholder": " ",
+        "type": "tel",
+        "id": "phone"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "#phone",
+      "timestamp": 1750465371535,
+      "value": "123456789",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Phone",
+        "data-name": "Phone",
+        "placeholder": " ",
+        "type": "tel",
+        "id": "phone",
+        "data-gtm-form-interact-field-id": "3"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "focus",
+      "selector": "#organization",
+      "timestamp": 1750465371539,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Organization",
+        "data-name": "Organization",
+        "placeholder": " ",
+        "type": "text",
+        "id": "organization"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "click",
+      "selector": "#organization",
+      "timestamp": 1750465371644,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Organization",
+        "data-name": "Organization",
+        "placeholder": " ",
+        "type": "text",
+        "id": "organization"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "change",
+      "selector": "#organization",
+      "timestamp": 1750465373767,
+      "value": "test",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Organization",
+        "data-name": "Organization",
+        "placeholder": " ",
+        "type": "text",
+        "id": "organization"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "type",
+      "selector": "#organization",
+      "timestamp": 1750465373775,
+      "value": "test",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "INPUT",
+      "classList": [
+        "form-input",
+        "w-input"
+      ],
+      "attributes": {
+        "class": "form-input w-input",
+        "maxlength": "256",
+        "name": "Organization",
+        "data-name": "Organization",
+        "placeholder": " ",
+        "type": "text",
+        "id": "organization",
+        "data-gtm-form-interact-field-id": "4"
+      },
+      "innerText": null,
+      "elementText": null
+    },
+    {
+      "action": "focus",
+      "selector": "#position",
+      "timestamp": 1750465373795,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "position",
+        "name": "Position",
+        "data-name": "Position",
+        "class": "form-select w-select"
+      },
+      "innerText": "Administrator\nAdvanced Practice Provider (APP)\nClinic Manager\nDevice Specialist\nMedical Assistant\nPhysician\nRegistered Nurse (RN)\nOther",
+      "elementText": "AdministratorAdvanced Practice Provider (APP)Clinic ManagerDevice SpecialistMedical AssistantPhysicianRegistered Nurse (RN)Other"
+    },
+    {
+      "action": "click",
+      "selector": "#position",
+      "timestamp": 1750465373898,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "position",
+        "name": "Position",
+        "data-name": "Position",
+        "class": "form-select w-select"
+      },
+      "innerText": "Administrator\nAdvanced Practice Provider (APP)\nClinic Manager\nDevice Specialist\nMedical Assistant\nPhysician\nRegistered Nurse (RN)\nOther",
+      "elementText": "AdministratorAdvanced Practice Provider (APP)Clinic ManagerDevice SpecialistMedical AssistantPhysicianRegistered Nurse (RN)Other"
+    },
+    {
+      "action": "change",
+      "selector": "#position",
+      "timestamp": 1750465375359,
+      "value": "Device Specialist",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "position",
+        "name": "Position",
+        "data-name": "Position",
+        "class": "form-select w-select"
+      },
+      "innerText": "Administrator\nAdvanced Practice Provider (APP)\nClinic Manager\nDevice Specialist\nMedical Assistant\nPhysician\nRegistered Nurse (RN)\nOther",
+      "elementText": "AdministratorAdvanced Practice Provider (APP)Clinic ManagerDevice SpecialistMedical AssistantPhysicianRegistered Nurse (RN)Other"
+    },
+    {
+      "action": "click",
+      "selector": "#position",
+      "timestamp": 1750465375368,
+      "value": "Device Specialist",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "position",
+        "name": "Position",
+        "data-name": "Position",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "5"
+      },
+      "innerText": "Administrator\nAdvanced Practice Provider (APP)\nClinic Manager\nDevice Specialist\nMedical Assistant\nPhysician\nRegistered Nurse (RN)\nOther",
+      "elementText": "AdministratorAdvanced Practice Provider (APP)Clinic ManagerDevice SpecialistMedical AssistantPhysicianRegistered Nurse (RN)Other"
+    },
+    {
+      "action": "type",
+      "selector": "#position",
+      "timestamp": 1750465377138,
+      "value": "Device Specialist",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "position",
+        "name": "Position",
+        "data-name": "Position",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "5"
+      },
+      "innerText": "Administrator\nAdvanced Practice Provider (APP)\nClinic Manager\nDevice Specialist\nMedical Assistant\nPhysician\nRegistered Nurse (RN)\nOther",
+      "elementText": "AdministratorAdvanced Practice Provider (APP)Clinic ManagerDevice SpecialistMedical AssistantPhysicianRegistered Nurse (RN)Other"
+    },
+    {
+      "action": "focus",
+      "selector": "#state",
+      "timestamp": 1750465377147,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "state",
+        "name": "State",
+        "data-name": "State",
+        "class": "form-select w-select"
+      },
+      "innerText": "Alabama\nAlaska\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest Virginia\nWisconsin\nWyoming\nInternational",
+      "elementText": "Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshire New Jersey New Mexico New York North Carolina North Dakota Ohio Oklahoma Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee Texas Utah Vermont Virginia Washington West Virginia Wisconsin Wyoming International"
+    },
+    {
+      "action": "click",
+      "selector": "#state",
+      "timestamp": 1750465377253,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "state",
+        "name": "State",
+        "data-name": "State",
+        "class": "form-select w-select"
+      },
+      "innerText": "Alabama\nAlaska\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest Virginia\nWisconsin\nWyoming\nInternational",
+      "elementText": "Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshire New Jersey New Mexico New York North Carolina North Dakota Ohio Oklahoma Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee Texas Utah Vermont Virginia Washington West Virginia Wisconsin Wyoming International"
+    },
+    {
+      "action": "change",
+      "selector": "#state",
+      "timestamp": 1750465379193,
+      "value": " Indiana",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "state",
+        "name": "State",
+        "data-name": "State",
+        "class": "form-select w-select"
+      },
+      "innerText": "Alabama\nAlaska\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest Virginia\nWisconsin\nWyoming\nInternational",
+      "elementText": "Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshire New Jersey New Mexico New York North Carolina North Dakota Ohio Oklahoma Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee Texas Utah Vermont Virginia Washington West Virginia Wisconsin Wyoming International"
+    },
+    {
+      "action": "click",
+      "selector": "#state",
+      "timestamp": 1750465379196,
+      "value": " Indiana",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "state",
+        "name": "State",
+        "data-name": "State",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "6"
+      },
+      "innerText": "Alabama\nAlaska\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest Virginia\nWisconsin\nWyoming\nInternational",
+      "elementText": "Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshire New Jersey New Mexico New York North Carolina North Dakota Ohio Oklahoma Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee Texas Utah Vermont Virginia Washington West Virginia Wisconsin Wyoming International"
+    },
+    {
+      "action": "type",
+      "selector": "#state",
+      "timestamp": 1750465380512,
+      "value": " Indiana",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "state",
+        "name": "State",
+        "data-name": "State",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "6"
+      },
+      "innerText": "Alabama\nAlaska\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMaryland\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest Virginia\nWisconsin\nWyoming\nInternational",
+      "elementText": "Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware Florida Georgia Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshire New Jersey New Mexico New York North Carolina North Dakota Ohio Oklahoma Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee Texas Utah Vermont Virginia Washington West Virginia Wisconsin Wyoming International"
+    },
+    {
+      "action": "focus",
+      "selector": "#cardiac-patients",
+      "timestamp": 1750465380516,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "cardiac-patients",
+        "name": "Approximately-how-many-cardiac-patients",
+        "data-name": "Approximately how many cardiac patients?",
+        "class": "form-select w-select"
+      },
+      "innerText": "0-500\n501-1,000\n1,001-3,000\n3,001-5,000\n5,001+",
+      "elementText": "0-500501-1,0001,001-3,0003,001-5,0005,001+"
+    },
+    {
+      "action": "click",
+      "selector": "#cardiac-patients",
+      "timestamp": 1750465380635,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "cardiac-patients",
+        "name": "Approximately-how-many-cardiac-patients",
+        "data-name": "Approximately how many cardiac patients?",
+        "class": "form-select w-select"
+      },
+      "innerText": "0-500\n501-1,000\n1,001-3,000\n3,001-5,000\n5,001+",
+      "elementText": "0-500501-1,0001,001-3,0003,001-5,0005,001+"
+    },
+    {
+      "action": "change",
+      "selector": "#cardiac-patients",
+      "timestamp": 1750465381665,
+      "value": "0-500",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "cardiac-patients",
+        "name": "Approximately-how-many-cardiac-patients",
+        "data-name": "Approximately how many cardiac patients?",
+        "class": "form-select w-select"
+      },
+      "innerText": "0-500\n501-1,000\n1,001-3,000\n3,001-5,000\n5,001+",
+      "elementText": "0-500501-1,0001,001-3,0003,001-5,0005,001+"
+    },
+    {
+      "action": "click",
+      "selector": "#cardiac-patients",
+      "timestamp": 1750465381666,
+      "value": "0-500",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "cardiac-patients",
+        "name": "Approximately-how-many-cardiac-patients",
+        "data-name": "Approximately how many cardiac patients?",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "7"
+      },
+      "innerText": "0-500\n501-1,000\n1,001-3,000\n3,001-5,000\n5,001+",
+      "elementText": "0-500501-1,0001,001-3,0003,001-5,0005,001+"
+    },
+    {
+      "action": "type",
+      "selector": "#cardiac-patients",
+      "timestamp": 1750465382490,
+      "value": "0-500",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "cardiac-patients",
+        "name": "Approximately-how-many-cardiac-patients",
+        "data-name": "Approximately how many cardiac patients?",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "7"
+      },
+      "innerText": "0-500\n501-1,000\n1,001-3,000\n3,001-5,000\n5,001+",
+      "elementText": "0-500501-1,0001,001-3,0003,001-5,0005,001+"
+    },
+    {
+      "action": "focus",
+      "selector": "#ehr",
+      "timestamp": 1750465382492,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "ehr",
+        "name": "EHR",
+        "data-name": "EHR",
+        "class": "form-select w-select"
+      },
+      "innerText": "Epic\nathenahealth\nCerner\nAllscripts\nAprima\nPractice Fusion\nECW\nOther\nN/A\nNextGen\nGreenway\nMeditech",
+      "elementText": "EpicathenahealthCernerAllscriptsAprimaPractice FusionECWOtherN/ANextGenGreenwayMeditech"
+    },
+    {
+      "action": "click",
+      "selector": "#ehr",
+      "timestamp": 1750465382604,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "ehr",
+        "name": "EHR",
+        "data-name": "EHR",
+        "class": "form-select w-select"
+      },
+      "innerText": "Epic\nathenahealth\nCerner\nAllscripts\nAprima\nPractice Fusion\nECW\nOther\nN/A\nNextGen\nGreenway\nMeditech",
+      "elementText": "EpicathenahealthCernerAllscriptsAprimaPractice FusionECWOtherN/ANextGenGreenwayMeditech"
+    },
+    {
+      "action": "change",
+      "selector": "#ehr",
+      "timestamp": 1750465384248,
+      "value": "ECW",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "ehr",
+        "name": "EHR",
+        "data-name": "EHR",
+        "class": "form-select w-select"
+      },
+      "innerText": "Epic\nathenahealth\nCerner\nAllscripts\nAprima\nPractice Fusion\nECW\nOther\nN/A\nNextGen\nGreenway\nMeditech",
+      "elementText": "EpicathenahealthCernerAllscriptsAprimaPractice FusionECWOtherN/ANextGenGreenwayMeditech"
+    },
+    {
+      "action": "click",
+      "selector": "#ehr",
+      "timestamp": 1750465384251,
+      "value": "ECW",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "ehr",
+        "name": "EHR",
+        "data-name": "EHR",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "8"
+      },
+      "innerText": "Epic\nathenahealth\nCerner\nAllscripts\nAprima\nPractice Fusion\nECW\nOther\nN/A\nNextGen\nGreenway\nMeditech",
+      "elementText": "EpicathenahealthCernerAllscriptsAprimaPractice FusionECWOtherN/ANextGenGreenwayMeditech"
+    },
+    {
+      "action": "type",
+      "selector": "#ehr",
+      "timestamp": 1750465386451,
+      "value": "ECW",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "ehr",
+        "name": "EHR",
+        "data-name": "EHR",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "8"
+      },
+      "innerText": "Epic\nathenahealth\nCerner\nAllscripts\nAprima\nPractice Fusion\nECW\nOther\nN/A\nNextGen\nGreenway\nMeditech",
+      "elementText": "EpicathenahealthCernerAllscriptsAprimaPractice FusionECWOtherN/ANextGenGreenwayMeditech"
+    },
+    {
+      "action": "focus",
+      "selector": "#product-interest",
+      "timestamp": 1750465386456,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "product-interest",
+        "name": "Product-Interest",
+        "data-name": "Product Interest",
+        "class": "form-select w-select"
+      },
+      "innerText": "Software\nServices\nSoftware & Services\nOn-Demand Services\nAmbulatory Monitoring\nStill Considering\nAll Categories",
+      "elementText": "SoftwareServicesSoftware & ServicesOn-Demand ServicesAmbulatory MonitoringStill ConsideringAll Categories"
+    },
+    {
+      "action": "click",
+      "selector": "#product-interest",
+      "timestamp": 1750465386562,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "product-interest",
+        "name": "Product-Interest",
+        "data-name": "Product Interest",
+        "class": "form-select w-select"
+      },
+      "innerText": "Software\nServices\nSoftware & Services\nOn-Demand Services\nAmbulatory Monitoring\nStill Considering\nAll Categories",
+      "elementText": "SoftwareServicesSoftware & ServicesOn-Demand ServicesAmbulatory MonitoringStill ConsideringAll Categories"
+    },
+    {
+      "action": "change",
+      "selector": "#product-interest",
+      "timestamp": 1750465387831,
+      "value": "Software",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select"
+      ],
+      "attributes": {
+        "id": "product-interest",
+        "name": "Product-Interest",
+        "data-name": "Product Interest",
+        "class": "form-select w-select"
+      },
+      "innerText": "Software\nServices\nSoftware & Services\nOn-Demand Services\nAmbulatory Monitoring\nStill Considering\nAll Categories",
+      "elementText": "SoftwareServicesSoftware & ServicesOn-Demand ServicesAmbulatory MonitoringStill ConsideringAll Categories"
+    },
+    {
+      "action": "click",
+      "selector": "#product-interest",
+      "timestamp": 1750465387833,
+      "value": "Software",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "product-interest",
+        "name": "Product-Interest",
+        "data-name": "Product Interest",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "9"
+      },
+      "innerText": "Software\nServices\nSoftware & Services\nOn-Demand Services\nAmbulatory Monitoring\nStill Considering\nAll Categories",
+      "elementText": "SoftwareServicesSoftware & ServicesOn-Demand ServicesAmbulatory MonitoringStill ConsideringAll Categories"
+    },
+    {
+      "action": "type",
+      "selector": "#product-interest",
+      "timestamp": 1750465391851,
+      "value": "Software",
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "SELECT",
+      "classList": [
+        "form-select",
+        "w-select",
+        "not-empty"
+      ],
+      "attributes": {
+        "id": "product-interest",
+        "name": "Product-Interest",
+        "data-name": "Product Interest",
+        "class": "form-select w-select not-empty",
+        "data-gtm-form-interact-field-id": "9"
+      },
+      "innerText": "Software\nServices\nSoftware & Services\nOn-Demand Services\nAmbulatory Monitoring\nStill Considering\nAll Categories",
+      "elementText": "SoftwareServicesSoftware & ServicesOn-Demand ServicesAmbulatory MonitoringStill ConsideringAll Categories"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"13325 Hargrave Road, Suite 281, Houston, Texas 77070\")",
+      "timestamp": 1750465391993,
+      "value": null,
+      "url": "https://www.octagos.com/company/book-a-demo",
+      "tagName": "A",
+      "classList": [
+        "text-size-xlarge"
+      ],
+      "attributes": {
+        "href": "https://maps.app.goo.gl/RHQTJJfnUQCXWB719",
+        "target": "_blank",
+        "class": "text-size-xlarge"
+      },
+      "innerText": "13325 Hargrave Road, Suite 281, Houston, Texas 77070",
+      "elementText": "13325 Hargrave Road, Suite 281, Houston, Texas 77070"
     }
   ],
   "http://indeed.com": [

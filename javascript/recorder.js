@@ -1,60 +1,47 @@
-import { getSmartSelector, getVisibleText } from './selectorHelper.js';
-import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
+import { getSmartSelector } from './selectorHelper.js';
+import { getAllAttributes } from './domanalyser.js';
 
 (function () {
   if (window.__recorderInjected) return;
   window.__recorderInjected = true;
   console.log("[Botflows] Recorder script injected successfully");
 
-  // Manual trigger from dashboard
-  window.sendSelectorSnapshot = () => {
-    if (typeof window.sendSelectorAnalysisToPython === "function") {
-      const payload = {
-        source: "manual-trigger",
-        ...getSelectorAnalysisPayload()
-      };
-      window.sendSelectorAnalysisToPython(payload);
-    }
-  };
-
-  // Define send handler
-  window.sendSelectorAnalysisToPython = function (snapshot) {
-    console.log("Sending selector snapshot to /api/snapshot", snapshot);
-    fetch("http://localhost:8000/api/snapshot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(snapshot)
-    }).catch(e => console.warn("Failed to send snapshot to Python agent", e));
-  };
-  window.getSelectorAnalysisPayload = getSelectorAnalysisPayload;
-
-  // Register exported functions
-  let typingDebounce;
-  let lastTypedElement = null;
   let lastClick = { selector: null, timestamp: 0 };
   let lastFocus = { selector: null, timestamp: 0 };
 
-  const sendEvent = (event) => {
+  const sendEvent = (event, override = {}) => {
     const original = event.target;
-    const target = original.closest('a, button, input[type="button"], [role="button"]') || original;
+    const target =
+      original.closest('a, button, input[type="button"], [role="button"]') || original;
     const type = event.type;
 
-    if (!target || typeof window.sendEventToPython !== "function") return;
+    // 💡 Skip invalid targets
+    if (
+      !target ||
+      target === document ||
+      target === document.body ||
+      !document.contains(target) ||
+      typeof window.sendEventToPython !== "function"
+    ) {
+      return;
+    }
 
     const selector = getSmartSelector(target);
     const now = Date.now();
 
-    if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 80) return;
+    // ⏱ Skip duplicate clicks within 80ms
+    if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 80)
+      return;
+
+    // 🎯 Only record focus for form fields
     if (type === "focus") {
       const tag = target.tagName.toLowerCase();
-      const isFormField = ["input", "textarea", "select"].includes(tag);
-
-      if (!isFormField) return; // Don't log focus unless it's a field
+      if (!["input", "textarea", "select"].includes(tag)) return;
     }
-      if (type === "click") lastClick = { selector, timestamp: now };
+
+    if (type === "click") lastClick = { selector, timestamp: now };
     if (type === "focus") lastFocus = { selector, timestamp: now };
 
-    // Common metadata
     const actionData = {
       action: type === "input" ? "type" : type,
       selector,
@@ -65,40 +52,20 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
       classList: Array.from(target.classList || []),
       attributes: getAllAttributes(target),
       innerText: target.innerText || null,
-      elementText: target.textContent || null
+      elementText: target.textContent || null,
+      ...override
     };
 
-    if (type === "input" && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
-      clearTimeout(typingDebounce);
-      lastTypedElement = target;
+    // 🔁 Stream to all consumers
+    window.sendEventToPython(actionData);
+    window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
+    fetch("http://localhost:8000/api/stream_action", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(actionData)
+    });
 
-      typingDebounce = setTimeout(() => {
-        if (lastTypedElement) {
-          window.sendEventToPython(actionData);
-          window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
-
-          fetch("http://localhost:8000/api/stream_action", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(actionData)
-          });
-
-          lastTypedElement = null;
-        }
-      }, 800);
-    } else {
-      // Non-typing actions
-      window.sendEventToPython(actionData);
-      window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
-
-      fetch("http://localhost:8000/api/stream_action", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(actionData)
-      });
-    }
-
-    // Optional log event
+    // 🪵 Optional click insight logging
     if (type === "click" && typeof window.sendLogToPython === "function") {
       const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
       const siblingText = Array.from(target.parentElement?.children || [])
@@ -122,11 +89,23 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
     }
   };
 
-
-  ["click", "focus", "change", "input"].forEach(type => {
+  // 👂 Core interaction listeners
+  ["click", "focus", "change"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
   });
 
+  // ✅ Record final input value only once on blur (user finishes typing)
+  document.addEventListener("blur", (event) => {
+    const target = event.target;
+    if (!target.matches("input, textarea, select")) return;
+
+    sendEvent(event, {
+      action: "type",
+      value: target.value
+    });
+  }, true);
+
+  // 🔁 URL tracking helpers
   const notifyUrlChange = () => {
     if (typeof window.sendUrlChangeToPython === "function") {
       window.sendUrlChangeToPython(window.location.href);
@@ -140,7 +119,7 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
         subtree: true,
       });
     } else {
-      setTimeout(waitForBodyAndObserve, 100); // Retry until body exists
+      setTimeout(waitForBodyAndObserve, 100);
     }
   };
 
@@ -156,88 +135,6 @@ import { getSelectorAnalysisPayload, getAllAttributes } from './domanalyser.js';
 
   window.addEventListener("popstate", notifyUrlChange);
   notifyUrlChange();
-
   patchHistory("pushState");
   patchHistory("replaceState");
-  // Trigger initial snapshot when DOM is ready
-  // function triggerInitialSnapshot() {
-  //   if (typeof window.sendSelectorAnalysisToPython === "function") {
-  //     debugger;
-  //     const snapshot = {
-  //       source: "initial-snapshot",
-  //       ...getSelectorAnalysisPayload()
-  //     };
-  //     console.log("Triggering initial selector snapshot");
-  //     window.sendSelectorAnalysisToPython(snapshot);
-  //   } else {
-  //     console.warn("sendSelectorAnalysisToPython is not defined");
-  //   }
-  // }
-
-  const snapshotSentUrls = new Set(JSON.parse(sessionStorage.getItem("snapshotSentUrls") || "[]"));
-
-  function shouldSendSnapshot(url) {
-    return !snapshotSentUrls.has(url);
-  }
-
-  function markSnapshotSent(url) {
-    snapshotSentUrls.add(url);
-    sessionStorage.setItem("snapshotSentUrls", JSON.stringify([...snapshotSentUrls]));
-  }
-
-  function trySendSnapshot(sourceLabel = "auto-snapshot") {
-    const url = window.location.href;
-    if (typeof window.sendSelectorAnalysisToPython !== "function") return;
-
-    const analysisPayload = window.getSelectorAnalysisPayload();
-    const hasElements = Array.isArray(analysisPayload.Elements) && analysisPayload.Elements.length > 0;
-
-    if (!hasElements) {
-      console.warn(`Skipping snapshot for ${url}: No elements found.`);
-      return;
-    }
-
-    if (shouldSendSnapshot(url)) {
-      const payload = {
-        Source: sourceLabel,
-        Url: url,
-        Timestamp: new Date().toISOString(),
-        ...analysisPayload
-      };
-      console.log(`📸 Snapshot sent for ${url}`);
-      window.sendSelectorAnalysisToPython(payload);
-      markSnapshotSent(url);
-    } else {
-      console.log(`Snapshot already sent for ${url}`);
-    }
-  }
-
-  // Hook into navigation
-  function setupSnapshotOnNavigation() {
-    // Initial snapshot after full load
-    window.addEventListener("load", () => {
-      setTimeout(() => trySendSnapshot("initial-load"), 1000);
-    });
-
-    // Handle back/forward
-    window.addEventListener("popstate", () => {
-      setTimeout(() => trySendSnapshot("history-nav"), 1000);
-    });
-
-    // Patch history API
-    const patchHistory = (method) => {
-      const original = history[method];
-      history[method] = function (...args) {
-        const result = original.apply(this, args);
-        setTimeout(() => trySendSnapshot(`history-${method}`), 1000);
-        return result;
-      };
-    };
-    patchHistory("pushState");
-    patchHistory("replaceState");
-  }
-
-  setupSnapshotOnNavigation();
-
-
 })();

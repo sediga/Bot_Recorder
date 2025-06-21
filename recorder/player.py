@@ -5,6 +5,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright, Page
 from common import state
 from common.browserutil import launch_chrome
+from common.selectorHelper import call_selector_recovery_api  # ⬅️ Add this import
 
 logger = logging.getLogger("botflows-player")
 logging.basicConfig(level=logging.INFO)
@@ -20,6 +21,10 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
         elif action == "type":
             await target_page.wait_for_selector(sel, state="attached", timeout=5000)
             await target_page.focus(sel)
+            return await target_page.type(sel, value or "")
+        elif action == "change":
+            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
+            await target_page.focus(sel)
             return await target_page.fill(sel, value or "")
         elif action == "press":
             return await target_page.keyboard.press(key)
@@ -33,10 +38,10 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
     for attempt in range(1, retries + 1):
         try:
             await try_action(page, selector)
-            logger.info(f"✅ Action '{action}' succeeded on attempt {attempt}: {selector}")
+            logger.info(f"Action '{action}' succeeded on attempt {attempt}: {selector}")
             return
         except Exception as e:
-            logger.warning(f"⚠️ Attempt {attempt} failed: {action} / {selector} => {e}")
+            logger.warning(f"Attempt {attempt} failed: {action} / {selector} => {e}")
 
             text_hint = None
             if ":has-text(" in selector:
@@ -79,7 +84,36 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                 except Exception as fe:
                     logger.error(f"[Force Click] Failed: {fe}")
 
-            await asyncio.sleep(1)
+                # ✅ Final fallback: selector recovery API
+                try:
+                    element_text = await page.evaluate(f"""() => {{
+                        const el = document.querySelector("{selector}");
+                        return el?.innerText || "";
+                    }}""")
+                    tag = await page.evaluate(f"""() => {{
+                        const el = document.querySelector("{selector}");
+                        return el?.tagName?.toLowerCase() || "";
+                    }}""")
+                    el_id = await page.evaluate(f"""() => {{
+                        const el = document.querySelector("{selector}");
+                        return el?.id || "";
+                    }}""")
+
+                    new_selector = await call_selector_recovery_api(
+                        url=page.url,
+                        failed_selector=selector,
+                        tag=tag,
+                        text=element_text,
+                        el_id=el_id
+                    )
+                    if new_selector:
+                        logger.info(f"Recovered selector from API: {new_selector}")
+                        await try_action(page, new_selector)
+                        return
+                except Exception as api_ex:
+                    logger.warning(f"[Recovery API] Failed: {api_ex}")
+
+        await asyncio.sleep(1)
 
 
 async def handle_step(step: dict, page: Page):
@@ -99,7 +133,7 @@ async def handle_step(step: dict, page: Page):
         await asyncio.sleep(1)
     elif step_type == "counterloop" and step.get("action") == "counterloop":
         count = step.get("criteria", {}).get("count", 1)
-        logger.info(f"⟳ Starting loop '{step.get('source')}' for {count} iterations")
+        logger.info(f"Starting loop '{step.get('source')}' for {count} iterations")
         for i in range(count):
             logger.info(f"→ Loop iteration {i + 1}/{count}")
             for sub_step in step.get("steps", []):
@@ -118,10 +152,6 @@ async def replay_flow(json_str: str):
         for step in flow:
             await handle_step(step, page)
 
-        logger.info("🎉 Replay complete.")
+        logger.info("Replay complete.")
         await browser.close()
         state.is_replaying = False
-
-
-# Example usage:
-# asyncio.run(replay_flow(Path("recordings/final_flow.json").read_text()))
