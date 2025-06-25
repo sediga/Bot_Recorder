@@ -1,23 +1,22 @@
 import re
 import os
 import httpx
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple
+from datetime import datetime
+from bs4 import BeautifulSoup
 from common import state
 
 def normalize(text: Optional[str]) -> str:
     return (text or "").strip().lower().replace("\xa0", " ")
 
+
 def text_matches(a: str, b: str) -> bool:
     return normalize(a) == normalize(b)
 
-def flatten_dom_tree(node: dict, acc: List[dict]) -> None:
-    acc.append(node)
-    for child in node.get("children", []):
-        flatten_dom_tree(child, acc)
 
-async def find_better_selector(payload: dict, snapshot_tree: dict) -> Tuple[str, str]:
-    flat_snapshot = []
-    flatten_dom_tree(snapshot_tree, flat_snapshot)
+async def find_better_selector(payload: dict, html: str) -> Tuple[str, str]:
+    soup = BeautifulSoup(html, "html.parser")
+    elements = soup.find_all(True)
 
     target_text = normalize(payload.get("innerText") or payload.get("elementText"))
     target_attrs = payload.get("attributes", {})
@@ -29,16 +28,15 @@ async def find_better_selector(payload: dict, snapshot_tree: dict) -> Tuple[str,
     best_match = None
     reason = ""
 
-    for el in flat_snapshot:
-        tag = el.get("tag", "").lower()
+    for el in elements:
+        tag = el.name.lower()
         el_id = el.get("id", "")
-        el_attrs = el.get("attributes", {})
-        el_name = el_attrs.get("name", "")
-        el_aria = el_attrs.get("aria-label", "")
-        el_testid = el_attrs.get("data-testid", "")
-        el_type = el_attrs.get("type", "")
-        el_classes = set(el.get("classes", []))
-        el_text = normalize(el.get("text", ""))
+        el_name = el.get("name", "")
+        el_aria = el.get("aria-label", "")
+        el_testid = el.get("data-testid", "")
+        el_type = el.get("type", "")
+        el_classes = set(el.get("class", []) or [])
+        el_text = normalize(el.get_text(strip=True))
 
         if target_id and el_id == target_id:
             return f"#{el_id}", "Using id"
@@ -48,24 +46,20 @@ async def find_better_selector(payload: dict, snapshot_tree: dict) -> Tuple[str,
             return f'[aria-label="{el_aria}"]', "Using aria-label"
         if el_testid:
             return f'[data-testid="{el_testid}"]', "Using data-testid"
-
         if target_text and el_text and text_matches(el_text, target_text):
             best_match = best_match or el
             reason = "Using visible text"
-
         if target_text and el_classes.intersection(target_classes):
             best_match = best_match or el
             reason = "Using partial class + text match"
-
         if tag == "input" and target_type and el_type == target_type:
             best_match = best_match or el
             reason = "Using input type match"
 
     if best_match:
-        tag = best_match["tag"].lower()
-        el_id = best_match.get("id", "")
-        el_classes = best_match.get("classes", [])
-        text = best_match.get("text", "")
+        tag = best_match.name.lower()
+        el_classes = best_match.get("class", []) or []
+        text = best_match.get_text(strip=True)
 
         class_selector = (
             "." + ".".join([c for c in el_classes if re.match(r"^[a-zA-Z0-9_-]+$", c)])
@@ -79,37 +73,104 @@ async def find_better_selector(payload: dict, snapshot_tree: dict) -> Tuple[str,
 
     return "", "No reliable match found"
 
+
+import os
+
 async def validate_and_enrich_selector(payload: dict) -> dict:
     selector = payload.get("selector")
-    action_type = payload.get("action")
-    if not selector or not action_type:
-        return {**payload, "valid": False, "reason": "Missing selector or action type"}
+    if not selector:
+        return {**payload, "valid": False, "reason": "Missing selector"}
 
     page = state.active_page
     if not page:
         return {**payload, "valid": False, "reason": "No active page"}
 
     try:
-        el = await page.locator(selector).element_handle()
-        if el:
-            return {**payload, "valid": True, "reason": "Selector resolved"}
+        loose_selector = loosen_selector(selector)
+        el = await page.locator(loose_selector).first.element_handle()
+        if not el:
+            raise Exception("Element not found with loose selector")
+
+        replay_selector = await build_resilient_selector(el)
+        payload["replaySelector"] = replay_selector
+        payload["valid"] = True
+        payload["reason"] = "Resolved and enriched with replay-safe selector"
+
+        if os.getenv("BOTFLOWS_ENABLE_AX", "true").lower() == "true":
+            ax_snapshot = await page.accessibility.snapshot()
+            name = payload.get("innerText") or payload.get("elementText")
+            node = traverse_ax_tree(ax_snapshot, name.strip() if name else "")
+            if node:
+                payload["accessibility"] = {
+                    "role": node.get("role"),
+                    "name": node.get("name")
+                }
+
+        if os.getenv("BOTFLOWS_ENABLE_COLUMN_TYPE", "true").lower() == "true":
+            if await is_inside_grid(el) and await is_header_cell(el):
+                col_type = await infer_column_type(page, replay_selector)
+                payload["inferredType"] = col_type
+
+        return payload
+
     except Exception as e:
         return {**payload, "valid": False, "reason": f"Playwright error: {str(e)}"}
 
-    snapshot = state.active_dom_snapshot
-    if not snapshot:
-        return {**payload, "valid": False, "reason": "No DOM snapshot"}
+def traverse_ax_tree(node: dict, target_name: str) -> Optional[dict]:
+    if not node or "name" not in node:
+        return None
 
-    improved_selector, reason = await find_better_selector(payload, snapshot)
+    if normalize(node.get("name", "")) == normalize(target_name):
+        return node
 
-    if improved_selector:
-        payload["selector"] = improved_selector
-        payload["improvedSelector"] = improved_selector
-        return {**payload, "valid": True, "reason": f"Fallback selector used: {reason}"}
+    for child in node.get("children", []):
+        found = traverse_ax_tree(child, target_name)
+        if found:
+            return found
 
-    return {**payload, "valid": False, "reason": "Failed to resolve or recover selector"}
+    return None
 
-# ✅ New method to call .NET API for selector resolution
+
+def loosen_selector(selector: str) -> str:
+    selector = re.sub(r":nth-of-type\(\d+\)", "", selector)
+
+    if ":has-text" in selector and re.search(r'(?i)(columnheader|grid|header)', selector):
+        text_match = re.search(r':has-text\(".*?"\)', selector)
+        if text_match:
+            return f'[role="columnheader"]{text_match.group(0)}'
+
+    selector = re.sub(r"\.[a-zA-Z0-9_-]+", "", selector, count=2)
+    return selector.strip()
+
+
+async def build_resilient_selector(el):
+    tag = await el.evaluate("el => el.tagName.toLowerCase()")
+    id_attr = await el.get_attribute("id")
+    testid = await el.get_attribute("data-testid")
+    aria = await el.get_attribute("aria-label")
+    name_attr = await el.get_attribute("name")
+    text = (await el.inner_text()).strip()
+
+    if id_attr:
+        return f"#{id_attr}"
+    if testid:
+        return f'[data-testid="{testid}"]'
+    if aria:
+        return f'[aria-label="{aria}"]'
+    if name_attr:
+        return f'[name="{name_attr}"]'
+    if text and len(text) < 80:
+        return f"{tag}:has-text(\"{text}\")"
+
+    class_attr = await el.get_attribute("class")
+    if class_attr:
+        class_parts = [c for c in class_attr.split() if re.match(r"^[a-zA-Z0-9_-]+$", c)]
+        if class_parts:
+            return f"{tag}." + ".".join(class_parts[:2])
+
+    return tag
+
+
 async def call_selector_recovery_api(url: str, failed_selector: str, tag: str = "", text: str = "", el_id: str = "") -> str | None:
     payload = {
         "url": url,
@@ -127,3 +188,140 @@ async def call_selector_recovery_api(url: str, failed_selector: str, tag: str = 
     except Exception as ex:
         print(f"Selector recovery failed: {ex}")
     return None
+
+
+async def confirm_selector_worked(flow_id, step_index, original_selector, improved_selector):
+    try:
+        async with httpx.AsyncClient() as client:
+            res = await client.post(
+                f"{os.getenv('BOTFLOWS_API_BASE', 'http://localhost:5000')}/api/selectoranalysis/confirm",
+                json={
+                    "flowId": flow_id,
+                    "stepIndex": step_index,
+                    "originalSelector": original_selector,
+                    "improvedSelector": improved_selector
+                },
+                timeout=10
+            )
+            if res.status_code == 200:
+                print("Confirmation sent and flow updated.")
+            else:
+                print(f"Confirm failed: {res.status_code} - {res.text}")
+    except Exception as e:
+        print(f"Error confirming selector: {e}")
+
+async def infer_column_type(page, column_selector: str, max_samples=5) -> str:
+    try:
+        # Find all header cell elements
+        header_elements = await page.query_selector_all('[role="columnheader"], .MuiDataGrid-columnHeader')
+        if not header_elements:
+            return "unknown"
+
+        # Get target column header text
+        target_el = await page.locator(column_selector).first.element_handle()
+        if not target_el:
+            return "unknown"
+
+        target_text = (await target_el.inner_text()).strip().lower()
+
+        # Match index by text
+        index = -1
+        for idx, el in enumerate(header_elements):
+            header_text = (await el.inner_text()).strip().lower()
+            if header_text == target_text:
+                index = idx
+                break
+
+        if index < 0:
+            return "unknown"
+
+        # Now get cells under that column
+        cell_selector = f'[role="row"] [role="cell"]:nth-child({index + 1})'
+        cells = await page.query_selector_all(cell_selector)
+        if not cells:
+            return "unknown"
+
+        # Extract text from cells
+        texts = []
+        for cell in cells[:max_samples]:
+            text = (await cell.inner_text()).strip()
+            if text:
+                texts.append(text)
+
+        is_date = all(_looks_like_date(t) for t in texts if t)
+        if is_date:
+            return "date"
+
+        is_number = all(_looks_like_number(t) for t in texts if t)
+        if is_number:
+            return "number"
+
+        return "text"
+
+    except Exception as e:
+        print(f"Error inferring column type: {e}")
+        return "unknown"
+    
+def _looks_like_date(text):
+    try:
+        for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%d-%b-%Y"):
+            datetime.strptime(text, fmt)
+            return True
+    except ValueError:
+        pass
+    return False
+
+
+def _looks_like_number(text):
+    try:
+        float(text.replace(",", ""))
+        return True
+    except ValueError:
+        return False
+
+async def is_header_cell(el) -> bool:
+    if not el:
+        return False
+
+    return await el.evaluate("""
+        (node) => {
+            const tag = node.tagName?.toLowerCase() || '';
+            const text = node.innerText?.toLowerCase() || '';
+            const classes = node.className?.toLowerCase() || '';
+            const role = node.getAttribute('role')?.toLowerCase() || '';
+
+            return (
+                tag === 'th' ||
+                role === 'columnheader' ||
+                text.includes('header') ||
+                classes.includes('header')
+            );
+        }
+    """)
+
+async def is_inside_grid(el) -> bool:
+    if not el:
+        return False
+
+    return await el.evaluate("""
+        (node) => {
+            while (node && node.parentElement) {
+                node = node.parentElement;
+                const tag = node.tagName.toLowerCase();
+                const role = node.getAttribute('role') || '';
+                const classes = node.className || '';
+
+                if (
+                    tag === 'table' || tag === 'grid' ||
+                    tag.includes('grid') ||
+                    classes.toLowerCase().includes('grid') ||
+                    classes.toLowerCase().includes('datatable') ||
+                    role.toLowerCase() === 'grid'
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    """)
+

@@ -5,7 +5,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright, Page
 from common import state
 from common.browserutil import launch_chrome
-from common.selectorHelper import call_selector_recovery_api  # ⬅️ Add this import
+from common.selectorHelper import call_selector_recovery_api, confirm_selector_worked
 
 logger = logging.getLogger("botflows-player")
 logging.basicConfig(level=logging.INFO)
@@ -43,29 +43,6 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
         except Exception as e:
             logger.warning(f"Attempt {attempt} failed: {action} / {selector} => {e}")
 
-            text_hint = None
-            if ":has-text(" in selector:
-                try:
-                    text_hint = selector.split(":has-text(")[1].split(")")[0].strip('"').strip("'")
-                except:
-                    pass
-
-            if action == "click" and text_hint:
-                for fallback in [
-                    lambda p: p.get_by_text(text_hint, exact=True),
-                    lambda p: p.get_by_role("button", name=text_hint),
-                    lambda p: p.locator(f"a:has-text('{text_hint}')"),
-                    lambda p: p.locator(f"div:has-text('{text_hint}')"),
-                    lambda p: p.locator(f"span:has-text('{text_hint}')"),
-                ]:
-                    try:
-                        candidate = fallback(page)
-                        await candidate.first.click(timeout=3000)
-                        logger.info(f"[Fallback] Click worked using text match: {text_hint}")
-                        return
-                    except Exception:
-                        continue
-
             for frame in page.frames:
                 if frame == page.main_frame:
                     continue
@@ -76,15 +53,7 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                 except:
                     continue
 
-            if action == "click" and attempt == retries:
-                try:
-                    await page.click(selector, force=True, timeout=3000)
-                    logger.info(f"[Force Click] Succeeded: {selector}")
-                    return
-                except Exception as fe:
-                    logger.error(f"[Force Click] Failed: {fe}")
-
-                # ✅ Final fallback: selector recovery API
+            if attempt == retries:
                 try:
                     element_text = await page.evaluate(f"""() => {{
                         const el = document.querySelector("{selector}");
@@ -109,6 +78,7 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                     if new_selector:
                         logger.info(f"Recovered selector from API: {new_selector}")
                         await try_action(page, new_selector)
+                        await confirm_selector_worked(url=page.url, original_selector=selector)
                         return
                 except Exception as api_ex:
                     logger.warning(f"[Recovery API] Failed: {api_ex}")
@@ -138,6 +108,83 @@ async def handle_step(step: dict, page: Page):
             logger.info(f"→ Loop iteration {i + 1}/{count}")
             for sub_step in step.get("steps", []):
                 await handle_step(sub_step, page)
+    elif step_type == "dataLoop":
+        grid_selector = step.get("gridSelector")
+        row_selector = step.get("rowSelector", "tr")
+        column_mappings = step.get("columnMappings", [])
+        actions_per_row = step.get("actionsPerRow", [])
+        filters = step.get("filters", [])
+
+        logger.info(f"Starting dataLoop on grid: {grid_selector}")
+
+        try:
+            await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
+            grid_handle = await page.query_selector(grid_selector)
+            if not grid_handle:
+                logger.error(f"Grid container not found for selector: {grid_selector}")
+                return
+            await page.wait_for_selector(row_selector, state="visible", timeout=5000)
+            rows = await page.query_selector_all(row_selector)
+            logger.info(f"Found {len(rows)} rows in grid.")
+
+            if filters:
+                filtered_rows = []
+                for row in rows:
+                    row_text = await row.inner_text()
+                    if all(filt.lower() in row_text.lower() for filt in filters):
+                        filtered_rows.append(row)
+                rows = filtered_rows
+                logger.info(f"{len(rows)} rows remain after filtering.")
+
+            temp_table = []
+
+            for idx, row in enumerate(rows):
+                logger.info(f"Processing row {idx + 1}/{len(rows)}")
+
+                # This dict will hold the column-value pairs for this row
+                row_data = {}
+
+                for action in actions_per_row:
+                    action_type = action.get("action")
+                    relative_selector = action.get("selector", "")
+
+                    # Compose full selector relative to this row
+                    full_selector = relative_selector
+                    if relative_selector:
+                        try:
+                            full_selector = f"{row_selector}:nth-child({idx + 1}) {relative_selector}"
+                        except Exception:
+                            full_selector = relative_selector
+
+                    if action_type == "extract":
+                        cell_texts = []
+                        for col in column_mappings:
+                            col_selector = col.get("selector")
+                            cell = await row.query_selector(col_selector)
+                            text = await cell.inner_text() if cell else ""
+                            cell_texts.append({col.get("header"): text})
+                            
+                            # Add to row_data using header as key
+                            row_data[col.get("header")] = text
+
+                        logger.info(f"Extracted data from row {idx + 1}: {cell_texts}")
+                    else:
+                        # For other actions like click/open, perform the action on relative selector
+                        await _perform_action(page, action_type, full_selector)
+                
+                # Append row_data dict to temp_table after processing all columns for this row
+                if row_data:
+                    temp_table.append(row_data)
+            print(f"Final extracted table data: {temp_table}")
+            # Now temp_table is a list of dicts like:
+            # [
+            #   {'Name': 'John', 'Age': '30', ...},
+            #   {'Name': 'Jane', 'Age': '25', ...},
+            #    ...
+            # ]
+
+        except Exception as ex:
+            logger.error(f"Error during dataLoop playback: {ex}")
 
 
 async def replay_flow(json_str: str):
@@ -155,3 +202,7 @@ async def replay_flow(json_str: str):
         logger.info("Replay complete.")
         await browser.close()
         state.is_replaying = False
+
+
+# Example usage:
+# asyncio.run(replay_flow(Path("recordings/final_flow.json").read_text()))

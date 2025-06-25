@@ -35,7 +35,7 @@ logger = logging.getLogger("botflows-agent")
 
 # --- FastAPI Setup ---
 app = FastAPI()
-connections = []
+state.connections = []
 
 app.add_middleware(
     CORSMiddleware,
@@ -53,38 +53,47 @@ class RecordRequest(BaseModel):
 @app.websocket("/ws/actions")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    connections.append(websocket)
-    print(f"[WEBSOCKET CONNECTED] Total connections: {len(connections)}")
+    state.connections.append(websocket)
+    print(f"[WEBSOCKET CONNECTED] Total connections: {len(state.connections)}")
     try:
         while True:
             await asyncio.sleep(10)  # Keeps connection alive
     except Exception as e:
         print("WebSocket disconnected:", e)
     finally:
-        if websocket in connections:
-            connections.remove(websocket)
-            print(f"[WEBSOCKET REMOVED] Active: {len(connections)}")
+        if websocket in state.connections:
+            state.connections.remove(websocket)
+            print(f"[WEBSOCKET REMOVED] Active: {len(state.connections)}")
 
-@app.post("/api/stream_action")
-async def stream_action(request: Request):
-    action = await request.json()
-    # print("[RECEIVED ACTION]", action)
-    # improved_action = await selectorHelper.validate_and_enrich_selector(action)
-    # print("[IMPROVED ACTION]", improved_action)
+# @app.post("/api/stream_action")
+# async def stream_action(request: Request):
+#     action = await request.json()
+    
+#     try:
+#         if state.pick_mode and state.active_dom_snapshot:
+#             meta = action.get("metadata", {})
+#             target_text = meta.get("innerText", "")
+#             target_tag = meta.get("tagName", "").lower()
+#             target_classes = meta.get("classList", [])
 
-    disconnected = []
-    for ws in connections:
-        try:
-            await ws.send_text(json.dumps(action))
-            print("[BROADCASTED ACTION]", action)
-        except Exception as e:
-            print("Failed to send:", e)
-            disconnected.append(ws)
+#             # Enrich with replay-safe selector and inferred type
+#             action = await selectorHelper.validate_and_enrich_selector(action)
+#     except Exception as e:
+#         logger.warning(f"Could not enrich action: {e}")
 
-    for ws in disconnected:
-        connections.remove(ws)
+#     disconnected = []
+#     for ws in state.connections:
+#         try:
+#             await ws.send_text(json.dumps(action))
+#             print("[BROADCASTED ACTION]", action)
+#         except Exception as e:
+#             print("Failed to send:", e)
+#             disconnected.append(ws)
 
-    return {"status": "ok"}
+#     for ws in disconnected:
+#         state.connections.remove(ws)
+
+#     return {"status": "ok"}
 
 @app.post("/api/record")
 async def start_recording(req: RecordRequest):
@@ -175,6 +184,60 @@ def get_recorded_urls():
     except Exception as e:
         logger.exception("Failed to load recorded URLs")
         return JSONResponse(status_code=500, content={"error": str(e)})
+
+from pathlib import Path
+
+@app.post("/api/target-pick-mode")
+async def enable_target_pick_mode(request: Request):
+    try:
+        state.pick_mode = True
+        data = await request.json()
+        mode = data.get("mode")
+
+        if mode != "start":
+            return {"status": "ignored", "message": "Unsupported mode"}
+
+        page = getattr(state, "active_page", None)
+        if not page:
+            return {"error": "No active page/browser"}
+
+        # Test if page is still open by evaluating a harmless noop
+        try:
+            await page.evaluate("() => true")
+        except Exception:
+            logger.warning("Stale page detected. Resetting active_page.")
+            state.active_page = None
+            return {"error": "Page is no longer available"}
+
+        logger.info("Injecting selector helper and picker script...")
+
+        # Inject selector helper first (if you use it)
+        selector_helper_path = Path(__file__).parent / "javascript" / "selectorHelper.bundle.js"
+        js_selector_helper = selector_helper_path.read_text(encoding="utf-8")
+        await page.evaluate("(code) => eval(code)", js_selector_helper)
+
+        # Inject picker script from external file
+        picker_path = Path(__file__).parent / "javascript" / "gridPicker.js"
+        picker_script = picker_path.read_text(encoding="utf-8")
+        await page.evaluate("(script => eval(script))", picker_script)
+
+        return {"status": "ok", "message": "Picker script injected"}
+
+    except Exception as e:
+        logger.exception("Failed to enable picker mode")
+        return {"error": str(e)}
+
+@app.post("/api/target-pick-done")
+async def disable_pick_mode():
+    state.pick_mode = False
+    if state.active_page:
+        await state.active_page.evaluate("window.__pickModeActive = false")
+
+        recorder_path = Path(__file__).parent / "javascript" / "recorder.bundle.js"
+        js_code = recorder_path.read_text(encoding="utf-8")
+        await state.active_page.evaluate("(code) => eval(code)", js_code)
+        
+    return { "status": "ok" }
 
 # --- Tray App ---
 if __name__ == "__main__":

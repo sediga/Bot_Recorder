@@ -29,7 +29,49 @@
       "url": "https://mail.google.com/mail/u/0/#drafts"
     }
   ],
-  "http://edigatech.com": [],
+  "http://edigatech.com": [
+    {
+      "action": "click",
+      "selector": "h3.text-xl.font-bold.mb-2:has-text(\"Developer Coaching & Training\")",
+      "timestamp": 1750768614871,
+      "value": null,
+      "url": "https://edigatech.com/",
+      "tagName": "H3",
+      "classList": [
+        "text-xl",
+        "font-bold",
+        "mb-2",
+        "text-indigo-700"
+      ],
+      "attributes": {
+        "class": "text-xl font-bold mb-2 text-indigo-700"
+      },
+      "innerText": "Developer Coaching & Training",
+      "elementText": "Developer Coaching & Training"
+    },
+    {
+      "action": "click",
+      "selector": "a:has-text(\"\u2190 Back to Home\")",
+      "timestamp": 1750768630915,
+      "value": null,
+      "url": "https://edigatech.com/training",
+      "tagName": "A",
+      "classList": [
+        "text-sm",
+        "text-indigo-600",
+        "hover:text-indigo-800",
+        "transition",
+        "font-medium"
+      ],
+      "attributes": {
+        "class": "text-sm text-indigo-600 hover:text-indigo-800 transition font-medium",
+        "href": "/",
+        "data-discover": "true"
+      },
+      "innerText": "\u2190 Back to Home",
+      "elementText": "\u2190 Back to Home"
+    }
+  ],
   "https://raiserecruiting.com/": [
     {
       "action": "mousedown",
@@ -1849,5 +1891,115 @@
       "url": "https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit"
     }
   ],
-  "http://octagos.com": []
+  "http://octagos.com": [],
+  "https://mui.com/x/react-data-grid/editing/": [
+    {
+      "action": "click",
+      "selector": "a:has-text(\"Making a column editable\")",
+      "timestamp": 1750890887147,
+      "value": null,
+      "url": "https://mui.com/x/react-data-grid/editing/",
+      "tagName": "A",
+      "classList": [
+        "title-link-to-anchor"
+      ],
+      "attributes": {
+        "href": "#making-a-column-editable",
+        "class": "title-link-to-anchor",
+        "draggable": "false"
+      },
+      "innerText": "Making a column editable",
+      "elementText": "Making a column editable"
+    },
+    {
+      "action": "click",
+      "selector": "div.MuiDataGrid-columnHeader.MuiDataGrid-columnHeader--sortable.MuiDataGrid-withBorderColor:has-text(\"Date Created\"):nth-of-type(14)",
+      "timestamp": 1750890891405,
+      "value": null,
+      "url": "https://mui.com/x/react-data-grid/editing/#making-a-column-editable",
+      "tagName": "DIV",
+      "classList": [
+        "MuiDataGrid-columnHeaderTitle",
+        "css-1rxsvxt"
+      ],
+      "attributes": {
+        "class": "MuiDataGrid-columnHeaderTitle css-1rxsvxt"
+      },
+      "innerText": "Date Created",
+      "elementText": "Date Created"
+    },
+    {
+      "action": "click",
+      "selector": "div.MuiDataGrid-columnHeader.MuiDataGrid-columnHeader--sortable.MuiDataGrid-withBorderColor:has-text(\"Last Login\"):nth-of-type(14)",
+      "timestamp": 1750890893950,
+      "value": null,
+      "url": "https://mui.com/x/react-data-grid/editing/#making-a-column-editable",
+      "tagName": "DIV",
+      "classList": [
+        "MuiDataGrid-columnHeaderTitle",
+        "css-1rxsvxt"
+      ],
+      "attributes": {
+        "class": "MuiDataGrid-columnHeaderTitle css-1rxsvxt"
+      },
+      "innerText": "Last Login",
+      "elementText": "Last Login"
+    },
+    {
+      "action": "click",
+      "selector": "div.MuiDataGrid-columnHeader.MuiDataGrid-columnHeader--alignLeft.MuiDataGrid-columnHeader--sortable:has-text(\"Age\"):nth-of-type(29)",
+      "timestamp": 1750890896589,
+      "value": null,
+      "url": "https://mui.com/x/react-data-grid/editing/#making-a-column-editable",
+      "tagName": "DIV",
+      "classList": [
+        "MuiDataGrid-columnHeaderTitle",
+        "css-1rxsvxt"
+      ],
+      "attributes": {
+        "class": "MuiDataGrid-columnHeaderTitle css-1rxsvxt"
+      },
+      "innerText": "Age",
+      "elementText": "Age"
+    }
+  ],
+  "https://www.ag-grid.com/react-data-grid/grouping-multiple-group-columns/": [
+    {
+      "action": "click",
+      "selector": "div.ag-header-cell.ag-header-parent-hidden.ag-header-cell-sortable:has-text(\"Year\"):nth-of-type(12)",
+      "timestamp": 1750881474601,
+      "value": null,
+      "url": "https://www.ag-grid.com/examples/grouping-multiple-group-columns/enabling-multiple-group-column/reactFunctional/example-runner/",
+      "tagName": "DIV",
+      "classList": [
+        "ag-header-cell-label"
+      ],
+      "attributes": {
+        "class": "ag-header-cell-label",
+        "data-ref": "eLabel",
+        "role": "presentation"
+      },
+      "innerText": "Year",
+      "elementText": " Year         "
+    },
+    {
+      "action": "click",
+      "selector": "div.ag-cell.ag-cell-not-inline-editing.ag-cell-normal-height:nth-of-type(107)",
+      "timestamp": 1750881496088,
+      "value": null,
+      "url": "https://www.ag-grid.com/examples/grouping-multiple-group-columns/enabling-multiple-group-column/reactFunctional/example-runner/",
+      "tagName": "SPAN",
+      "classList": [
+        "ag-cell-wrapper",
+        "ag-row-group-leaf-indent",
+        "ag-row-group-indent-0"
+      ],
+      "attributes": {
+        "class": "ag-cell-wrapper ag-row-group-leaf-indent ag-row-group-indent-0",
+        "style": "--ag-indentation-level: 0;"
+      },
+      "innerText": null,
+      "elementText": null
+    }
+  ]
 }

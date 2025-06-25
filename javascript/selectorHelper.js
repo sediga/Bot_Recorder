@@ -143,3 +143,7 @@ export function getSmartSelector(el) {
 
   return selector;
 }
+window.getSmartSelectorLib = {
+  getSmartSelector,
+  // include any other helpers here
+};

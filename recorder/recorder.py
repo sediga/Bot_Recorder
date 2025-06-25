@@ -7,14 +7,16 @@ import sys
 import os
 from common import state
 from common.browserutil import launch_chrome
-from common.dom_snapshot import collect_snapshot, upload_snapshot_to_api
+from common.dom_snapshot import upload_snapshot_to_api
+from common import selectorHelper
 
 logger = logging.getLogger(__name__)
 recorded_events = []
 
 # Resolve paths
 BASE_DIR = Path(getattr(sys, "_MEIPASS", Path(__file__).parent.resolve()))
-script_path = BASE_DIR / "../javascript" / "recorder.bundle.js"
+selector_script_path = BASE_DIR / "../javascript" / "selectorHelper.bundle.js"
+recorder_script_path = BASE_DIR / "../javascript" / "recorder.bundle.js"
 log_path = BASE_DIR / "../dataset/selector_logs.jsonl"
 live_events_log = BASE_DIR / "../dataset/live_events.jsonl"
 output_path = BASE_DIR / "../recordings/recorded_actions.json"
@@ -31,9 +33,21 @@ def append_event(event):
         f.write(json.dumps(event) + "\n")
 
 async def handle_event(source, event):
-    recorded_events.append(event)
     append_event(event)
-    logger.debug(f"Recorded: {event}")
+    recorded_events.append(event)
+
+    try:
+        if state.pick_mode and state.is_recording:
+            event = await selectorHelper.validate_and_enrich_selector(event)
+    except Exception as e:
+        logger.warning(f"Failed to enrich selector: {e}")
+
+    for ws in state.connections:
+        try:
+            await ws.send_text(json.dumps(event))
+            logger.debug(f"[WS] Broadcasted event: {event}")
+        except Exception as e:
+            logger.warning(f"WebSocket broadcast failed: {e}")
 
 async def handle_log(source, log_data):
     try:
@@ -47,14 +61,15 @@ async def handle_url_change(source, new_url):
     logger.info(f"SPA navigation detected: {new_url}")
     page = source._context.pages[0]
     await page.evaluate(overlay_script)
-    await collect_snapshot()
+    state.active_dom_snapshot = await page.content()
     await page.evaluate(remove_overlay_script)
     await upload_snapshot_to_api(new_url, state.active_dom_snapshot)
     await reinject_script(page)
 
 async def inject_script(page):
     try:
-        await page.add_init_script(script_path.read_text(encoding="utf-8"))
+        await page.add_init_script(selector_script_path.read_text(encoding="utf-8"))
+        await page.add_init_script(recorder_script_path.read_text(encoding="utf-8"))
         await page.evaluate("window.__recorderInjected = true")
         logger.info("Recorder script injected")
     except Exception as e:
@@ -64,7 +79,8 @@ async def reinject_script(page):
     try:
         injected = await page.evaluate("() => window.__recorderInjected === true")
         if not injected:
-            await page.evaluate(script_path.read_text(encoding="utf-8"))
+            await page.add_init_script(selector_script_path.read_text(encoding="utf-8"))
+            await page.add_init_script(recorder_script_path.read_text(encoding="utf-8"))
             await page.evaluate("window.__recorderInjected = true")
             logger.info("Recorder script re-injected")
     except Exception as e:
@@ -73,17 +89,18 @@ async def reinject_script(page):
 def deduplicate_events(events, threshold_ms=200):
     seen, deduped = [], []
     for event in events:
-        if event["action"] != "click":
+        action = event.get("action")  # use .get() to avoid KeyError
+        if action != "click":
             deduped.append(event)
             continue
-        ts = event["timestamp"]
-        if any(e["action"] == "click" and abs(e["timestamp"] - ts) <= threshold_ms for e in seen):
+        ts = event.get("timestamp", 0)
+        if any(e.get("action") == "click" and abs(e.get("timestamp", 0) - ts) <= threshold_ms for e in seen):
             continue
         deduped.append(event)
         seen.append(event)
     return deduped
 
-# Overlay scripts
+
 overlay_script = """
 (() => {
   const overlay = document.createElement('div');
@@ -130,11 +147,9 @@ async def record(url: str):
 
         page = await context.new_page()
 
-        # Show overlay first
         await page.goto("about:blank")
         await page.evaluate(overlay_script)
 
-        # Setup bindings
         await context.expose_binding("sendEventToPython", handle_event)
         await context.expose_binding("sendUrlChangeToPython", handle_url_change)
         await context.expose_binding("sendLogToPython", handle_log)
@@ -150,9 +165,10 @@ async def record(url: str):
         await page.goto(url)
         await page.wait_for_load_state("networkidle")
         state.active_page = page
-        await collect_snapshot()
+        state.active_dom_snapshot = await page.content()
         await page.evaluate(remove_overlay_script)
         await upload_snapshot_to_api(url, state.active_dom_snapshot)
+
         async def wait_for_tab_close():
             while not page.is_closed():
                 await asyncio.sleep(1)

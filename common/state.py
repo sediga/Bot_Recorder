@@ -6,3 +6,6 @@ is_replaying = False
 current_url = None
 active_page = None
 active_dom_snapshot = None
+# Already has: is_running, is_recording, is_replaying, etc.
+pick_mode = False
+connections = []

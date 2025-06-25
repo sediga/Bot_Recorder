@@ -1,4 +1,3 @@
-import { getSmartSelector } from './selectorHelper.js';
 import { getAllAttributes } from './domanalyser.js';
 
 (function () {
@@ -9,13 +8,17 @@ import { getAllAttributes } from './domanalyser.js';
   let lastClick = { selector: null, timestamp: 0 };
   let lastFocus = { selector: null, timestamp: 0 };
 
+  const getSmartSelector = window.getSmartSelectorLib.getSmartSelector;
+  const isInPickMode = () => window.__pickModeActive === true;
+
   const sendEvent = (event, override = {}) => {
+    if (isInPickMode()) return;
+
     const original = event.target;
     const target =
       original.closest('a, button, input[type="button"], [role="button"]') || original;
     const type = event.type;
 
-    // 💡 Skip invalid targets
     if (
       !target ||
       target === document ||
@@ -29,11 +32,9 @@ import { getAllAttributes } from './domanalyser.js';
     const selector = getSmartSelector(target);
     const now = Date.now();
 
-    // ⏱ Skip duplicate clicks within 80ms
     if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 80)
       return;
 
-    // 🎯 Only record focus for form fields
     if (type === "focus") {
       const tag = target.tagName.toLowerCase();
       if (!["input", "textarea", "select"].includes(tag)) return;
@@ -56,16 +57,9 @@ import { getAllAttributes } from './domanalyser.js';
       ...override
     };
 
-    // 🔁 Stream to all consumers
     window.sendEventToPython(actionData);
     window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
-    fetch("http://localhost:8000/api/stream_action", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(actionData)
-    });
 
-    // 🪵 Optional click insight logging
     if (type === "click" && typeof window.sendLogToPython === "function") {
       const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
       const siblingText = Array.from(target.parentElement?.children || [])
@@ -89,13 +83,12 @@ import { getAllAttributes } from './domanalyser.js';
     }
   };
 
-  // 👂 Core interaction listeners
   ["click", "focus", "change"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
   });
 
-  // ✅ Record final input value only once on blur (user finishes typing)
   document.addEventListener("blur", (event) => {
+   if (isInPickMode()) return; // ✅ Suppress during grid pick mode
     const target = event.target;
     if (!target.matches("input, textarea, select")) return;
 
@@ -105,7 +98,6 @@ import { getAllAttributes } from './domanalyser.js';
     });
   }, true);
 
-  // 🔁 URL tracking helpers
   const notifyUrlChange = () => {
     if (typeof window.sendUrlChangeToPython === "function") {
       window.sendUrlChangeToPython(window.location.href);
