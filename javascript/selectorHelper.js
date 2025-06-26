@@ -82,7 +82,6 @@ export function getSmartSelector(el) {
     if (input) return getSmartSelector(input);
   }
 
-  // Prevent climbing on input fields
   const isFormField = el.matches('input, textarea, select');
   const targetEl = isFormField ? el : (climbToClickable(el) || el);
   const tag = targetEl.tagName.toLowerCase();
@@ -92,9 +91,18 @@ export function getSmartSelector(el) {
   if (targetEl.getAttribute('data-testid')) {
     return `[data-testid="${CSS.escape(targetEl.getAttribute('data-testid'))}"]`;
   }
-  if (targetEl.getAttribute('aria-label')) {
-    return `[aria-label="${CSS.escape(targetEl.getAttribute('aria-label'))}"]`;
+
+  // ✅ Enhanced: Context-aware [aria-label]
+  const ariaLabel = targetEl.getAttribute('aria-label');
+  if (ariaLabel) {
+    const columnHeader = targetEl.closest('div[role="columnheader"][data-field]');
+    if (columnHeader) {
+      const dataField = columnHeader.getAttribute('data-field');
+      return `div[role="columnheader"][data-field="${CSS.escape(dataField)}"] [aria-label="${CSS.escape(ariaLabel)}"]`;
+    }
+    return `[aria-label="${CSS.escape(ariaLabel)}"]`;
   }
+
   if (targetEl.id && !isLikelyGeneratedId(targetEl.id)) {
     return `#${CSS.escape(targetEl.id)}`;
   }
@@ -103,6 +111,16 @@ export function getSmartSelector(el) {
   }
   if (targetEl.placeholder) {
     return `[placeholder="${CSS.escape(targetEl.placeholder)}"]`;
+  }
+
+  // ✅ DataGrid column header support
+  if (
+    targetEl.getAttribute('role') === 'columnheader' &&
+    targetEl.hasAttribute('data-field')
+  ) {
+    return `div[role="columnheader"][data-field="${CSS.escape(
+      targetEl.getAttribute('data-field')
+    )}"]`;
   }
 
   // Text-based selectors
@@ -138,11 +156,12 @@ export function getSmartSelector(el) {
     if (index >= 0) selector += `:nth-of-type(${index + 1})`;
   }
 
-  // Final sanity fallback
   if (selector.startsWith('body:has-text("*")')) return '';
 
   return selector;
 }
+
+
 window.getSmartSelectorLib = {
   getSmartSelector,
   // include any other helpers here

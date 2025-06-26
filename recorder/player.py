@@ -15,25 +15,27 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
     await asyncio.sleep(1)
 
     async def try_action(target_page: Page, sel):
+        locator = target_page.locator(sel)
+
         if action == "click":
-            await target_page.wait_for_selector(sel, state="visible", timeout=5000)
-            return await target_page.click(sel, timeout=5000)
+           await target_page.wait_for_selector(sel, state="visible", timeout=5000)
+           return await target_page.click(sel, timeout=5000)
         elif action == "type":
-            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
-            await target_page.focus(sel)
-            return await target_page.type(sel, value or "")
+            await locator.first.wait_for(state="attached", timeout=5000)
+            await locator.first.focus()
+            return await locator.first.type(value or "")
         elif action == "change":
-            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
-            await target_page.focus(sel)
-            return await target_page.fill(sel, value or "")
+            await locator.first.wait_for(state="attached", timeout=5000)
+            await locator.first.focus()
+            return await locator.first.fill(value or "")
         elif action == "press":
             return await target_page.keyboard.press(key)
         elif action == "select":
-            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
-            return await target_page.select_option(sel, value)
+            await locator.first.wait_for(state="attached", timeout=5000)
+            return await locator.first.select_option(value)
         elif action in ["mousedown", "focus", "blur"]:
-            await target_page.wait_for_selector(sel, state="attached", timeout=5000)
-            return await target_page.dispatch_event(sel, action)
+            await locator.first.wait_for(state="attached", timeout=5000)
+            return await locator.first.dispatch_event(action)
 
     for attempt in range(1, retries + 1):
         try:
@@ -43,6 +45,7 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
         except Exception as e:
             logger.warning(f"Attempt {attempt} failed: {action} / {selector} => {e}")
 
+            # Try inside iframes
             for frame in page.frames:
                 if frame == page.main_frame:
                     continue
@@ -53,20 +56,12 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                 except:
                     continue
 
+            # Recovery API fallback (only on final failure)
             if attempt == retries:
                 try:
-                    element_text = await page.evaluate(f"""() => {{
-                        const el = document.querySelector("{selector}");
-                        return el?.innerText || "";
-                    }}""")
-                    tag = await page.evaluate(f"""() => {{
-                        const el = document.querySelector("{selector}");
-                        return el?.tagName?.toLowerCase() || "";
-                    }}""")
-                    el_id = await page.evaluate(f"""() => {{
-                        const el = document.querySelector("{selector}");
-                        return el?.id || "";
-                    }}""")
+                    element_text = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.innerText || ''; }", selector)
+                    tag = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.tagName?.toLowerCase() || ''; }", selector)
+                    el_id = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.id || ''; }", selector)
 
                     new_selector = await call_selector_recovery_api(
                         url=page.url,
@@ -88,26 +83,44 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
 
 async def handle_step(step: dict, page: Page):
     step_type = step.get("type")
-    selector = step.get("improvedSelector") or step.get("selector")
+    label = step.get("label")
+    if label:
+        logger.info(f"▶ Step: {label}")
 
-    if step_type == "uiAction":
-        await _perform_action(
-            page,
-            action=step.get("action"),
-            selector=selector,
-            value=step.get("value"),
-            key=step.get("key")
-        )
-    elif step_type == "navigate":
+    if step_type == "navigate":
         await page.goto(step["url"])
         await asyncio.sleep(1)
+
+    elif step_type == "uiAction":
+        selector = step.get("selector")
+        improved = step.get("improvedSelector")
+        action = step.get("action")
+        value = step.get("value")
+        key = step.get("key")
+
+        # Try the main selector first
+        try:
+            await _perform_action(page, action=action, selector=selector, value=value, key=key)
+        except Exception as e:
+            logger.warning(f"[Primary selector failed] {selector} => {e}")
+            if improved and improved != selector:
+                try:
+                    logger.info(f"🔁 Trying improvedSelector: {improved}")
+                    await _perform_action(page, action=action, selector=improved, value=value, key=key)
+                except Exception as e2:
+                    logger.error(f"[Improved selector failed] {improved} => {e2}")
+                    raise e2
+            else:
+                raise e
+
     elif step_type == "counterloop" and step.get("action") == "counterloop":
         count = step.get("criteria", {}).get("count", 1)
-        logger.info(f"Starting loop '{step.get('source')}' for {count} iterations")
+        logger.info(f"🔄 Counter loop '{step.get('source')}' for {count} iterations")
         for i in range(count):
             logger.info(f"→ Loop iteration {i + 1}/{count}")
             for sub_step in step.get("steps", []):
                 await handle_step(sub_step, page)
+
     elif step_type == "dataLoop":
         grid_selector = step.get("gridSelector")
         row_selector = step.get("rowSelector", "tr")
@@ -115,17 +128,17 @@ async def handle_step(step: dict, page: Page):
         actions_per_row = step.get("actionsPerRow", [])
         filters = step.get("filters", [])
 
-        logger.info(f"Starting dataLoop on grid: {grid_selector}")
-
+        logger.info(f"🔁 Starting dataLoop on grid: {grid_selector}")
         try:
             await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
             grid_handle = await page.query_selector(grid_selector)
             if not grid_handle:
-                logger.error(f"Grid container not found for selector: {grid_selector}")
+                logger.error(f"Grid container not found: {grid_selector}")
                 return
+
             await page.wait_for_selector(row_selector, state="visible", timeout=5000)
             rows = await page.query_selector_all(row_selector)
-            logger.info(f"Found {len(rows)} rows in grid.")
+            logger.info(f"Found {len(rows)} rows in grid")
 
             if filters:
                 filtered_rows = []
@@ -134,27 +147,18 @@ async def handle_step(step: dict, page: Page):
                     if all(filt.lower() in row_text.lower() for filt in filters):
                         filtered_rows.append(row)
                 rows = filtered_rows
-                logger.info(f"{len(rows)} rows remain after filtering.")
+                logger.info(f"{len(rows)} rows remain after filtering")
 
             temp_table = []
 
             for idx, row in enumerate(rows):
                 logger.info(f"Processing row {idx + 1}/{len(rows)}")
-
-                # This dict will hold the column-value pairs for this row
                 row_data = {}
 
                 for action in actions_per_row:
                     action_type = action.get("action")
                     relative_selector = action.get("selector", "")
-
-                    # Compose full selector relative to this row
-                    full_selector = relative_selector
-                    if relative_selector:
-                        try:
-                            full_selector = f"{row_selector}:nth-child({idx + 1}) {relative_selector}"
-                        except Exception:
-                            full_selector = relative_selector
+                    full_selector = f"{row_selector}:nth-child({idx + 1}) {relative_selector}" if relative_selector else row_selector
 
                     if action_type == "extract":
                         cell_texts = []
@@ -163,29 +167,19 @@ async def handle_step(step: dict, page: Page):
                             cell = await row.query_selector(col_selector)
                             text = await cell.inner_text() if cell else ""
                             cell_texts.append({col.get("header"): text})
-                            
-                            # Add to row_data using header as key
                             row_data[col.get("header")] = text
 
-                        logger.info(f"Extracted data from row {idx + 1}: {cell_texts}")
+                        logger.info(f"Extracted data: {cell_texts}")
                     else:
-                        # For other actions like click/open, perform the action on relative selector
                         await _perform_action(page, action_type, full_selector)
-                
-                # Append row_data dict to temp_table after processing all columns for this row
+
                 if row_data:
                     temp_table.append(row_data)
-            print(f"Final extracted table data: {temp_table}")
-            # Now temp_table is a list of dicts like:
-            # [
-            #   {'Name': 'John', 'Age': '30', ...},
-            #   {'Name': 'Jane', 'Age': '25', ...},
-            #    ...
-            # ]
+
+            print(f"Final extracted table: {temp_table}")
 
         except Exception as ex:
             logger.error(f"Error during dataLoop playback: {ex}")
-
 
 async def replay_flow(json_str: str):
     state.is_replaying = True

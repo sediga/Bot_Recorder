@@ -35,6 +35,7 @@ logger = logging.getLogger("botflows-agent")
 
 # --- FastAPI Setup ---
 app = FastAPI()
+
 state.connections = []
 
 app.add_middleware(
@@ -44,8 +45,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 
 class RecordRequest(BaseModel):
     url: str
@@ -232,6 +231,7 @@ async def disable_pick_mode():
     state.pick_mode = False
     if state.active_page:
         await state.active_page.evaluate("window.__pickModeActive = false")
+        await state.active_page.evaluate("window.finishPicker?.()")
 
         recorder_path = Path(__file__).parent / "javascript" / "recorder.bundle.js"
         js_code = recorder_path.read_text(encoding="utf-8")
