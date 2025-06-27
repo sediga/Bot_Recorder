@@ -239,6 +239,31 @@ async def disable_pick_mode():
         
     return { "status": "ok" }
 
+class StartLoopRequest(BaseModel):
+    loopIndex: int
+    loopName: str
+
+@app.post("/api/start-loop-recording")
+async def start_loop_recording(req: StartLoopRequest):
+    try:
+        state.active_loop_index = req.loopIndex
+        state.active_loop_name = req.loopName
+        await state.current_page.evaluate(f'window.__botflows_loopName__ = {json.dumps(req.loopName)};')
+        loop_script_path = Path(__file__).parent / "javascript" / "loopBanner.js"
+        await state.current_page.add_init_script(path=loop_script_path)
+        await state.current_page.evaluate("() => {}")  # force init script to apply
+        return {"status": "ok"}
+    except Exception as ex:
+        return {"status": "error", "details": str(ex)}
+    
+@app.post("/api/end-loop-recording")
+async def end_loop_recording():
+    try:
+        await state.current_page.evaluate("window.__botflows_loopName__ = null;")
+        return {"status": "ok"}
+    except Exception as ex:
+        return {"status": "error", "details": str(ex)}
+
 # --- Tray App ---
 if __name__ == "__main__":
     import threading
