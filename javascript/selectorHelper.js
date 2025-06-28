@@ -161,8 +161,85 @@ export function getSmartSelector(el) {
   return selector;
 }
 
+export function getDevtoolsLikeSelector(el) {
+  if (!(el instanceof Element)) return "";
+
+  const parts = [];
+  while (el && el.nodeType === Node.ELEMENT_NODE) {
+    let part = el.nodeName.toLowerCase();
+
+    if (el.id) {
+      part = `#${CSS.escape(el.id)}`;
+      parts.unshift(part);
+      break;
+    } else {
+      const className = (el.className || "").toString().trim().replace(/\s+/g, ".");
+      if (className) {
+        part += "." + className.replace(/^\.+/, "");
+      }
+    }
+
+    const parent = el.parentNode;
+    if (parent) {
+      const siblings = Array.from(parent.children).filter(child => child.tagName === el.tagName);
+      if (siblings.length > 1) {
+        const index = siblings.indexOf(el) + 1;
+        part += `:nth-child(${index})`;
+      }
+    }
+
+    parts.unshift(part);
+    el = el.parentNode;
+  }
+
+  return parts.join(" > ");
+}
+
+function captureSelectors(el) {
+  if (!el || el.nodeType !== 1) return null;
+
+  const smartSelector = getSmartSelector(el);
+  const devtoolsSelector = getDevtoolsLikeSelector(el);
+  const attributes = getAllAttributes(el);
+  const text = el.innerText?.trim() || "";
+  const rect = el.getBoundingClientRect();
+
+  const selectors = [];
+
+  if (smartSelector) selectors.push({ strategy: "smart", selector: smartSelector });
+  if (attributes["data-testid"]) {
+    selectors.push({ strategy: "testid", selector: `[data-testid="${CSS.escape(attributes["data-testid"])}"]` });
+  }
+  if (attributes["id"] && !isLikelyGeneratedId(attributes["id"])) {
+    selectors.push({ strategy: "id", selector: `#${CSS.escape(attributes["id"])}` });
+  }
+  if (attributes["name"]) {
+    selectors.push({ strategy: "name", selector: `[name="${CSS.escape(attributes["name"])}"]` });
+  }
+  if (attributes["aria-label"]) {
+    selectors.push({ strategy: "aria", selector: `[aria-label="${CSS.escape(attributes["aria-label"])}"]` });
+  }
+  if (devtoolsSelector) {
+    selectors.push({ strategy: "devtools", selector: devtoolsSelector });
+  }
+
+  return {
+    selectors, // prioritized array
+    smartSelector,
+    devtoolsSelector,
+    attributes,
+    boundingBox: {
+      x: rect.x,
+      y: rect.y,
+      width: rect.width,
+      height: rect.height
+    },
+    text
+  };
+}
 
 window.getSmartSelectorLib = {
   getSmartSelector,
+  getDevtoolsLikeSelector
   // include any other helpers here
 };

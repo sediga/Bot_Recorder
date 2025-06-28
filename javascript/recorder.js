@@ -14,6 +14,7 @@ import { getAllAttributes } from './domanalyser.js';
   let lastFocus = { selector: null, timestamp: 0 };
 
   const getSmartSelector = window.getSmartSelectorLib.getSmartSelector;
+  const getDevtoolsLikeSelector  = window.getSmartSelectorLib.getDevtoolsLikeSelector ;
   const isInPickMode = () => window.__pickModeActive === true;
 
   const sendEvent = (event, override = {}) => {
@@ -39,6 +40,7 @@ import { getAllAttributes } from './domanalyser.js';
     }
 
     const selector = getSmartSelector(target);
+    const devToolsSelector = getDevtoolsLikeSelector(target)
     const now = Date.now();
 
     if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 80) {
@@ -60,6 +62,7 @@ import { getAllAttributes } from './domanalyser.js';
     const actionData = {
       action: type === "input" ? "type" : type,
       selector,
+      devToolsSelector,
       timestamp: now,
       value: target.value || null,
       url: window.location.href,
@@ -86,6 +89,7 @@ import { getAllAttributes } from './domanalyser.js';
       const logData = {
         event: "click",
         selector,
+        devToolsSelector,
         elementMeta: {
           tag: target.tagName.toLowerCase(),
           attributes: getAllAttributes(target),
@@ -102,7 +106,7 @@ import { getAllAttributes } from './domanalyser.js';
     }
   };
 
-  ["click", "focus", "change"].forEach(type => {
+  ["click", "focus", "change", "dblclick"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
     console.debug(`[Botflows] Event listener attached for ${type}`);
   });
