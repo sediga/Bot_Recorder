@@ -18,34 +18,6 @@ BASE_DIR = Path(getattr(sys, "_MEIPASS", Path(__file__).parent.resolve()))
 selector_script_path = BASE_DIR / "../javascript" / "selectorHelper.bundle.js"
 recorder_script_path = BASE_DIR / "../javascript" / "recorder.bundle.js"
 blocker_script_path = BASE_DIR / "../javascript" / "blocker.js"
-log_path = BASE_DIR / "../dataset/selector_logs.jsonl"
-live_events_log = BASE_DIR / "../dataset/live_events.jsonl"
-output_path = BASE_DIR / "../recordings/recorded_actions.json"
-
-os.makedirs(log_path.parent, exist_ok=True)
-
-recorded_actions_json = {}
-if output_path.exists():
-    content = output_path.read_text(encoding="utf-8").strip()
-    recorded_actions_json = json.loads(content) if content else {}
-
-def append_event(event):
-    with open(live_events_log, "a", encoding="utf-8") as f:
-        f.write(json.dumps(event) + "\n")
-
-def deduplicate_events(events, threshold_ms=200):
-    seen, deduped = [], []
-    for event in events:
-        action = event.get("action")
-        if action != "click":
-            deduped.append(event)
-            continue
-        ts = event.get("timestamp", 0)
-        if any(e.get("action") == "click" and abs(e.get("timestamp", 0) - ts) <= threshold_ms for e in seen):
-            continue
-        deduped.append(event)
-        seen.append(event)
-    return deduped
 
 overlay_script = """
 (() => {
@@ -96,7 +68,6 @@ async def reinject_scripts_if_needed(page):
         logger.error(f"Reinjection failed: {e}")
 
 async def handle_event(source, event):
-    append_event(event)
     recorded_events.append(event)
 
     try:
@@ -111,14 +82,6 @@ async def handle_event(source, event):
             logger.debug(f"[WS] Broadcasted event: {event}")
         except Exception as e:
             logger.warning(f"WebSocket broadcast failed: {e}")
-
-async def handle_log(source, log_data):
-    try:
-        with open(log_path, "a", encoding="utf-8") as f:
-            json.dump(log_data, f)
-            f.write("\n")
-    except Exception as e:
-        logger.warning(f"Failed to log selector: {e}")
 
 async def handle_url_change(source, new_url):
     logger.info(f"SPA navigation detected: {new_url}")
@@ -145,10 +108,8 @@ async def record(url: str):
         page = await context.new_page()
         state.active_page = page
 
-        # Inject before navigation (for persistence)
         await context.expose_binding("sendEventToPython", handle_event)
         await context.expose_binding("sendUrlChangeToPython", handle_url_change)
-        await context.expose_binding("sendLogToPython", handle_log)
 
         await page.add_init_script(selector_script_path.read_text("utf-8"))
         await page.add_init_script(recorder_script_path.read_text("utf-8"))
@@ -162,12 +123,10 @@ async def record(url: str):
         await page.goto(url)
         await page.wait_for_load_state("networkidle")
 
-        # Initial snapshot
         state.active_dom_snapshot = await page.content()
         await page.evaluate(remove_overlay_script)
         await upload_snapshot_to_api(url, state.active_dom_snapshot)
 
-        # === Setup SPA recovery ===
         async def reinject_on_spa_change(new_url):
             logger.info(f"[Recorder] SPA navigation: {new_url}")
             await page.evaluate(overlay_script)
@@ -182,7 +141,6 @@ async def record(url: str):
             state.active_dom_snapshot = snapshot
             await upload_snapshot_to_api(new_url, snapshot)
 
-        # Attach callback
         page.on("framenavigated", lambda frame: asyncio.create_task(reinject_on_spa_change(frame.url)))
 
         async def wait_for_tab_close():
@@ -204,8 +162,5 @@ async def record(url: str):
                 asyncio.create_task(wait_for_stop_flag())
             ], return_when=asyncio.FIRST_COMPLETED)
         finally:
-            deduped = deduplicate_events(recorded_events)
-            recorded_actions_json[url] = deduped
-            output_path.write_text(json.dumps(recorded_actions_json, indent=2))
             await browser.close()
-            logger.info(f"[Recorder] Saved {len(deduped)} actions to {output_path}")
+            logger.info(f"[Recorder] Session complete. {len(recorded_events)} events captured.")

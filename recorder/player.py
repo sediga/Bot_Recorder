@@ -23,32 +23,32 @@ logging.basicConfig(level=logging.INFO)
 
 steps_by_parent = {}
 
-async def _perform_action(page: Page, action: str, selector=None, value=None, key=None, retries=3):
+async def _perform_action(page: Page, action: str, selector=None, value=None, key=None, selectors=None, retries=3):
     await asyncio.sleep(1)
 
     async def try_action(target_page: Page, sel):
         locator = target_page.locator(sel)
 
-        if action == "click":
+        if action.lower() == "click":
             await target_page.wait_for_selector(sel, state="visible", timeout=5000)
             return await target_page.click(sel, timeout=5000)
-        if action == "dblclick":
+        if action.lower() == "dblclick":
             await target_page.wait_for_selector(sel, state="visible", timeout=5000)
             return await target_page.dblclick(sel, timeout=5000)
-        elif action == "type":
+        elif action.lower() == "type":
             await locator.first.wait_for(state="attached", timeout=5000)
             await locator.first.focus()
             return await locator.first.type(value or "")
-        elif action == "change":
+        elif action.lower() == "change":
             await locator.first.wait_for(state="attached", timeout=5000)
             await locator.first.focus()
             return await locator.first.fill(value or "")
-        elif action == "press":
+        elif action.lower() == "press":
             return await target_page.keyboard.press(key)
-        elif action == "select":
+        elif action.lower() == "select":
             await locator.first.wait_for(state="attached", timeout=5000)
             return await locator.first.select_option(value)
-        elif action in ["mousedown", "focus", "blur"]:
+        elif action.lower() in ["mousedown", "focus", "blur"]:
             await locator.first.wait_for(state="attached", timeout=5000)
             return await locator.first.dispatch_event(action)
 
@@ -99,11 +99,13 @@ async def _perform_action(page: Page, action: str, selector=None, value=None, ke
                     logger.warning(f"[Recovery API] Failed: {api_ex}")
 
         await asyncio.sleep(1)
-    
+
     raise Exception(f"All attempts failed for action '{action}' on selector: {selector}")
 
 async def handle_step(step: dict, page: Page):
-    step_type = step.get("type")
+    step_type = step.get("type", "").lower()
+    step_id = step.get("id")
+
     label = step.get("label")
     if label:
         logger.info(f"Step: {label}")
@@ -112,54 +114,56 @@ async def handle_step(step: dict, page: Page):
         await page.goto(step["url"])
         await asyncio.sleep(1)
 
-    elif step_type == "uiAction":
+    elif step_type == "uiaction":
         selector = step.get("selector")
-        improved = step.get("improvedSelector")
-        devToolsSelector = step.get("devToolsSelector")
+        selectors = step.get("selectors", [])
         action = step.get("action")
         value = step.get("value")
         key = step.get("key")
 
-        try:
-            await _perform_action(page, action=action, selector=devToolsSelector, value=value, key=key, retries=2)
-        except Exception as e:
-            logger.warning(f"[Primary selector failed] {devToolsSelector} => {e}")
-            if improved and improved != devToolsSelector:
-                try:
-                    logger.info(f"Trying improvedSelector: {improved}")
-                    await _perform_action(page, action=action, selector=improved, value=value, key=key, retries=1)
-                except Exception as e2:
-                    logger.error(f"[Improved selector failed] {improved} => {e2}")
-                    if improved != selector:
-                        try:
-                            logger.info(f"Trying normal selector: {selector}")
-                            await _perform_action(page, action=action, selector=selector, value=value, key=key, retries=1)
-                        except Exception as e3:
-                            logger.error(f"[Dev Tool Selector Failed] {selector}")
-            elif selector and devToolsSelector != selector :
-                try:
-                    logger.info(f"Teying dev tool selector: {selector}")
-                    await _perform_action(page, action=action, selector=selector, value=value, key=key, retries=1)
-                except Exception as e3:
-                    logger.error(f"[Dev Tool Selector Failed] {selector}")
-            else:
-                raise e
+        tried = set()
 
-    elif step_type == "smartExtract":
+        def should_try(sel):
+            return sel and sel not in tried
+
+        try:
+            if should_try(selector):
+                tried.add(selector)
+                await _perform_action(page, action=action, selector=selector, value=value, key=key, selectors=selectors, retries=2)
+                return
+        except Exception as e:
+            logger.warning(f"[Primary selector failed] {selector} => {e}")
+
+        for alt in selectors:
+            try:
+                if should_try(alt):
+                    tried.add(alt)
+                    logger.info(f"[Trying fallback selector] {alt}")
+                    await _perform_action(page, action=action, selector=alt, value=value, key=key, selectors=selectors, retries=1)
+                    return
+            except Exception as e:
+                logger.warning(f"[Fallback selector failed] {alt} => {e}")
+
+        raise Exception(f"All selectors failed for action: {action}")
+
+    elif step_type == "gridextract":
         if not hasattr(page.context, "_botflows_extractions"):
             page.context._botflows_extractions = {}
         page.context._botflows_extractions[step["id"]] = step
-        logger.info(f"[smartExtract] Registered extract step: {step['name']}")
+        logger.info(f"[gridExtract] Registered extract step: {step['name']}")
 
     elif step_type == "loop":
-        # unchanged
-        pass
+        for child in steps_by_parent.get(step_id, []):
+            await handle_step(child, page)
 
-    elif step_type == "counterloop" and step.get("action") == "counterloop":
-        # unchanged
-        pass
+    elif step_type == "counterloop":
+        loop_count = step.get("count", 1)
+        for i in range(loop_count):
+            logger.info(f"[counterLoop] Iteration {i + 1}")
+            for child in steps_by_parent.get(step_id, []):
+                await handle_step(child, page)
 
-    elif step_type == "dataLoop":
+    elif step_type == "dataloop":
         source_id = step.get("source")
         extract = getattr(page.context, "_botflows_extractions", {}).get(source_id)
         if not extract:
@@ -181,9 +185,7 @@ async def handle_step(step: dict, page: Page):
             if filters:
                 filtered_rows = []
                 for row in rows:
-                    row_text = await row.inner_text()
                     row_data = {}
-
                     for col in column_mappings:
                         header = col.get("header")
                         col_selector = col.get("selector")
@@ -194,15 +196,13 @@ async def handle_step(step: dict, page: Page):
                     passed_filters = True
                     for filt in filters:
                         col = filt.get("column")
-                        op = filt.get("operator")
+                        op = filt.get("operator", "").lower()
                         val = filt.get("value")
                         actual_val = row_data.get(col)
 
                         try:
-                            if op in [">", "<", ">=", "<=", "==", "!="]:
-                                passed = ops[op](float(actual_val), float(val))
-                            elif op == "contains":
-                                passed = ops[op](str(actual_val), str(val))
+                            if op in ops:
+                                passed = ops[op](float(actual_val), float(val)) if op != "contains" else ops[op](str(actual_val), str(val))
                             else:
                                 passed = False
                         except Exception:
@@ -220,16 +220,28 @@ async def handle_step(step: dict, page: Page):
 
             for idx, row in enumerate(rows):
                 logger.info(f"[dataLoop] Row {idx + 1}")
-                for action in steps_by_parent.get(step["id"], []):
-                    sel = action.get("devToolsSelector") or action.get("selector") or action.get("improvedSelector")
-                    act = action.get("action")
-                    await _perform_action(page, act, sel)
+                for child in steps_by_parent.get(step_id, []):
+                    await handle_step(child, page)
         except Exception as ex:
             logger.error(f"Error during dataLoop playback: {ex}")
 
-    elif step_type == "gridLoop":
-        # unchanged
-        pass
+    elif step_type == "gridloop":
+        grid_selector = step.get("gridSelector")
+        row_selector = step.get("rowSelector")
+        filters = step.get("filters", [])
+        logger.info(f"Starting gridLoop on grid: {grid_selector}")
+        try:
+            await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
+            await page.wait_for_selector(row_selector, state="visible", timeout=5000)
+            rows = await page.query_selector_all(row_selector)
+            logger.info(f"Found {len(rows)} rows in grid")
+
+            for idx, row in enumerate(rows):
+                logger.info(f"[gridLoop] Row {idx + 1}")
+                for child in steps_by_parent.get(step_id, []):
+                    await handle_step(child, page)
+        except Exception as ex:
+            logger.error(f"Error during gridLoop playback: {ex}")
 
 async def replay_flow(json_str: str):
     state.is_replaying = True

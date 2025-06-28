@@ -1,3 +1,5 @@
+import { getAllAttributes } from "./domanalyser";
+
 function getVisibleText(el) {
   if (!el || !el.textContent) return '';
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
@@ -195,7 +197,7 @@ export function getDevtoolsLikeSelector(el) {
   return parts.join(" > ");
 }
 
-function captureSelectors(el) {
+export function captureSelectors(el) {
   if (!el || el.nodeType !== 1) return null;
 
   const smartSelector = getSmartSelector(el);
