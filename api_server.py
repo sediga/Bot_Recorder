@@ -177,6 +177,14 @@ if __name__ == "__main__":
     import winreg
     from uvicorn import Config, Server
 
+    import logging
+
+    class SuppressStatusLogs(logging.Filter):
+        def filter(self, record):
+            return "/api/status" not in record.getMessage()
+
+    logging.getLogger("uvicorn.access").addFilter(SuppressStatusLogs())
+
     lock_file = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
     if os.path.exists(lock_file):
         os.remove(lock_file)

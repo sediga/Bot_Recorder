@@ -15,9 +15,46 @@ import { captureSelectors } from './selectorHelper.js';
 
   const isInPickMode = () => window.__pickModeActive === true;
 
+  function showValidationOverlay() {
+    if (document.getElementById("__botflows_validation_overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "__botflows_validation_overlay";
+    Object.assign(overlay.style, {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: "rgba(255, 255, 255, 0.6)",
+      zIndex: 999999,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "22px",
+      fontFamily: "sans-serif",
+      fontWeight: "bold",
+      color: "#333"
+    });
+    overlay.innerText = "Validating action… Please wait";
+    document.body.appendChild(overlay);
+  }
+
+  function hideValidationOverlay() {
+    const el = document.getElementById("__botflows_validation_overlay");
+    if (el) el.remove();
+  }
+  window.hideValidationOverlay = hideValidationOverlay;
+
+
   const sendEvent = (event, override = {}) => {
     if (isInPickMode()) {
       console.debug("[Botflows] In pick mode — event suppressed:", event.type);
+      return;
+    }
+
+    if (window.__pendingValidation) {
+      console.debug("[Botflows] Skipping event while previous validation is pending");
       return;
     }
 
@@ -75,35 +112,10 @@ import { captureSelectors } from './selectorHelper.js';
       ...override
     };
 
-    console.debug("[Botflows] Event recorded:", actionData);
-
+    console.debug("[Botflows] Sending event to Python:", actionData);
+    window.__pendingValidation = true;
+    showValidationOverlay();
     window.sendEventToPython(actionData);
-    window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
-
-    if (type === "click" && typeof window.sendLogToPython === "function") {
-      const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
-      const siblingText = Array.from(target.parentElement?.children || [])
-        .filter(sib => sib !== target)
-        .map(sib => sib.innerText?.trim())
-        .filter(Boolean);
-
-      const logData = {
-        event: "click",
-        selector: primarySelector,
-        elementMeta: {
-          tag: target.tagName.toLowerCase(),
-          attributes: getAllAttributes(target),
-          innerText: target.innerText?.trim(),
-          parentTag,
-          siblingText
-        },
-        timestamp: new Date().toISOString(),
-        pageUrl: window.location.href
-      };
-
-      console.debug("[Botflows] Sending log to Python:", logData);
-      window.sendLogToPython(logData);
-    }
   };
 
   ["click", "focus", "change", "dblclick"].forEach(type => {

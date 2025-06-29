@@ -198,47 +198,135 @@ export function getDevtoolsLikeSelector(el) {
 }
 
 export function captureSelectors(el) {
-  if (!el || el.nodeType !== 1) return null;
-
-  const smartSelector = getSmartSelector(el);
-  const devtoolsSelector = getDevtoolsLikeSelector(el);
-  const attributes = getAllAttributes(el);
-  const text = el.innerText?.trim() || "";
-  const rect = el.getBoundingClientRect();
+  if (!el) return null;
 
   const selectors = [];
+  const attributes = getAllAttributes(el);
+  const tag = el.tagName.toLowerCase();
 
-  if (smartSelector) selectors.push({ strategy: "smart", selector: smartSelector });
-  if (attributes["data-testid"]) {
-    selectors.push({ strategy: "testid", selector: `[data-testid="${CSS.escape(attributes["data-testid"])}"]` });
+  // ID (highest priority)
+  if (el.id) {
+    selectors.push({
+      selector: `#${CSS.escape(el.id)}`,
+      source: "id",
+      score: 100,
+    });
   }
-  if (attributes["id"] && !isLikelyGeneratedId(attributes["id"])) {
-    selectors.push({ strategy: "id", selector: `#${CSS.escape(attributes["id"])}` });
+
+  // data-testid or aria-label
+  if (el.getAttribute("data-testid")) {
+    selectors.push({
+      selector: `[data-testid="${el.getAttribute("data-testid")}"]`,
+      source: "data-testid",
+      score: 90,
+    });
   }
-  if (attributes["name"]) {
-    selectors.push({ strategy: "name", selector: `[name="${CSS.escape(attributes["name"])}"]` });
+
+  if (el.getAttribute("aria-label")) {
+    selectors.push({
+      selector: `[aria-label="${el.getAttribute("aria-label")}"]`,
+      source: "aria-label",
+      score: 85,
+    });
   }
-  if (attributes["aria-label"]) {
-    selectors.push({ strategy: "aria", selector: `[aria-label="${CSS.escape(attributes["aria-label"])}"]` });
+
+  if (el.getAttribute("name")) {
+    selectors.push({
+      selector: `[name="${el.getAttribute("name")}"]`,
+      source: "name",
+      score: 80,
+    });
   }
-  if (devtoolsSelector) {
-    selectors.push({ strategy: "devtools", selector: devtoolsSelector });
+
+  // Tag + classes
+  if (el.classList.length) {
+    const classSelector = `${tag}.${[...el.classList]
+      .map(cls => CSS.escape(cls))
+      .join(".")}`;
+    selectors.push({
+      selector: classSelector,
+      source: "class",
+      score: 70,
+    });
   }
+
+  // Inner text (Playwright-only — lower confidence)
+  const innerText = el.innerText?.trim();
+  if (innerText) {
+    selectors.push({
+      selector: `${tag}:has-text("${innerText.slice(0, 50)}")`,
+      source: "has-text",
+      score: 40,
+    });
+  }
+
+  // DOM path (low confidence)
+  selectors.push({
+    selector: getFullDomPath(el),
+    source: "dom-path",
+    score: 30,
+  });
+
+  // XPath (last resort)
+  selectors.push({
+    selector: getXPath(el),
+    source: "xpath",
+    score: 20,
+  });
 
   return {
-    selectors, // prioritized array
-    smartSelector,
-    devtoolsSelector,
+    text: innerText,
+    selectors,
     attributes,
-    boundingBox: {
-      x: rect.x,
-      y: rect.y,
-      width: rect.width,
-      height: rect.height
-    },
-    text
+    boundingBox: el.getBoundingClientRect?.() || null,
   };
 }
+
+// Utility: full DOM path (basic fallback)
+function getFullDomPath(el) {
+  const path = [];
+  while (el && el.nodeType === Node.ELEMENT_NODE) {
+    let selector = el.nodeName.toLowerCase();
+    if (el.id) {
+      selector += `#${CSS.escape(el.id)}`;
+    } else {
+      const sibs = Array.from(el.parentNode?.children || []).filter(
+        e => e.nodeName === el.nodeName
+      );
+      if (sibs.length > 1) {
+        const idx = sibs.indexOf(el);
+        selector += `:nth-of-type(${idx + 1})`;
+      }
+    }
+    path.unshift(selector);
+    el = el.parentElement;
+  }
+  return path.join(" > ");
+}
+
+// Utility: XPath fallback
+function getXPath(el) {
+  if (el.id) {
+    return `//*[@id="${el.id}"]`;
+  }
+  const parts = [];
+  while (el && el.nodeType === 1) {
+    let index = 1;
+    let sibling = el.previousSibling;
+    while (sibling) {
+      if (sibling.nodeType === 1 && sibling.tagName === el.tagName) {
+        index++;
+      }
+      sibling = sibling.previousSibling;
+    }
+    const tag = el.tagName.toLowerCase();
+    const part = index > 1 ? `${tag}[${index}]` : tag;
+    parts.unshift(part);
+    el = el.parentNode;
+  }
+  return "/" + parts.join("/");
+}
+
 
 window.getSmartSelectorLib = {
   getSmartSelector,

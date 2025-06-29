@@ -129,17 +129,18 @@ async def handle_step(step: dict, page: Page):
         try:
             if should_try(selector):
                 tried.add(selector)
-                await _perform_action(page, action=action, selector=selector, value=value, key=key, selectors=selectors, retries=2)
+                await _perform_action(page, action=action, selector=selector, value=value, key=key, selectors=selectors, retries=1)
                 return
         except Exception as e:
             logger.warning(f"[Primary selector failed] {selector} => {e}")
 
         for alt in selectors:
+            alt_selector = alt["selector"] if isinstance(alt, dict) else alt
             try:
-                if should_try(alt):
-                    tried.add(alt)
-                    logger.info(f"[Trying fallback selector] {alt}")
-                    await _perform_action(page, action=action, selector=alt, value=value, key=key, selectors=selectors, retries=1)
+                if should_try(alt_selector):
+                    tried.add(alt_selector)
+                    logger.info(f"[Trying fallback selector] {alt_selector}")
+                    await _perform_action(page, action=action, selector=alt_selector, value=value, key=key, selectors=selectors, retries=1)
                     return
             except Exception as e:
                 logger.warning(f"[Fallback selector failed] {alt} => {e}")
@@ -178,7 +179,17 @@ async def handle_step(step: dict, page: Page):
         logger.info(f"Starting dataLoop on grid: {grid_selector}")
         try:
             await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
-            await page.wait_for_selector(row_selector, state="visible", timeout=5000)
+            # Fallback: if row selector fails and <tr> exists, replace selector dynamically
+            try:
+                await page.wait_for_selector(row_selector, state="visible", timeout=3000)
+            except:
+                test_tr_selector = f"{grid_selector} tr"
+                try:
+                    await page.wait_for_selector(test_tr_selector, state="visible", timeout=3000)
+                    logger.warning(f"[RowSelector Fallback] Switching from '{row_selector}' to '{test_tr_selector}'")
+                    row_selector = test_tr_selector
+                except:
+                    raise Exception(f"Row selector failed: {row_selector}")
             rows = await page.query_selector_all(row_selector)
             logger.info(f"Found {len(rows)} rows in grid")
 

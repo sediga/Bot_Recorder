@@ -136,7 +136,7 @@
 
         // Blur + overlay
         const overlay = document.createElement("div");
-        overlay.id = "__botflows_overlay";
+        overlay.id = "__botflows_picker_overlay";
         overlay.style.position = "fixed";
         overlay.style.top = "0";
         overlay.style.left = "0";
@@ -171,7 +171,7 @@
 
     // Expose finish method to dashboard
     window.finishPicker = () => {
-        const overlay = document.getElementById("__botflows_overlay");
+        const overlay = document.getElementById("__botflows_picker_overlay");
         if (overlay) overlay.remove();
         window.__pickModeActive = false;
         window.__picked = false;
