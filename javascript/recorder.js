@@ -1,4 +1,4 @@
-import { getAllAttributes } from './domanalyser.js';
+import { captureSelectors } from './selectorHelper.js';
 
 (function () {
   console.debug("[Botflows] Recorder script starting execution...");
@@ -13,13 +13,48 @@ import { getAllAttributes } from './domanalyser.js';
   let lastClick = { selector: null, timestamp: 0 };
   let lastFocus = { selector: null, timestamp: 0 };
 
-  const getSmartSelector = window.getSmartSelectorLib.getSmartSelector;
-  const getDevtoolsLikeSelector  = window.getSmartSelectorLib.getDevtoolsLikeSelector ;
   const isInPickMode = () => window.__pickModeActive === true;
+
+  function showValidationOverlay() {
+    if (document.getElementById("__botflows_validation_overlay")) return;
+
+    const overlay = document.createElement("div");
+    overlay.id = "__botflows_validation_overlay";
+    Object.assign(overlay.style, {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      backgroundColor: "rgba(255, 255, 255, 0.6)",
+      zIndex: 999999,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "22px",
+      fontFamily: "sans-serif",
+      fontWeight: "bold",
+      color: "#333"
+    });
+    overlay.innerText = "Validating action… Please wait";
+    document.body.appendChild(overlay);
+  }
+
+  function hideValidationOverlay() {
+    const el = document.getElementById("__botflows_validation_overlay");
+    if (el) el.remove();
+  }
+  window.hideValidationOverlay = hideValidationOverlay;
+
 
   const sendEvent = (event, override = {}) => {
     if (isInPickMode()) {
       console.debug("[Botflows] In pick mode — event suppressed:", event.type);
+      return;
+    }
+
+    if (window.__pendingValidation) {
+      console.debug("[Botflows] Skipping event while previous validation is pending");
       return;
     }
 
@@ -39,12 +74,14 @@ import { getAllAttributes } from './domanalyser.js';
       return;
     }
 
-    const selector = getSmartSelector(target);
-    const devToolsSelector = getDevtoolsLikeSelector(target)
-    const now = Date.now();
+    const meta = captureSelectors(target);
+    if (!meta || !meta.selectors?.length) return;
 
-    if (type === "click" && selector === lastClick.selector && now - lastClick.timestamp < 80) {
-      console.debug("[Botflows] Suppressed duplicate click:", selector);
+    const now = Date.now();
+    const primarySelector = meta.selectors[0].selector;
+
+    if (type === "click" && primarySelector === lastClick.selector && now - lastClick.timestamp < 80) {
+      console.debug("[Botflows] Suppressed duplicate click:", primarySelector);
       return;
     }
 
@@ -56,54 +93,29 @@ import { getAllAttributes } from './domanalyser.js';
       }
     }
 
-    if (type === "click") lastClick = { selector, timestamp: now };
-    if (type === "focus") lastFocus = { selector, timestamp: now };
+    if (type === "click") lastClick = { selector: primarySelector, timestamp: now };
+    if (type === "focus") lastFocus = { selector: primarySelector, timestamp: now };
 
     const actionData = {
       action: type === "input" ? "type" : type,
-      selector,
-      devToolsSelector,
+      selector: primarySelector,
+      selectors: meta.selectors,
       timestamp: now,
       value: target.value || null,
       url: window.location.href,
       tagName: target.tagName || null,
       classList: Array.from(target.classList || []),
-      attributes: getAllAttributes(target),
-      innerText: target.innerText || null,
+      attributes: meta.attributes,
+      innerText: meta.text,
       elementText: target.textContent || null,
+      boundingBox: meta.boundingBox,
       ...override
     };
 
-    console.debug("[Botflows] Event recorded:", actionData);
-
+    console.debug("[Botflows] Sending event to Python:", actionData);
+    window.__pendingValidation = true;
+    showValidationOverlay();
     window.sendEventToPython(actionData);
-    window.parent.postMessage({ type: "recorded-event", data: actionData }, "*");
-
-    if (type === "click" && typeof window.sendLogToPython === "function") {
-      const parentTag = target.parentElement?.tagName?.toLowerCase() || null;
-      const siblingText = Array.from(target.parentElement?.children || [])
-        .filter(sib => sib !== target)
-        .map(sib => sib.innerText.trim())
-        .filter(Boolean);
-
-      const logData = {
-        event: "click",
-        selector,
-        devToolsSelector,
-        elementMeta: {
-          tag: target.tagName.toLowerCase(),
-          attributes: getAllAttributes(target),
-          innerText: target.innerText?.trim(),
-          parentTag,
-          siblingText
-        },
-        timestamp: new Date().toISOString(),
-        pageUrl: window.location.href
-      };
-
-      console.debug("[Botflows] Sending log to Python:", logData);
-      window.sendLogToPython(logData);
-    }
   };
 
   ["click", "focus", "change", "dblclick"].forEach(type => {
