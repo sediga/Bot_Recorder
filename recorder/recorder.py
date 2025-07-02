@@ -12,6 +12,7 @@ from common import selectorHelper
 # selector_builder.py
 from common.selectorHelper import get_devtools_like_selector
 from common.gridHelper import *
+import asyncio
 
 logger = logging.getLogger(__name__)
 recorded_events = []
@@ -60,6 +61,22 @@ remove_validation_overlay_script = """
 })();
 """
 
+standard_event_queue = asyncio.Queue()
+
+async def standard_event_worker():
+    while True:
+        page, event = await standard_event_queue.get()
+        try:
+            await handle_standard_event(page, event)
+        except Exception as e:
+            logger.error(f"[Event Worker] Error processing event: {e}")
+        standard_event_queue.task_done()
+
+def flush_standard_event_queue():
+    global standard_event_queue
+    standard_event_queue = asyncio.Queue()
+    logger.info("[Queue] Standard event queue flushed.")
+
 async def inject_scripts(page):
     try:
         await page.add_init_script(selector_script_path.read_text("utf-8"))
@@ -84,7 +101,7 @@ async def handle_event(source, event):
     if type == "targetPicked":
         await handle_target_picked(page, event)
     else:
-        await handle_standard_event(page, event)
+        await standard_event_queue.put((page, event))
 
 async def handle_standard_event(page, event):
     meta = {
@@ -385,6 +402,18 @@ async def record(url: str):
     global recorded_events
     recorded_events = []
     logger.info(f"[Recorder] Starting session: {url}")
+    flush_standard_event_queue()
+    if state.worker_task:
+        state.worker_task.cancel()
+        try:
+            await state.worker_task
+        except asyncio.CancelledError:
+            logger.info("[Recorder] Event worker cancelled.")
+        state.worker_task = None
+
+    # Start the event worker
+    if not state.worker_task or state.worker_task.done():
+        state.worker_task = asyncio.create_task(standard_event_worker())
 
     async with async_playwright() as p:
         browser = await launch_chrome(p)
@@ -439,12 +468,14 @@ async def record(url: str):
                 await asyncio.sleep(1)
             if not state.pick_mode:
                 state.is_recording = False
+                state.worker_task = None
                 logger.info("Tab closed, recording stopped")
 
         async def wait_for_stop_flag():
             while state.is_recording:
                 await asyncio.sleep(1)
             if not state.pick_mode:
+                state.worker_task = None
                 logger.info("Recording manually stopped")
 
         try:
