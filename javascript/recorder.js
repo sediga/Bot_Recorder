@@ -1,4 +1,5 @@
-import { captureSelectors } from './selectorHelper.js';
+import { getFullDomPath, getXPath, captureSelectors } from './selectorHelper.js';
+import {getAllAttributes} from './domanalyser.js'
 
 (function () {
   console.debug("[Botflows] Recorder script starting execution...");
@@ -74,12 +75,22 @@ import { captureSelectors } from './selectorHelper.js';
       return;
     }
 
-    const meta = captureSelectors(target);
-    if (!meta || !meta.selectors?.length) return;
+    const metadata = {
+      tagName: target.tagName.toLowerCase(),
+      id: target.id || null,
+      name: target.getAttribute("name") || null,
+      classList: Array.from(target.classList || []),
+      attributes: getAllAttributes(target),
+      text: target.innerText?.trim() || "",
+      elementText: target.textContent?.trim() || "",
+      boundingBox: target.getBoundingClientRect?.(),
+      outerHTML: target.outerHTML || "",
+      domPath: getFullDomPath(target),
+      xpath: getXPath(target)
+    };
 
     const now = Date.now();
-    const primarySelector = meta.selectors[0].selector;
-
+    const primarySelector = captureSelectors(target).selector;
     if (type === "click" && primarySelector === lastClick.selector && now - lastClick.timestamp < 80) {
       console.debug("[Botflows] Suppressed duplicate click:", primarySelector);
       return;
@@ -98,30 +109,48 @@ import { captureSelectors } from './selectorHelper.js';
 
     const actionData = {
       action: type === "input" ? "type" : type,
-      selector: primarySelector,
-      selectors: meta.selectors,
-      timestamp: now,
-      value: target.value || null,
       url: window.location.href,
-      tagName: target.tagName || null,
-      classList: Array.from(target.classList || []),
-      attributes: meta.attributes,
-      innerText: meta.text,
-      elementText: target.textContent || null,
-      boundingBox: meta.boundingBox,
-      ...override
+      value: target.value || null,
+      timestamp: now,
+      ...metadata
     };
+
 
     console.debug("[Botflows] Sending event to Python:", actionData);
     window.__pendingValidation = true;
     showValidationOverlay();
     window.sendEventToPython(actionData);
+    waitForValidationComplete();
   };
 
   ["click", "focus", "change", "dblclick"].forEach(type => {
     document.addEventListener(type, sendEvent, true);
     console.debug(`[Botflows] Event listener attached for ${type}`);
   });
+
+  function waitForValidationComplete(timeout = 5000) {
+    return new Promise((resolve) => {
+      const handler = (event) => {
+        if (event.data?.type === "validationComplete") {
+          window.removeEventListener("message", handler);
+          window.__pendingValidation = false;
+          hideValidationOverlay();
+          resolve();
+        }
+      };
+
+      window.addEventListener("message", handler);
+
+      // Safety timeout
+      setTimeout(() => {
+        window.removeEventListener("message", handler);
+        console.warn("[Botflows] Validation timeout");
+        window.__pendingValidation = false;
+        hideValidationOverlay();
+        resolve();
+      }, timeout);
+    });
+  }
 
   document.addEventListener("blur", (event) => {
     if (isInPickMode()) {

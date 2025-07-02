@@ -1,9 +1,10 @@
 {
   "name": "botflows-recorder",
   "scripts": {
-    "build": "npm run build:recorder && npm run build:helper",
     "build:recorder": "esbuild javascript/recorder.js --bundle --outfile=javascript/recorder.bundle.js --minify",
-    "build:helper": "esbuild javascript/selectorHelper.js --bundle --format=iife --global-name=getSmartSelectorLib --outfile=javascript/selectorHelper.bundle.js --minify"
+    "build:helper": "esbuild javascript/selectorHelper.js --bundle --format=iife --global-name=getSmartSelectorLib --outfile=javascript/selectorHelper.bundle.js --minify",
+    "build:gridpicker": "esbuild javascript/gridPicker.js --bundle --outfile=javascript/gridPicker.bundle.js --minify",
+    "build": "npm run build:recorder && npm run build:helper && npm run build:gridpicker"
   },
   "devDependencies": {
     "esbuild": "^0.19.0"

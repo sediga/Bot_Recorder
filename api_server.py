@@ -120,7 +120,7 @@ async def enable_target_pick_mode(request: Request):
             return {"error": "Stale page"}
 
         selector_path = Path(__file__).parent / "javascript" / "selectorHelper.bundle.js"
-        picker_path = Path(__file__).parent / "javascript" / "gridPicker.js"
+        picker_path = Path(__file__).parent / "javascript" / "gridPicker.bundle.js"
 
         await page.evaluate("(code) => eval(code)", selector_path.read_text("utf-8"))
         await page.evaluate("(code) => eval(code)", picker_path.read_text("utf-8"))

@@ -6,6 +6,39 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from common import state
 
+async def get_devtools_like_selector(el):
+    path = []
+
+    while el:
+        tag = await el.evaluate("e => e.tagName.toLowerCase()")
+        id_attr = await el.get_attribute("id")
+
+        if id_attr:
+            path.insert(0, f"#{id_attr}")
+            break
+        else:
+            class_attr = await el.get_attribute("class") or ""
+            class_selector = "." + ".".join(
+                [c for c in class_attr.strip().split() if c]
+            ) if class_attr else ""
+            
+            parent = await el.evaluate_handle("e => e.parentElement")
+            siblings = await el.evaluate("""(e) => {
+                const tag = e.tagName;
+                return Array.from(e.parentElement?.children || []).filter(child => child.tagName === tag).length;
+            }""")
+            index = await el.evaluate("""(e) => {
+                const tag = e.tagName;
+                return Array.from(e.parentElement?.children || []).filter(child => child.tagName === tag).indexOf(e) + 1;
+            }""")
+
+            nth = f":nth-child({index})" if siblings and index > 0 else ""
+            path.insert(0, f"{tag}{class_selector}{nth}")
+
+        el = await el.evaluate_handle("e => e.parentElement")
+
+    return " > ".join(path)
+
 def normalize(text: Optional[str]) -> str:
     return (text or "").strip().lower().replace("\xa0", " ")
 
