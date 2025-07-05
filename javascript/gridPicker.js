@@ -284,23 +284,7 @@
             });
         }
 
-        const overlay = document.createElement("div");
-        overlay.id = "__botflows_picker_overlay";
-        overlay.style.position = "fixed";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.zIndex = "9999";
-        overlay.style.backdropFilter = "blur(3px)";
-        overlay.style.backgroundColor = "rgba(255,255,255,0.6)";
-        overlay.style.display = "flex";
-        overlay.style.alignItems = "center";
-        overlay.style.justifyContent = "center";
-        overlay.innerHTML = `<div style="font-size: 20px; font-weight: bold; background: #fff; padding: 20px; border: 2px solid #333; border-radius: 10px;">Finish setup in the Botflows dashboard...</div>`;
-        document.body.appendChild(overlay);
-
-        window.__picked = true;
+        window.startPicker();
     };
 
     grids.forEach((grid, index) => {
@@ -317,6 +301,26 @@
             cleanup();
         }
     }, 500);
+
+    window.startPicker = () => {
+        const overlay = document.createElement("div");
+        overlay.id = "__botflows_picker_overlay";
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.zIndex = "9999";
+        overlay.style.backdropFilter = "blur(3px)";
+        overlay.style.backgroundColor = "rgba(255,255,255,0.6)";
+        overlay.style.display = "flex";
+        overlay.style.alignItems = "center";
+        overlay.style.justifyContent = "center";
+        overlay.innerHTML = `<div style="font-size: 20px; font-weight: bold; background: #fff; padding: 20px; border: 2px solid #333; border-radius: 10px;">Finish setup in the Botflows dashboard...</div>`;
+        document.body.appendChild(overlay);
+        window.__pickModeActive = true;
+        window.__picked = true;
+    }
 
     window.finishPicker = () => {
         const overlay = document.getElementById("__botflows_picker_overlay");

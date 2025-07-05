@@ -80,6 +80,15 @@ async def replay_by_json(request: Request):
         logger.exception("Replay failed")
         return {"error": str(e)}
 
+@app.post("/api/preview-replay")
+async def preview_replay(req: Request):
+    try:
+        json_str = await req.body()
+        await replay_flow(json_str.decode("utf-8"))
+        return {"status": "ok"}
+    except Exception as e:
+        return {"status": "error", "details": str(e)}
+
 @app.post("/api/stop")
 def stop_recording():
     try:
@@ -148,25 +157,33 @@ class StartLoopRequest(BaseModel):
     loopName: str
 
 @app.post("/api/start-loop-recording")
-async def start_loop_recording(req: StartLoopRequest):
-    try:
-        # state.active_loop_index = req.loopIndex
-        state.active_loop_name = req.loopName
-        await state.current_page.evaluate(f'window.__botflows_loopName__ = {json.dumps(req.loopName)}')
-        loop_script_path = Path(__file__).parent / "javascript" / "loopBanner.js"
-        await state.current_page.add_init_script(path=loop_script_path)
-        await state.current_page.evaluate("() => {}")
-        return {"status": "ok"}
-    except Exception as e:
-        return {"status": "error", "details": str(e)}
+async def start_loop_recording(request: Request):
+    data = await request.json()
+    state.current_loop = {
+        "active": True,
+        "loopId": data.get("loopId"),
+        "loopName": data.get("loopName"),
+        "sourceStep": data.get("sourceStep"),  # entire extract step
+    }
+    await state.active_page.evaluate(
+        """(loop) => { window.loopContext = loop; }""",
+        state.current_loop
+    )
+    
+    return { "status": "ok" }
 
 @app.post("/api/end-loop-recording")
-async def end_loop_recording():
-    try:
-        await state.current_page.evaluate("window.__botflows_loopName__ = null")
-        return {"status": "ok"}
-    except Exception as e:
-        return {"status": "error", "details": str(e)}
+async def start_loop_recording(request: Request):
+    state.current_loop = {
+        "active": False,
+        "loopId": None,
+        "loopName": None,
+        "sourceStep": None
+    }
+    await state.active_page.evaluate("""() => {
+        delete window.loopContext;
+    }""")
+    return { "status": "loop recording stopped" }
 
 # === Tray Launcher ===
 if __name__ == "__main__":

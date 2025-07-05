@@ -274,7 +274,7 @@ async def extract_row_samples(page, grid_selector: str):
 
     return samples
 
-def matches_filter(row_data, filt):
+def matches_filter(row_data, filt, col_type="text"):
     col = filt.get("column")
     op = filt.get("operator", "").lower()
     val = filt.get("value", "")
@@ -282,12 +282,12 @@ def matches_filter(row_data, filt):
     actual_val = row_data.get(col, "")
 
     try:
-        # Boolean & Image
+        # Boolean or image
         if op in ["is true", "is false"]:
             is_truthy = bool(actual_val)
             return is_truthy if op == "is true" else not is_truthy
 
-        # Text-based
+        # Normalize for string ops
         actual_val_str = str(actual_val).strip().lower()
         val_str = str(val).strip().lower()
 
@@ -308,19 +308,9 @@ def matches_filter(row_data, filt):
         elif op == "does not end with":
             return not actual_val_str.endswith(val_str)
         elif op == "regex":
-            return re.search(val, actual_val) is not None
+            return re.search(val, actual_val_str) is not None
 
-        # Date/Number
-        if var:
-            actual_val = dateparser.parse(actual_val)
-            val = dateparser.parse(val)
-        else:
-            try:
-                actual_val = float(actual_val)
-                val = float(val)
-            except:
-                return False
-
+        # Number/Date comparison
         ops = {
             ">": lambda a, b: a > b,
             "<": lambda a, b: a < b,
@@ -330,6 +320,17 @@ def matches_filter(row_data, filt):
             "==": lambda a, b: a == b,
             "!=": lambda a, b: a != b,
         }
+
+        if col_type == "date":
+            actual_val = dateparser.parse(actual_val)
+            val = dateparser.parse(val)
+        elif col_type == "number":
+            actual_val = float(actual_val)
+            val = float(val)
+        else:
+            # fallback if type unknown
+            actual_val = str(actual_val).strip().lower()
+            val = str(val).strip().lower()
 
         return ops[op](actual_val, val) if op in ops else False
 
