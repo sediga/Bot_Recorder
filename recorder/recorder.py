@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from playwright.async_api import async_playwright
 import sys
-import os
+import re
 from common import state
 from common.browserutil import launch_chrome
 from common.dom_snapshot import upload_snapshot_to_api
@@ -409,8 +409,6 @@ async def try_scope_selector(page, selector: str, el_handle):
         print(f"[scoping failed] {ex}")
     return None
 
-import re
-
 async def generate_and_validate_selectors(meta: dict, page, event, strict: bool = False):
     candidates = []
     action = event.get("action")
@@ -458,11 +456,10 @@ async def generate_and_validate_selectors(meta: dict, page, event, strict: bool 
             "score": 60
         })
 
-        # 🆕 Add combo: class + has-text (only if vt-* class exists)
-        vt_class = next((c for c in stable_classes if c.startswith("vt-")), None)
-        if vt_class:
+        prominent_class = next((c for c in stable_classes if len(c) > 5), None)
+        if prominent_class:
             candidates.append({
-                "selector": f'{tag}.{vt_class}:has-text("{inner_text.strip()}")',
+                "selector": f'{tag}.{prominent_class}:has-text("{inner_text.strip()}")',
                 "source": "has-text-combo",
                 "score": 85
             })
@@ -476,8 +473,6 @@ async def generate_and_validate_selectors(meta: dict, page, event, strict: bool 
         })
 
     xpath = meta.get("xpath")
-    if not xpath and el_id:
-        xpath = f'//*[@id="{el_id}"]'
     if xpath:
         candidates.append({
             "selector": xpath,
@@ -518,8 +513,12 @@ async def generate_and_validate_selectors(meta: dict, page, event, strict: bool 
                 sel["verified"] = True
                 sel["score"] += 30
             elif count > 1:
-                sel["verified"] = False
-                sel["score"] -= 20
+                scoped = await try_scope_selector(page, sel["selector"], meta["elementHandle"])
+                if scoped:
+                    sel["selector"] = scoped
+                    sel["score"] += 10
+                    sel["matchCount"] = 1
+                    sel["verified"] = True
             else:
                 sel["verified"] = False
 

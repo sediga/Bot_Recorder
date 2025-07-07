@@ -10,6 +10,8 @@ from common.gridHelper import matches_filter
 from common.selectorHelper import call_selector_recovery_api, confirm_selector_worked
 import operator
 from dateutil import parser as dateparser
+from common.selectorRecoveryHelper import *
+from math import fabs
 
 ops = {
     ">": operator.gt,
@@ -34,14 +36,216 @@ steps_by_parent = {}
 def get_locator(page: Page, sel: str, source: str):
     if source == "xpath":
         return page.locator(f"xpath={sel}")
-    elif source == "css" or source == "dom-path":
-        return page.locator(sel)
-    elif source == "id" and sel.startswith("#"):
-        return page.locator(sel)
-    else:
-        return page.locator(sel)
+    
+    # Treat all other sources as CSS selectors
+    return page.locator(sel)
 
-async def _perform_action(page: Page, step: dict, retries=2):
+# async def _perform_action(page: Page, step: dict, retries=2):
+#     await asyncio.sleep(1)
+
+#     action = step.get("action", "")
+#     value = step.get("value")
+#     dynamicValue = step.get("dynamicValue")
+#     key = step.get("key")
+#     selector = step.get("selector")
+#     selectors = step.get("selectors", [])
+
+#     async def try_action(target_page: Page, sel, source_hint=None):
+#         locator = get_locator(target_page, sel, source_hint or "")
+
+#         if action.lower() == "click":
+#             await locator.first.wait_for(state="visible", timeout=5000)
+#             return await locator.first.click(timeout=5000)
+#         elif action.lower() == "dblclick":
+#             await locator.first.wait_for(state="visible", timeout=5000)
+#             return await locator.first.dblclick(timeout=5000)
+#         elif action.lower() == "type":
+#             await locator.first.wait_for(state="attached", timeout=5000)
+#             await locator.first.focus()
+#             return await locator.first.type(value or "")
+#         elif action.lower() == "change":
+#             await locator.first.wait_for(state="attached", timeout=5000)
+#             await locator.first.focus()
+#             return await locator.first.fill(value or "")
+#         elif action.lower() == "press":
+#             return await target_page.keyboard.press(key)
+#         elif action.lower() == "select":
+#             await locator.first.wait_for(state="attached", timeout=5000)
+#             return await locator.first.select_option(value)
+#         elif action.lower() in ["mousedown", "focus", "blur"]:
+#             await locator.first.wait_for(state="attached", timeout=5000)
+#             return await locator.first.dispatch_event(action)
+
+#     # 🔁 Handle dynamic value substitution
+#     raw_value = dynamicValue or value
+
+#     if step and isinstance(dynamicValue, str) and "{{" in dynamicValue and hasattr(page.context, "_botflows_row_data"):
+#         row_data = page.context._botflows_row_data
+#         transform = step.get("transform")
+#         transform_type = step.get("transformType")
+
+#         for key, val in row_data.items():
+#             placeholder = f"{{{{{key}}}}}"
+#             if placeholder in raw_value:
+#                 final_val = apply_transformations(val, transform_type, transform)
+#                 raw_value = raw_value.replace(placeholder, final_val)
+
+#         value = raw_value
+
+#     # ✅ Pre-check: Wait for any verified selector if present
+#     # if selectors:
+#     #     first_verified = next((s for s in selectors if s.get("verified")), None)
+#     #     if first_verified:
+#     #         try:
+#     #             await page.wait_for_selector(first_verified["selector"], timeout=2000)
+#     #             logger.info(f"Pre-check success: {first_verified['selector']}")
+#     #         except Exception as wait_ex:
+#     #             logger.warning(f"Pre-check failed for {first_verified['selector']}: {wait_ex}")
+
+#     effective_selectors = selectors if selectors else [{"selector": selector}]
+
+#     # for attempt in range(1, retries + 1):
+#     #     for sel_obj in effective_selectors:
+#     #         sel = sel_obj["selector"] if isinstance(sel_obj, dict) else sel_obj
+#     #         source = sel_obj.get("source", "") if isinstance(sel_obj, dict) else ""
+
+#     #         try:
+#     #             await try_action(page, sel)
+#     #             logger.info(f"Action '{action}' succeeded on attempt {attempt}: {sel}")
+#     #             return
+#     #         except Exception as e:
+#     #             logger.warning(f"Attempt {attempt} failed: {action} / {sel} => {e}")
+
+#     #             for frame in page.frames:
+#     #                 if frame == page.main_frame:
+#     #                     continue
+#     #                 try:
+#     #                     await try_action(frame, sel)
+#     #                     logger.info(f"[Frame] Success inside: {frame.url}")
+#     #                     return
+#     #                 except:
+#     #                     continue
+
+#     #     if attempt == retries:
+#     #         fallback_sel = effective_selectors[0]["selector"] if isinstance(effective_selectors[0], dict) else effective_selectors[0]
+#     #         source_hint = effective_selectors[0].get("source", "") if isinstance(effective_selectors[0], dict) else ""
+
+#     #         try:
+#     #             if source_hint == "xpath":
+#     #                 tag = await page.evaluate("""(sel) => {
+#     #                     const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+#     #                     const el = result.singleNodeValue;
+#     #                     return el?.tagName?.toLowerCase() || '';
+#     #                 }""", fallback_sel)
+#     #                 el_id = await page.evaluate("""(sel) => {
+#     #                     const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+#     #                     const el = result.singleNodeValue;
+#     #                     return el?.id || '';
+#     #                 }""", fallback_sel)
+#     #                 element_text = await page.evaluate("""(sel) => {
+#     #                     const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+#     #                     const el = result.singleNodeValue;
+#     #                     return el?.innerText || '';
+#     #                 }""", fallback_sel)
+#     #             else:
+#     #                 tag = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.tagName?.toLowerCase() || ''; }", fallback_sel)
+#     #                 el_id = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.id || ''; }", fallback_sel)
+#     #                 element_text = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.innerText || ''; }", fallback_sel)
+#     #         except Exception as ex:
+#     #             logger.warning(f"[safe_evaluate failed] {ex}")
+#     #             tag = el_id = element_text = ""
+
+#     #         try:
+#     #             new_selector = await call_selector_recovery_api(
+#     #                 url=page.url,
+#     #                 failed_selector=fallback_sel,
+#     #                 tag=tag,
+#     #                 text=element_text,
+#     #                 el_id=el_id
+#     #             )
+#     #             if new_selector:
+#     #                 logger.info(f"Recovered selector from API: {new_selector}")
+#     #                 await try_action(page, new_selector)
+#     #                 await confirm_selector_worked(url=page.url, original_selector=fallback_sel)
+#     #                 return
+#     #         except Exception as api_ex:
+#     #             logger.warning(f"[Recovery API] Failed: {api_ex}")
+
+#     #     await asyncio.sleep(1)
+
+#     # Only attempt first selector once, keep full selector list for reference
+#     sel_obj = effective_selectors[0] if isinstance(effective_selectors[0], dict) else {"selector": effective_selectors[0], "source": ""}
+#     sel = sel_obj["selector"]
+#     source = sel_obj.get("source", "")
+
+#     try:
+#         await try_action(page, sel)
+#         logger.info(f"Action '{action}' succeeded: {sel}")
+#         return
+#     except Exception as e:
+#         logger.warning(f"Initial attempt failed: {action} / {sel} => {e}")
+
+#         # Try in child frames
+#         for frame in page.frames:
+#             if frame == page.main_frame:
+#                 continue
+#             try:
+#                 await try_action(frame, sel)
+#                 logger.info(f"[Frame] Success inside: {frame.url}")
+#                 return
+#             except:
+#                 continue
+
+#     # Recovery logic — active
+#     try:
+#         if source == "xpath":
+#             tag = await page.evaluate("""(sel) => {
+#                 const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+#                 const el = result.singleNodeValue;
+#                 return el?.tagName?.toLowerCase() || '';
+#             }""", sel)
+#             el_id = await page.evaluate("""(sel) => {
+#                 const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+#                 const el = result.singleNodeValue;
+#                 return el?.id || '';
+#             }""", sel)
+#             element_text = await page.evaluate("""(sel) => {
+#                 const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+#                 const el = result.singleNodeValue;
+#                 return el?.innerText || '';
+#             }""", sel)
+#         else:
+#             tag = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.tagName?.toLowerCase() || ''; }", sel)
+#             el_id = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.id || ''; }", sel)
+#             element_text = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.innerText || ''; }", sel)
+#     except Exception as ex:
+#         logger.warning(f"[safe_evaluate failed] {ex}")
+#         # tag = el_id = element_text = ""
+
+#     try:
+#         new_selector = await call_selector_recovery_api(
+#             url=page.url,
+#             failed_selector=sel,
+#             tag=step.get("tagName"),
+#             text=step.get("elementText"),
+#             el_id=""
+#         )
+#         if new_selector:
+#             logger.info(f"Recovered selector from API: {new_selector}")
+#             await try_action(page, new_selector)
+#             await confirm_selector_worked(url=page.url, original_selector=sel)
+#             return
+#     except Exception as api_ex:
+#         logger.warning(f"[Recovery API] Failed: {api_ex}")
+
+#     # --- Retry logic removed for now ---
+#     # for attempt in range(1, retries + 1):
+#     #     ...
+#     # -----------------------------------
+
+#     raise Exception(f"All attempts failed for action '{action}' on selector: {selector}")
+
+async def _perform_action(page, step, retries=2):
     await asyncio.sleep(1)
 
     action = step.get("action", "")
@@ -51,33 +255,85 @@ async def _perform_action(page: Page, step: dict, retries=2):
     selector = step.get("selector")
     selectors = step.get("selectors", [])
 
-    async def try_action(target_page: Page, sel, source_hint=None):
+    def bbox_mismatch(box1, box2, tolerance=100):
+        if not box1 or not box2:
+            return True
+        return any(fabs(box1.get(k, 0) - box2.get(k, 0)) > tolerance for k in ["x", "y", "width", "height"])
+
+    async def try_action(target_page, sel, step, source_hint=None):
+        time_out = 5000
         locator = get_locator(target_page, sel, source_hint or "")
+        matchedLocator = locator.first
+        numberOfmatches = await locator.count()
+        logger.info(f"#########################################")
+        logger.info(f"Number of matches found {numberOfmatches}")
+        logger.info(f"#########################################")
+
+        if numberOfmatches == 0:
+            raise Exception(f"no matches found on selector {selector}")
+        
+        if numberOfmatches > 1 :
+            validated = await generate_recovery_selectors(page, step)
+            if len(validated) > 1:
+                matchedSelObj = validated[0]
+                index = matchedSelObj.get("matchIndex", None)
+                matchedLocator = locator.nth(index)
+
+        # interceptors = [
+        #     "cws-toaster-container",
+        #     ".mat-snack-bar-container",
+        #     ".toast-message",
+        #     "div[role='alert']"
+        # ]
+        # for i in interceptors:
+        #     blocking = target_page.locator(i)
+        #     if await blocking.count() > 0 and await blocking.first.is_visible():
+        #         try:
+        #             await blocking.first.wait_for(state="detached", timeout=3000)
+        #         except:
+        #             logger.warning(f"Blocking element {i} still present — forcing wait.")
+        #             await asyncio.sleep(1.5)
+
+        original_bbox = step.get("boundingBox")
+
+        # Validate bounding box
+        if original_bbox:
+            try:
+                box = await matchedLocator.bounding_box()
+                if bbox_mismatch(original_bbox, box):
+                    logger.warning("Bounding box mismatch — trying fallback selectors.")
+                    validated = await generate_recovery_selectors(page, step)
+                    if validated:
+                        sel_obj = validated[0]
+                        matchedLocator = get_locator(target_page, sel_obj["selector"], sel_obj.get("source", "")).first
+            except Exception as bbox_ex:
+                logger.warning(f"Bounding box validation failed: {bbox_ex}")
 
         if action.lower() == "click":
-            await locator.first.wait_for(state="visible", timeout=5000)
-            return await locator.first.click(timeout=5000)
+            await matchedLocator.wait_for(state="visible", timeout=time_out)
+            async with page.expect_navigation(wait_until="load"):
+                return await matchedLocator.click(timeout=time_out)
+            
         elif action.lower() == "dblclick":
-            await locator.first.wait_for(state="visible", timeout=5000)
-            return await locator.first.dblclick(timeout=5000)
+            await matchedLocator.wait_for(state="visible", timeout=time_out)
+            return await matchedLocator.dblclick(timeout=time_out)
         elif action.lower() == "type":
-            await locator.first.wait_for(state="attached", timeout=5000)
-            await locator.first.focus()
-            return await locator.first.type(value or "")
+            await matchedLocator.wait_for(state="attached", timeout=time_out)
+            await matchedLocator.focus()
+            return await matchedLocator.type(value or "")
         elif action.lower() == "change":
-            await locator.first.wait_for(state="attached", timeout=5000)
-            await locator.first.focus()
-            return await locator.first.fill(value or "")
+            await matchedLocator.wait_for(state="attached", timeout=time_out)
+            await matchedLocator.focus()
+            return await matchedLocator.fill(value or "")
         elif action.lower() == "press":
             return await target_page.keyboard.press(key)
         elif action.lower() == "select":
-            await locator.first.wait_for(state="attached", timeout=5000)
-            return await locator.first.select_option(value)
+            await matchedLocator.wait_for(state="attached", timeout=5000)
+            return await matchedLocator.select_option(value)
         elif action.lower() in ["mousedown", "focus", "blur"]:
-            await locator.first.wait_for(state="attached", timeout=5000)
-            return await locator.first.dispatch_event(action)
+            await matchedLocator.wait_for(state="attached", timeout=5000)
+            return await matchedLocator.dispatch_event(action)
 
-    # 🔁 Handle dynamic value substitution
     raw_value = dynamicValue or value
 
     if step and isinstance(dynamicValue, str) and "{{" in dynamicValue and hasattr(page.context, "_botflows_row_data"):
@@ -93,86 +349,44 @@ async def _perform_action(page: Page, step: dict, retries=2):
 
         value = raw_value
 
-    # ✅ Pre-check: Wait for any verified selector if present
-    # if selectors:
-    #     first_verified = next((s for s in selectors if s.get("verified")), None)
-    #     if first_verified:
-    #         try:
-    #             await page.wait_for_selector(first_verified["selector"], timeout=2000)
-    #             logger.info(f"Pre-check success: {first_verified['selector']}")
-    #         except Exception as wait_ex:
-    #             logger.warning(f"Pre-check failed for {first_verified['selector']}: {wait_ex}")
-
     effective_selectors = selectors if selectors else [{"selector": selector}]
 
-    for attempt in range(1, retries + 1):
-        for sel_obj in effective_selectors:
-            sel = sel_obj["selector"] if isinstance(sel_obj, dict) else sel_obj
-            source = sel_obj.get("source", "") if isinstance(sel_obj, dict) else ""
+    sel_obj = effective_selectors[0] if isinstance(effective_selectors[0], dict) else {"selector": effective_selectors[0], "source": ""}
+    sel = sel_obj["selector"]
+    source = sel_obj.get("source", "")
 
+    try:
+        await try_action(page, sel, step, source)
+        logger.info(f"Action '{action}' succeeded: {sel}")
+        return
+    except Exception as e:
+        logger.warning(f"Initial attempt failed: {action} / {sel} => {e}")
+        for frame in page.frames:
+            if frame == page.main_frame:
+                continue
             try:
-                await try_action(page, sel)
-                logger.info(f"Action '{action}' succeeded on attempt {attempt}: {sel}")
+                await try_action(frame, sel, step, source)
+                logger.info(f"[Frame] Success inside: {frame.url}")
                 return
-            except Exception as e:
-                logger.warning(f"Attempt {attempt} failed: {action} / {sel} => {e}")
+            except:
+                continue
 
-                for frame in page.frames:
-                    if frame == page.main_frame:
-                        continue
-                    try:
-                        await try_action(frame, sel)
-                        logger.info(f"[Frame] Success inside: {frame.url}")
-                        return
-                    except:
-                        continue
+    try:
+        selector_candidates = await generate_recovery_selectors(page, step)
 
-        # if attempt == retries:
-        #     fallback_sel = effective_selectors[0]["selector"] if isinstance(effective_selectors[0], dict) else effective_selectors[0]
-        #     source_hint = effective_selectors[0].get("source", "") if isinstance(effective_selectors[0], dict) else ""
-
-        #     try:
-        #         if source_hint == "xpath":
-        #             tag = await page.evaluate("""(sel) => {
-        #                 const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        #                 const el = result.singleNodeValue;
-        #                 return el?.tagName?.toLowerCase() || '';
-        #             }""", fallback_sel)
-        #             el_id = await page.evaluate("""(sel) => {
-        #                 const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        #                 const el = result.singleNodeValue;
-        #                 return el?.id || '';
-        #             }""", fallback_sel)
-        #             element_text = await page.evaluate("""(sel) => {
-        #                 const result = document.evaluate(sel, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        #                 const el = result.singleNodeValue;
-        #                 return el?.innerText || '';
-        #             }""", fallback_sel)
-        #         else:
-        #             tag = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.tagName?.toLowerCase() || ''; }", fallback_sel)
-        #             el_id = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.id || ''; }", fallback_sel)
-        #             element_text = await page.evaluate("(sel) => { const el = document.querySelector(sel); return el?.innerText || ''; }", fallback_sel)
-        #     except Exception as ex:
-        #         logger.warning(f"[safe_evaluate failed] {ex}")
-        #         tag = el_id = element_text = ""
-
-        #     # try:
-        #     #     new_selector = await call_selector_recovery_api(
-        #     #         url=page.url,
-        #     #         failed_selector=fallback_sel,
-        #     #         tag=tag,
-        #     #         text=element_text,
-        #     #         el_id=el_id
-        #     #     )
-        #     #     if new_selector:
-        #     #         logger.info(f"Recovered selector from API: {new_selector}")
-        #     #         await try_action(page, new_selector)
-        #     #         await confirm_selector_worked(url=page.url, original_selector=fallback_sel)
-        #     #         return
-        #     # except Exception as api_ex:
-        #     #     logger.warning(f"[Recovery API] Failed: {api_ex}")
-
-        await asyncio.sleep(1)
+        for candidate in selector_candidates:
+            candidate_selector = candidate.get("selector")
+            candidate_source = candidate.get("source", "")
+            try:
+                await try_action(page, candidate_selector, step, candidate_source)
+                logger.info(f"Recovered selector worked: {candidate_selector}")
+                # await confirm_selector_worked(url=page.url, original_selector=sel)
+                return
+            except Exception as attempt_ex:
+                logger.warning(f"[Recovery attempt failed] {candidate_selector}: {attempt_ex}")
+                continue
+    except Exception as recovery_ex:
+        logger.warning(f"[Recovery Logic] Failed: {recovery_ex}")
 
     raise Exception(f"All attempts failed for action '{action}' on selector: {selector}")
 
@@ -264,23 +478,23 @@ async def handle_step(step: dict, page: Page):
         except Exception as e:
             logger.warning(f"[Primary selector failed] {selector} => {e}")
 
-        for alt in selectors:
-            if isinstance(alt, dict):
-                alt_selector = alt.get("selector")
-                source = alt.get("source", "")
-            else:
-                alt_selector = alt
-                source = ""
+        # for alt in selectors:
+        #     if isinstance(alt, dict):
+        #         alt_selector = alt.get("selector")
+        #         source = alt.get("source", "")
+        #     else:
+        #         alt_selector = alt
+        #         source = ""
 
-            try:
-                if should_try(alt_selector):
-                    tried.add(alt_selector)
-                    logger.info(f"[Trying fallback selector] {alt_selector} (source: {source})")
-                    step["selector"] = alt_selector  # temporarily override
-                    await _perform_action(page, step)
-                    return
-            except Exception as e:
-                logger.warning(f"[Fallback selector failed] {alt_selector} => {e}")
+        #     try:
+        #         if should_try(alt_selector):
+        #             tried.add(alt_selector)
+        #             logger.info(f"[Trying fallback selector] {alt_selector} (source: {source})")
+        #             step["selector"] = alt_selector  # temporarily override
+        #             await _perform_action(page, step)
+        #             return
+        #     except Exception as e:
+        #         logger.warning(f"[Fallback selector failed] {alt_selector} => {e}")
 
         logger.warning(f"All selectors failed for action: {action}")
 
@@ -317,7 +531,11 @@ async def handle_step(step: dict, page: Page):
                 logger.info(f"[dataLoop] Row {idx + 1}")
                 page.context._botflows_row_data = row_data  # Optional: make it available for {{column}} replacement
                 for child in steps_by_parent.get(step_id, []):
-                    await handle_step(child, page)
+                    try:
+                        await handle_step(child, page)
+                    except Exception as ex:
+                        logger.error(f"Error during dataLoop playback: {ex}")
+                        break
         except Exception as ex:
             logger.error(f"Error during dataLoop playback: {ex}")
 
