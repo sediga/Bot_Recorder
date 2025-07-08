@@ -329,7 +329,8 @@ async def handle_target_picked(page, event):
                         if sel not in successful_selectors:
                             successful_selectors.append(sel)
                         break
-                except:
+                except Exception as e:
+                    logger.error(f"filed grid column extraction, exception : {e}")
                     continue
 
             column_mappings.append({

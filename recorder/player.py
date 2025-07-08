@@ -395,7 +395,7 @@ async def _perform_action(page, step, retries=2):
         if not box1 or not box2:
             return True
         return any(fabs(box1.get(k, 0) - box2.get(k, 0)) > tolerance for k in ["x", "y", "width", "height"])
-
+    
     async def can_perform_action_with_retries(locator: Locator, retries=3, delay=1.0) -> bool:
         for attempt in range(retries):
             try:
@@ -689,7 +689,7 @@ async def handle_step(step: dict, page: Page):
             for child in steps_by_parent.get(step_id, []):
                 await handle_step(child, page)
 
-    elif step_type == "dataloop":
+    elif step_type == "dataloop" or step_type == "gridloop":
         source_id = step.get("source")
         extract = getattr(page.context, "_botflows_extractions", {}).get(source_id)
         if not extract:
@@ -715,23 +715,23 @@ async def handle_step(step: dict, page: Page):
         except Exception as ex:
             logger.error(f"Error during dataLoop playback: {ex}")
 
-    elif step_type == "gridloop":
-        grid_selector = step.get("gridSelector")
-        row_selector = step.get("rowSelector")
-        filters = step.get("filters", [])
-        logger.info(f"Starting gridLoop on grid: {grid_selector}")
-        try:
-            await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
-            await page.wait_for_selector(row_selector, state="visible", timeout=5000)
-            rows = await page.query_selector_all(row_selector)
-            logger.info(f"Found {len(rows)} rows in grid")
+    # elif step_type == "gridloop":
+    #     grid_selector = step.get("gridSelector")
+    #     row_selector = step.get("rowSelector")
+    #     filters = step.get("filters", [])
+    #     logger.info(f"Starting gridLoop on grid: {grid_selector}")
+    #     try:
+    #         await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
+    #         await page.wait_for_selector(row_selector, state="visible", timeout=5000)
+    #         rows = await page.query_selector_all(row_selector)
+    #         logger.info(f"Found {len(rows)} rows in grid")
 
-            for idx, row in enumerate(rows):
-                logger.info(f"[gridLoop] Row {idx + 1}")
-                for child in steps_by_parent.get(step_id, []):
-                    await handle_step(child, page)
-        except Exception as ex:
-            logger.error(f"Error during gridLoop playback: {ex}")
+    #         for idx, row in enumerate(rows):
+    #             logger.info(f"[gridLoop] Row {idx + 1}")
+    #             for child in steps_by_parent.get(step_id, []):
+    #                 await handle_step(child, page)
+    #     except Exception as ex:
+    #         logger.error(f"Error during gridLoop playback: {ex}")
 
 def render_datatable(rows):
     if not rows:
