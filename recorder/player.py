@@ -12,6 +12,7 @@ import operator
 from dateutil import parser as dateparser
 from common.selectorRecoveryHelper import *
 from math import fabs
+from playwright.async_api import Locator
 
 ops = {
     ">": operator.gt,
@@ -39,6 +40,141 @@ def get_locator(page: Page, sel: str, source: str):
     
     # Treat all other sources as CSS selectors
     return page.locator(sel)
+
+# async def get_smart_locator(page: Page, step: dict) -> Page:
+#     selector = step.get("selector")
+#     source = step.get("source", "")
+#     is_smart = step.get("isSmartColumn", False)
+#     column_index = step.get("columnIndex")
+
+#     if not is_smart or column_index is None:
+#         return get_locator(page, selector, source).first
+
+#     try:
+#         # Look up grid extract step via loop parent and its sourceStepId
+#         steps_by_id = getattr(page.context, "_botflows_steps_by_id", {})
+#         loop_step = steps_by_id.get(step.get("parentId"), {})
+#         source_id = loop_step.get("source")
+
+#         extract_step = getattr(page.context, "_botflows_extractions", {}).get(source_id)
+#         if not extract_step:
+#             raise Exception("No matching grid extract step found in context.")
+
+#         grid_selector = extract_step.get("gridSelector")
+#         row_selector = extract_step.get("rowSelector")
+
+#         await page.wait_for_selector(grid_selector, timeout=3000)
+#         try:
+#             await page.wait_for_selector(row_selector, state="visible", timeout=3000)
+#         except:
+#             fallback = f"{grid_selector} tr"
+#             await page.wait_for_selector(fallback, state="visible", timeout=3000)
+#             logger.warning(f"[RowSelector Fallback] Switching from '{row_selector}' to '{fallback}'")
+#             row_selector = fallback
+
+#         cached = getattr(page.context, "_botflows_filtered_rows", {}).get(row_selector)
+#         if not cached:
+#             raise Exception("No cached grid data found for selector")
+
+#         rows = cached.get("rows", [])
+#         if not rows:
+#             raise Exception("No filtered rows cached")
+
+#         row_index = getattr(page.context, "_botflows_row_index", 0)
+#         matched_row = rows[row_index] if row_index < len(rows) else rows[0]
+
+#         fallback_selector = (
+#             f"td:nth-of-type({column_index + 1}), "
+#             f"[role='cell']:nth-of-type({column_index + 1}), "
+#             f"div[role='gridcell']:nth-of-type({column_index + 1})"
+#         )
+#         row_locator = page.locator(row_selector).nth(row_index)
+#         cellLocator = await row_locator.locator(fallback_selector)
+
+#         if not cellLocator:
+#             raise Exception(f"No cell found at column {column_index}")
+
+#         # # Try to find clickable descendant inside the cell
+#         # action_type = step.get("action") or step.get("smartActionType", "click")
+#         # if action_type == "click":
+#         #     # Search for clickable child
+#         #     target = await cell.query_selector('a, button, [role="button"], [onclick]') or cell
+#         # elif action_type in ["type", "change", "select"]:
+#         #     # Prefer form field descendants
+#         #     target = await cell.query_selector("input, select, textarea") or cell
+#         # else:
+#         #     target = cell  # fallback
+
+#         return cellLocator
+#     except Exception as ex:
+#         logger.warning(f"[get_smart_locator] Fallback to default due to error: {ex}")
+#         return get_locator(page, selector, source).first
+async def get_smart_locator(page: Page, step: dict):
+    selector = step.get("selector")
+    source = step.get("source", "")
+    is_smart = step.get("isSmartColumn", False)
+    column_index = step.get("columnIndex")
+
+    if not is_smart or column_index is None:
+        return get_locator(page, selector, source).first
+
+    try:
+        # Look up grid extract step via loop parent and its sourceStepId
+        steps_by_id = getattr(page.context, "_botflows_steps_by_id", {})
+        loop_step = steps_by_id.get(step.get("parentId"), {})
+        source_id = loop_step.get("source")
+
+        extract_step = getattr(page.context, "_botflows_extractions", {}).get(source_id)
+        if not extract_step:
+            raise Exception("No matching grid extract step found in context.")
+
+        grid_selector = extract_step.get("gridSelector")
+        row_selector = extract_step.get("rowSelector")
+
+        await page.wait_for_selector(grid_selector, timeout=3000)
+        try:
+            await page.wait_for_selector(row_selector, state="visible", timeout=3000)
+        except:
+            fallback = f"{grid_selector} tr"
+            await page.wait_for_selector(fallback, state="visible", timeout=3000)
+            logger.warning(f"[RowSelector Fallback] Switching from '{row_selector}' to '{fallback}'")
+            row_selector = fallback
+
+        cached = getattr(page.context, "_botflows_filtered_rows", {}).get(row_selector)
+        if not cached:
+            raise Exception("No cached grid data found for selector")
+
+        rows = cached.get("rows", [])
+        if not rows:
+            raise Exception("No filtered rows cached")
+
+        row_index = getattr(page.context, "_botflows_row_index", 0)
+        row_locator = rows[row_index] if row_index < len(rows) else rows[0]
+
+        fallback_selector = (
+            f"td:nth-of-type({column_index + 1}), "
+            f"[role='cell']:nth-of-type({column_index + 1}), "
+            f"div[role='gridcell']:nth-of-type({column_index + 1})"
+        )
+        cell_locator = row_locator.locator(fallback_selector)
+
+        if await cell_locator.count() == 0:
+            raise Exception(f"No cell found at column {column_index}")
+
+        action_type = step.get("action") or step.get("smartActionType", "click")
+
+        if action_type == "click":
+            target = cell_locator.locator("a, button, [role='button'], [onclick]").first
+        elif action_type in ["type", "change", "select"]:
+            target = cell_locator.locator("input, select, textarea").first
+        else:
+            target = cell_locator
+
+        return target
+
+    except Exception as ex:
+        logger.warning(f"[get_smart_locator] Fallback to default due to error: {ex}")
+        return get_locator(page, selector, source).first
 
 # async def _perform_action(page: Page, step: dict, retries=2):
 #     await asyncio.sleep(1)
@@ -260,56 +396,94 @@ async def _perform_action(page, step, retries=2):
             return True
         return any(fabs(box1.get(k, 0) - box2.get(k, 0)) > tolerance for k in ["x", "y", "width", "height"])
 
+    async def can_perform_action_with_retries(locator: Locator, retries=3, delay=1.0) -> bool:
+        for attempt in range(retries):
+            try:
+                # Avoid calling .first on something that is already a single locator
+                target = locator
+                if hasattr(locator, "_first"):  # dirty hack, but Playwright exposes this
+                    target = locator
+                else:
+                    target = locator.first
+
+                if await target.count() == 0:
+                    logger.debug(f"[RETRY {attempt+1}] Locator not found")
+                    await asyncio.sleep(delay)
+                    continue
+
+                if not await target.is_visible():
+                    logger.debug(f"[RETRY {attempt+1}] Locator not visible")
+                    await asyncio.sleep(delay)
+                    continue
+
+                element = await target.element_handle()
+                if not element:
+                    logger.debug(f"[RETRY {attempt+1}] No element handle")
+                    await asyncio.sleep(delay)
+                    continue
+
+                if await element.get_attribute("disabled") is not None:
+                    logger.debug(f"[RETRY {attempt+1}] Element disabled")
+                    await asyncio.sleep(delay)
+                    continue
+
+                logger.info(f"[REPLAY] Locator is ready for action")
+                return True
+
+            except Exception as e:
+                logger.warning(f"[RETRY {attempt+1}] Error checking locator: {str(e)}")
+                await asyncio.sleep(delay)
+
+        logger.warning(f"[REPLAY] Locator not ready after {retries} retries")
+        return False
+    
     async def try_action(target_page, sel, step, source_hint=None):
         time_out = 5000
-        locator = get_locator(target_page, sel, source_hint or "")
-        matchedLocator = locator.first
-        numberOfmatches = await locator.count()
-        logger.info(f"#########################################")
-        logger.info(f"Number of matches found {numberOfmatches}")
-        logger.info(f"#########################################")
+        action = step.get("action", "").lower()
+        if step.get("isSmartColumn"):
+            matchedLocator = await get_smart_locator(target_page, step)
+        else:
+            locator = get_locator(target_page, sel, source_hint or "")
+            matchedLocator = locator.first
+            numberOfmatches = await locator.count()
+            logger.info(f"#########################################")
+            logger.info(f"Number of matches found {numberOfmatches}")
+            logger.info(f"#########################################")
 
-        if numberOfmatches == 0:
-            raise Exception(f"no matches found on selector {selector}")
-        
-        if numberOfmatches > 1 :
-            validated = await generate_recovery_selectors(page, step)
-            if len(validated) > 1:
-                matchedSelObj = validated[0]
-                index = matchedSelObj.get("matchIndex", None)
-                matchedLocator = locator.nth(index)
+            if numberOfmatches == 0:
+                raise Exception(f"no matches found on selector {selector}")
+            
+            if numberOfmatches > 1 :
+                validated = await generate_recovery_selectors(page, step)
+                if len(validated) > 1:
+                    matchedSelObj = validated[0]
+                    index = matchedSelObj.get("matchIndex", None)
+                    if index is not None and isinstance(index, int):
+                        matchedLocator = locator.nth(index)
 
-        # interceptors = [
-        #     "cws-toaster-container",
-        #     ".mat-snack-bar-container",
-        #     ".toast-message",
-        #     "div[role='alert']"
-        # ]
-        # for i in interceptors:
-        #     blocking = target_page.locator(i)
-        #     if await blocking.count() > 0 and await blocking.first.is_visible():
-        #         try:
-        #             await blocking.first.wait_for(state="detached", timeout=3000)
-        #         except:
-        #             logger.warning(f"Blocking element {i} still present — forcing wait.")
-        #             await asyncio.sleep(1.5)
+            original_bbox = step.get("boundingBox")
 
-        original_bbox = step.get("boundingBox")
+            # Validate bounding box
+            if original_bbox:
+                try:
+                    box = await matchedLocator.bounding_box()
+                    if bbox_mismatch(original_bbox, box):
+                        logger.warning("Bounding box mismatch — trying fallback selectors.")
+                        validated = await generate_recovery_selectors(page, step)
+                        if validated:
+                            sel_obj = validated[0]
+                            matchedLocator = get_locator(target_page, sel_obj["selector"], sel_obj.get("source", "")).first
+                            logger.info(f"Using fallback selector: {sel_obj['selector']} from {sel_obj.get('source')}")
 
-        # Validate bounding box
-        if original_bbox:
-            try:
-                box = await matchedLocator.bounding_box()
-                if bbox_mismatch(original_bbox, box):
-                    logger.warning("Bounding box mismatch — trying fallback selectors.")
-                    validated = await generate_recovery_selectors(page, step)
-                    if validated:
-                        sel_obj = validated[0]
-                        matchedLocator = get_locator(target_page, sel_obj["selector"], sel_obj.get("source", "")).first
-            except Exception as bbox_ex:
-                logger.warning(f"Bounding box validation failed: {bbox_ex}")
+                except Exception as bbox_ex:
+                    logger.warning(f"Bounding box validation failed: {bbox_ex}")
+
+        if not await can_perform_action_with_retries(matchedLocator, 2):
+            raise Exception(f"Action can not be performed on selector {selector}")
 
         if action.lower() == "click":
+            await matchedLocator.scroll_into_view_if_needed()
+            await matchedLocator.wait_for(state="attached")  
             await matchedLocator.wait_for(state="visible", timeout=time_out)
             async with page.expect_navigation(wait_until="load"):
                 return await matchedLocator.click(timeout=time_out)
@@ -352,7 +526,7 @@ async def _perform_action(page, step, retries=2):
     effective_selectors = selectors if selectors else [{"selector": selector}]
 
     sel_obj = effective_selectors[0] if isinstance(effective_selectors[0], dict) else {"selector": effective_selectors[0], "source": ""}
-    sel = sel_obj["selector"]
+    sel = sel_obj["selector"] or selector
     source = sel_obj.get("source", "")
 
     try:
@@ -530,6 +704,8 @@ async def handle_step(step: dict, page: Page):
             for idx, row_data in enumerate(extracted_rows):
                 logger.info(f"[dataLoop] Row {idx + 1}")
                 page.context._botflows_row_data = row_data  # Optional: make it available for {{column}} replacement
+                page.context._botflows_row_index = idx
+
                 for child in steps_by_parent.get(step_id, []):
                     try:
                         await handle_step(child, page)
@@ -602,10 +778,93 @@ async def extract_data_by_type(source_step, page):
         logger.warning(f"[extract_data_by_type] Unknown extract type: {extract_type}")
         return []
 
+# async def extract_grid_data(page, grid_selector, row_selector, column_mappings, filters=None):
+#     """Extracts structured row data from a grid using mappings and optional filters."""
+#     filters = filters or []
+#     extracted_rows = []
+#     filtered_row_elements = []
+
+#     try:
+#         await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
+#         try:
+#             await page.wait_for_selector(row_selector, state="visible", timeout=3000)
+#         except:
+#             fallback = f"{grid_selector} tr"
+#             await page.wait_for_selector(fallback, state="visible", timeout=3000)
+#             logger.warning(f"[RowSelector Fallback] Switching from '{row_selector}' to '{fallback}'")
+#             row_selector = fallback
+
+#         rows = await page.query_selector_all(row_selector)
+#         logger.info(f"[extract_grid_data] Found {len(rows)} rows in grid")
+
+#         type_map = {
+#             col.get("header", {}).get("header"): col.get("header", {}).get("type", "text")
+#             for col in column_mappings
+#         }
+
+#         for row in rows:
+#             row_data = {}
+#             for col in column_mappings:
+#                 header_obj = col.get("header", {})
+#                 header_text = header_obj.get("header", f"col_{col.get('columnIndex')}")
+#                 header_type = header_obj.get("type", "text")
+#                 col_selector = col.get("selector")
+
+#                 cell = await row.query_selector(col_selector) if col_selector else None
+
+#                 # Fallback
+#                 if not cell and "columnIndex" in col:
+#                     index = col["columnIndex"]
+#                     fallback_selector = f'td:nth-of-type({index + 1})'
+#                     cell = await row.query_selector(fallback_selector)
+
+#                 if cell:
+#                     if header_type == "img":
+#                         img = await cell.query_selector("img")
+#                         row_data[header_text] = img is not None
+#                     else:
+#                         try:
+#                             text = await cell.inner_text()
+#                             row_data[header_text] = text.strip()
+#                         except:
+#                             row_data[header_text] = None
+#                 else:
+#                     row_data[header_text] = None
+
+#             # ✅ Skip row if all values are None or empty strings
+#             if all(v in [None, ""] for v in row_data.values()):
+#                 continue
+
+#             # Filter rows if needed
+#             passed_filters = all(
+#                 matches_filter(row_data, f, type_map.get(f.get("column"), "text"))
+#                 for f in filters
+#             )
+
+#             if passed_filters:
+#                 extracted_rows.append(row_data)
+#                 filtered_row_elements.append(row)
+
+#         # ✅ Cache result for use in get_smart_locator
+#         if not hasattr(page.context, "_botflows_filtered_rows"):
+#             page.context._botflows_filtered_rows = {}
+
+#         page.context._botflows_filtered_rows[row_selector] = {
+#             "rows": filtered_row_elements,
+#             "data": extracted_rows,
+#             "columnMappings": column_mappings
+#         }
+
+#         return extracted_rows
+
+#     except Exception as ex:
+#         logger.error(f"[extract_grid_data] Error extracting rows: {ex}")
+#         return []
 async def extract_grid_data(page, grid_selector, row_selector, column_mappings, filters=None):
     """Extracts structured row data from a grid using mappings and optional filters."""
     filters = filters or []
     extracted_rows = []
+    filtered_row_locators = []
 
     try:
         await page.wait_for_selector(grid_selector, state="visible", timeout=5000)
@@ -617,15 +876,17 @@ async def extract_grid_data(page, grid_selector, row_selector, column_mappings, 
             logger.warning(f"[RowSelector Fallback] Switching from '{row_selector}' to '{fallback}'")
             row_selector = fallback
 
-        rows = await page.query_selector_all(row_selector)
-        logger.info(f"[extract_grid_data] Found {len(rows)} rows in grid")
+        row_locators = page.locator(row_selector)
+        row_count = await row_locators.count()
+        logger.info(f"[extract_grid_data] Found {row_count} rows in grid")
 
         type_map = {
             col.get("header", {}).get("header"): col.get("header", {}).get("type", "text")
             for col in column_mappings
         }
 
-        for row in rows:
+        for i in range(row_count):
+            row = row_locators.nth(i)
             row_data = {}
             for col in column_mappings:
                 header_obj = col.get("header", {})
@@ -633,32 +894,33 @@ async def extract_grid_data(page, grid_selector, row_selector, column_mappings, 
                 header_type = header_obj.get("type", "text")
                 col_selector = col.get("selector")
 
-                cell = await row.query_selector(col_selector) if col_selector else None
+                cell_locator = row.locator(col_selector) if col_selector else None
 
                 # Fallback
-                if not cell and "columnIndex" in col:
-                    index = col["columnIndex"]
-                    fallback_selector = f'td:nth-of-type({index + 1})'
-                    cell = await row.query_selector(fallback_selector)
+                if not cell_locator or await cell_locator.count() == 0:
+                    if "columnIndex" in col:
+                        index = col["columnIndex"]
+                        fallback_selector = f'td:nth-of-type({index + 1})'
+                        cell_locator = row.locator(fallback_selector)
 
-                if cell:
+                text_value = None
+                if cell_locator and await cell_locator.count() > 0:
                     if header_type == "img":
-                        img = await cell.query_selector("img")
-                        row_data[header_text] = img is not None
+                        img_locator = cell_locator.locator("img")
+                        row_data[header_text] = await img_locator.count() > 0
                     else:
                         try:
-                            text = await cell.inner_text()
+                            cell = await cell_locator.element_handle()
+                            text = await cell.inner_text() if cell else ""
                             row_data[header_text] = text.strip()
                         except:
                             row_data[header_text] = None
                 else:
                     row_data[header_text] = None
 
-            # ✅ Skip row if all values are None or empty strings
             if all(v in [None, ""] for v in row_data.values()):
                 continue
 
-            # Filter rows if needed
             passed_filters = all(
                 matches_filter(row_data, f, type_map.get(f.get("column"), "text"))
                 for f in filters
@@ -666,6 +928,17 @@ async def extract_grid_data(page, grid_selector, row_selector, column_mappings, 
 
             if passed_filters:
                 extracted_rows.append(row_data)
+                filtered_row_locators.append(row)
+
+        # ✅ Cache result for use in get_smart_locator
+        if not hasattr(page.context, "_botflows_filtered_rows"):
+            page.context._botflows_filtered_rows = {}
+
+        page.context._botflows_filtered_rows[row_selector] = {
+            "rows": filtered_row_locators,  # Locators, not ElementHandles
+            "data": extracted_rows,
+            "columnMappings": column_mappings
+        }
 
         return extracted_rows
 
@@ -716,6 +989,10 @@ async def replay_flow(json_str: str):
         page = await context.new_page()
 
         top_level_steps = [s for s in flow if not s.get("parentId")]
+
+        steps_by_id = {step["id"]: step for step in flow}
+        page.context._botflows_steps_by_id = steps_by_id
+
         for step in top_level_steps:
             await handle_step(step, page)
 

@@ -40,8 +40,143 @@ import {getAllAttributes} from './domanalyser.js'
     overlay.innerText = "Validating action… Please wait";
     document.body.appendChild(overlay);
   }
+        
+  function showBotflowsGridCriteriaPrompt(callback) {
+    if (document.getElementById("botflows-prompt")) return;
 
-    
+    window.__pendingValidation = true;
+
+    const container = document.createElement("div");
+    container.id = "botflows-prompt";
+    container.style.position = "fixed";
+    container.style.top = "0";
+    container.style.left = "0";
+    container.style.width = "100vw";
+    container.style.height = "100vh";
+    container.style.backgroundColor = "rgba(0,0,0,0.5)";
+    container.style.zIndex = 9999;
+    container.style.display = "flex";
+    container.style.alignItems = "center";
+    container.style.justifyContent = "center";
+    container.style.fontFamily = "Arial, sans-serif";
+    container.setAttribute("data-botflows-ui", "true");
+
+    const dialog = document.createElement("div");
+    dialog.style.background = "white";
+    dialog.style.padding = "20px";
+    dialog.style.borderRadius = "12px";
+    dialog.style.width = "460px";
+    dialog.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+    dialog.setAttribute("data-botflows-ui", "true");
+
+    dialog.innerHTML = `
+      <h2 style="margin-top:0; font-size:20px; color:#333;">🔁 Botflows – Row Action Condition</h2>
+      <p style="margin: 10px 0;">Only click this element if a column in the current row matches:</p>
+      
+      <label for="grid-column">Column Name:</label>
+      <input id="grid-column" placeholder="e.g. Status" style="width:100%; padding:8px; font-size:14px; margin-bottom:10px;" />
+
+      <label for="grid-value">Equals Value:</label>
+      <input id="grid-value" placeholder="e.g. Pending" style="width:100%; padding:8px; font-size:14px;" />
+
+      <div style="margin-top:20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button id="cancel-btn" style="padding: 6px 12px; background: #eee; border: 1px solid #ccc;">Cancel</button>
+        <button id="submit-btn" style="padding: 6px 12px; background: #2563eb; color: white; border: none;">Submit</button>
+      </div>
+    `;
+
+    container.appendChild(dialog);
+    document.body.appendChild(container);
+
+    const inputCol = dialog.querySelector("#grid-column");
+    const inputVal = dialog.querySelector("#grid-value");
+
+    inputCol.focus();
+
+    dialog.querySelector("#cancel-btn").onclick = () => {
+      document.body.removeChild(container);
+      window.__pendingValidation = false;
+      callback(null, null);
+    };
+
+    dialog.querySelector("#submit-btn").onclick = () => {
+      const col = inputCol.value.trim();
+      const val = inputVal.value.trim();
+      document.body.removeChild(container);
+      window.__pendingValidation = false;
+      callback(col || null, val || null);
+    };
+  }
+
+  function showBotflowsDateCriteriaPrompt(callback) {
+    if (document.getElementById("botflows-prompt")) return;
+
+    window.__pendingValidation = true;
+
+    const container = document.createElement("div");
+    container.id = "botflows-prompt";
+    container.style.position = "fixed";
+    container.style.top = "0";
+    container.style.left = "0";
+    container.style.width = "100vw";
+    container.style.height = "100vh";
+    container.style.backgroundColor = "rgba(0,0,0,0.5)";
+    container.style.zIndex = 9999;
+    container.style.display = "flex";
+    container.style.alignItems = "center";
+    container.style.justifyContent = "center";
+    container.style.fontFamily = "Arial, sans-serif";
+    container.setAttribute("data-botflows-ui", "true");
+
+    const dialog = document.createElement("div");
+    dialog.style.background = "white";
+    dialog.style.padding = "20px";
+    dialog.style.borderRadius = "12px";
+    dialog.style.width = "460px";
+    dialog.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+    dialog.setAttribute("data-botflows-ui", "true");
+
+    const criteria = [
+      { value: "firstActiveDate", label: "First Active Date" },
+      { value: "today", label: "Today" },
+      { value: "nextWeekday", label: "Next Weekday" },
+      { value: "specificDate", label: "Specific Date (Coming Soon)" }
+    ];
+
+    dialog.innerHTML = `
+      <h2 style="margin-top:0; font-size:20px; color:#333;">📅 Botflows – Date Picker Criteria</h2>
+      <p style="margin: 10px 0;">Choose how this date should be selected during automation:</p>
+
+      <label for="botflows-date-criteria">Date Selection:</label>
+      <select id="botflows-date-criteria" style="width:100%; padding:8px; font-size:14px;">
+        ${criteria.map(c => `<option value="${c.value}">${c.label}</option>`).join("")}
+      </select>
+
+      <div style="margin-top:20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button id="cancel-btn" style="padding: 6px 12px; background: #eee; border: 1px solid #ccc;">Cancel</button>
+        <button id="submit-btn" style="padding: 6px 12px; background: #2563eb; color: white; border: none;">Submit</button>
+      </div>
+    `;
+
+    container.appendChild(dialog);
+    document.body.appendChild(container);
+
+    const selector = dialog.querySelector("#botflows-date-criteria");
+
+    dialog.querySelector("#cancel-btn").onclick = () => {
+      document.body.removeChild(container);
+      window.__pendingValidation = false;
+      callback(null);
+    };
+
+    dialog.querySelector("#submit-btn").onclick = () => {
+      const selected = selector.value;
+      document.body.removeChild(container);
+      window.__pendingValidation = false;
+      callback(selected);
+    };
+  }
+
   function showBotflowsColumnPrompt(columns, onSubmit) {
     if (document.getElementById("botflows-prompt")) return;
 
@@ -151,7 +286,7 @@ import {getAllAttributes} from './domanalyser.js'
 
     dialog.querySelector("#submit-btn").onclick = () => {
       document.body.removeChild(container);
-      onSubmit(selectedIndex !== null ? {
+      onSubmit(selectedIndex != null ? {
         index: selectedIndex,
         transform: transformValue,
         transformType
@@ -233,6 +368,17 @@ import {getAllAttributes} from './domanalyser.js'
       return;
     }
 
+    const now = Date.now();
+    const selectors = captureSelectors(target);
+
+    function getTopSelector(result) {
+      if (!result || !result.selectors || result.selectors.length === 0) return null;
+
+      const best = result.selectors.reduce((a, b) => (a.score > b.score ? a : b));
+      return best.selector;
+    }
+    const primarySelector = getTopSelector(selectors);
+
     const metadata = {
       tagName: target.tagName.toLowerCase(),
       id: target.id || null,
@@ -243,12 +389,11 @@ import {getAllAttributes} from './domanalyser.js'
       elementText: target.textContent?.trim() || "",
       boundingBox: target.getBoundingClientRect?.(),
       outerHTML: target.outerHTML || "",
+      selector: primarySelector || "",
       domPath: getFullDomPath(target),
       xpath: getXPath(target)
     };
 
-    const now = Date.now();
-    const primarySelector = captureSelectors(target).selector;
     if (type === "click" && primarySelector === lastClick.selector && now - lastClick.timestamp < 80) {
       console.debug("[Botflows] Suppressed duplicate click:", primarySelector);
       return;
@@ -280,7 +425,7 @@ import {getAllAttributes} from './domanalyser.js'
     if (
       window.loopContext?.active &&
       fields.length &&
-      ["input", "select", "textarea", "a"].includes(target.tagName.toLowerCase()) &&
+      ["input", "select", "textarea", "a", "button"].includes(target.tagName.toLowerCase()) &&
       target.getAttribute("data-botflows-mapped") !== window.loopContext?.loopName
     ) {
       // Auto param if user typed {{field}}
@@ -300,11 +445,106 @@ import {getAllAttributes} from './domanalyser.js'
 
       // Prompt if UI action is high-intent
       const shouldPrompt =
-        ["select", "a", "button"].includes(target.tagName.toLowerCase()) ||
+        ["select", "a", "button", "div"].includes(target.tagName.toLowerCase()) ||
         ["combobox", "link", "option"].includes(target.getAttribute("role"));
-
+      debugger;
       if (shouldPrompt || target.tagName.toLowerCase() === "input") {
         debugger;
+        const inputType = (target.getAttribute("type") || "").toLowerCase();
+        const nameLower = (target.getAttribute("name") || "").toLowerCase();
+        const classLower = (target.className || "").toLowerCase();
+
+        // ➤ If user clicked a link/button inside a grid row, show criteria prompt
+        if (
+          type === "click" &&
+          window.loopContext?.active
+        ) {
+          // Try resolving the row using multiple strategies
+          const rowEl = target.closest("[role='row'], tr, .MuiDataGrid-row, .sticky-row, [data-row], [data-rowindex]");
+          if (!rowEl) {
+            console.warn("[Botflows] No row found");
+            finalizeAndSend();
+            return;
+          }
+
+          // Resolve grid (for additional metadata if needed later)
+          const gridEl = rowEl.closest("[role='grid'], table, .MuiDataGrid-root, .patient-list-grid, [data-grid]");
+
+          // Prefer role-based cells, fall back to row children
+          let cellEls = Array.from(rowEl.querySelectorAll("[role='gridcell'], [role='cell']"));
+          if (cellEls.length === 0) {
+            cellEls = Array.from(rowEl.children || []);
+          }
+
+          const columnIndex = cellEls.findIndex(cell => cell.contains(target));
+          const columnMappings = window.loopContext?.sourceStep?.columnMappings || [];
+
+          if (columnIndex < 0 || columnIndex >= columnMappings.length) {
+            console.warn("[Botflows] Couldn't resolve clicked column index");
+            finalizeAndSend();
+            return;
+          }
+
+          const columnHeader = columnMappings[columnIndex]?.header || `Column ${columnIndex + 1}`;
+          const tag = target.tagName.toLowerCase();
+          const role = target.getAttribute("role")?.toLowerCase() || "";
+          const typeAttr = target.getAttribute("type")?.toLowerCase() || "";
+
+          function inferActionType(el) {
+            if (el.tagName.toLowerCase() === "input" && ["text", "search"].includes(typeAttr)) return "type";
+            if (el.tagName.toLowerCase() === "select") return "select";
+            if (["button", "a", "div"].includes(tag) || ["button", "link"].includes(role)) return "click";
+            return "click";
+          }
+
+          const actionType = inferActionType(target);
+
+          window.__botflowsTempStepExtras__ = {
+            type: "clickInColumn",
+            columnIndex,
+            columnHeader,
+            actionType,
+            targetTag: tag,
+            selector: primarySelector
+          };
+
+          console.debug(`[Botflows] Auto-captured smart column action → column ${columnIndex} (${columnHeader}), action: ${actionType}, tag: ${tag}`);
+          finalizeAndSend();
+          return;
+        }
+
+        const isDateLike =
+          inputType === "date" ||
+          nameLower.includes("date") ||
+          classLower.includes("date") ||
+          classLower.includes("calendar");
+
+        if (isDateLike) {
+          debugger;
+          // ➤ Handle special logic for date input
+          showBotflowsDateCriteriaPrompt((selectedCriteria) => {
+            if (!selectedCriteria) {
+              target.setAttribute("data-botflows-mapped", window.loopContext?.loopName || "global");
+              finalizeAndSend();
+              return;
+            }
+
+            // Save criteria + loop info for final step
+            target.setAttribute("data-botflows-date-criteria", selectedCriteria);
+            target.setAttribute("data-botflows-mapped", window.loopContext?.loopName || "global");
+
+            // Temp metadata to include in stepPayload
+            window.__botflowsTempStepExtras__ = {
+              dateCriteria: selectedCriteria
+            };
+
+            finalizeAndSend();
+          });
+
+          return;
+        }
+
+        // ➤ Normal input, show column mapping + transform options
         showBotflowsColumnPrompt(fields, (selected) => {
           if (!selected) {
             target.setAttribute("data-botflows-mapped", window.loopContext?.loopName || "global");
@@ -321,6 +561,7 @@ import {getAllAttributes} from './domanalyser.js'
 
           const transformed = window.getTransformedPreview(previewValue) || previewValue;
           target.value = transformed;
+
           target.setAttribute("data-botflows-mapped", window.loopContext?.loopName || "global");
           target.setAttribute("data-dynamic-value", dynamicVal);
 
@@ -336,7 +577,6 @@ import {getAllAttributes} from './domanalyser.js'
           finalizeAndSend();
         });
 
-
         return;
       }
     }
@@ -344,6 +584,11 @@ import {getAllAttributes} from './domanalyser.js'
     finalizeAndSend();
 
     function finalizeAndSend() {
+      if (window.__botflowsTempStepExtras__) {
+        Object.assign(actionData, window.__botflowsTempStepExtras__);
+        window.__botflowsTempStepExtras__ = null;
+      }
+
       console.debug("[Botflows] Sending event to Python:", actionData);
       window.__pendingValidation = true;
       showValidationOverlay();

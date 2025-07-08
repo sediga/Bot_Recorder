@@ -56,7 +56,7 @@ async def analyze_selector_failure(page: Page, selector_obj: dict, target_box=No
             if not enabled:
                 return "disabled"
             # ✅ Bounding box check for potentially volatile selectors
-            if target_box and source in ["id", "xpath"]:
+            if target_box and source in ["id"]:
                 try:
                     box = await el.bounding_box()
                     if box and compute_bbox_overlap(box, target_box) < 0.7:

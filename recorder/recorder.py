@@ -166,20 +166,20 @@ async def handle_standard_event(page, event):
     if "data-botflows-mapped" in attrs:
         event["mappedScope"] = attrs["data-botflows-mapped"]
 
-    best_selector, selector_list = await generate_and_validate_selectors(meta, page, event, True)
+    # best_selector, selector_list = await generate_and_validate_selectors(meta, page, event, True)
 
     # Use best_selector in event["selector"]
     # Store selector_list in event["selectors"]
 
 
-    if best_selector:
-        event["selector"] = best_selector
-    if selector_list and len(selector_list) > 0:
-        event["selectors"] = selector_list
-        logger.info(f"[Selector Validation] Primary set to: {best_selector}")
-        await page.evaluate("window.postMessage({ type: 'validationComplete' }, '*')")
-    else:
-        logger.warning("[Selector Validation] No valid selectors found, keeping original")
+    # if best_selector:
+    #     event["selector"] = best_selector
+    # if selector_list and len(selector_list) > 0:
+    #     event["selectors"] = selector_list
+    #     logger.info(f"[Selector Validation] Primary set to: {best_selector}")
+    #     await page.evaluate("window.postMessage({ type: 'validationComplete' }, '*')")
+    # else:
+    #     logger.warning("[Selector Validation] No valid selectors found, keeping original")
 
     recorded_events.append(event)
     try:
