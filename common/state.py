@@ -9,3 +9,9 @@ active_dom_snapshot = None
 # Already has: is_running, is_recording, is_replaying, etc.
 pick_mode = False
 connections = []
+worker_task = None  # Holds the worker task during recording
+current_loop = {
+    "loopId": None,
+    "loopName": None,
+    "sourceStep": None  # the full gridExtract step
+}

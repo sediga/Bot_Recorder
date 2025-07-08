@@ -6,6 +6,39 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from common import state
 
+async def get_devtools_like_selector(el):
+    path = []
+
+    while el:
+        tag = await el.evaluate("e => e.tagName.toLowerCase()")
+        id_attr = await el.get_attribute("id")
+
+        if id_attr:
+            path.insert(0, f"#{id_attr}")
+            break
+        else:
+            class_attr = await el.get_attribute("class") or ""
+            class_selector = "." + ".".join(
+                [c for c in class_attr.strip().split() if c]
+            ) if class_attr else ""
+            
+            parent = await el.evaluate_handle("e => e.parentElement")
+            siblings = await el.evaluate("""(e) => {
+                const tag = e.tagName;
+                return Array.from(e.parentElement?.children || []).filter(child => child.tagName === tag).length;
+            }""")
+            index = await el.evaluate("""(e) => {
+                const tag = e.tagName;
+                return Array.from(e.parentElement?.children || []).filter(child => child.tagName === tag).indexOf(e) + 1;
+            }""")
+
+            nth = f":nth-child({index})" if siblings and index > 0 else ""
+            path.insert(0, f"{tag}{class_selector}{nth}")
+
+        el = await el.evaluate_handle("e => e.parentElement")
+
+    return " > ".join(path)
+
 def normalize(text: Optional[str]) -> str:
     return (text or "").strip().lower().replace("\xa0", " ")
 
@@ -171,26 +204,41 @@ async def build_resilient_selector(el):
     return tag
 
 
-async def call_selector_recovery_api(url: str, failed_selector: str, tag: str = "", text: str = "", el_id: str = "") -> str | None:
-    payload = {
-        "url": url,
-        "originalSelector": failed_selector,
-        "tag": tag,
-        "text": text,
-        "id": el_id
+def to_pascal_case(s):
+    return ''.join(word.capitalize() for word in re.split(r'[_\s]+', s))
+
+def convert_keys_to_pascal(obj):
+    if isinstance(obj, dict):
+        return {to_pascal_case(k): convert_keys_to_pascal(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_keys_to_pascal(i) for i in obj]
+    return obj
+
+async def call_selector_recovery_api(step: dict) -> list[dict]:
+    payload = convert_keys_to_pascal(step)
+    headers = {
+        "Content-Type": "application/json",
+        "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"
     }
+
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             base_url = os.getenv("BOTFLOWS_API_BASE_URL", "http://localhost:5000")
-            res = await client.post(f"{base_url}/api/selectoranalysis/resolve", json=payload)
+            res = await client.post(f"{base_url}/api/selectoranalysis/resolve", json=payload, headers=headers)
             if res.status_code == 200:
-                return res.json().get("bestMatch")
+                return res.json().get("selectors", [])
+            print(f"Recovery API failed: {res.status_code} => {res.text}")
     except Exception as ex:
         print(f"Selector recovery failed: {ex}")
-    return None
-
+    
+    return []
 
 async def confirm_selector_worked(flow_id, step_index, original_selector, improved_selector):
+    headers = {
+        "Content-Type": "application/json",
+        # "x-api-key": os.getenv("BOTFLOWS_API_KEY", "")
+        "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"
+    }
     try:
         async with httpx.AsyncClient() as client:
             res = await client.post(
@@ -201,7 +249,7 @@ async def confirm_selector_worked(flow_id, step_index, original_selector, improv
                     "originalSelector": original_selector,
                     "improvedSelector": improved_selector
                 },
-                timeout=10
+                timeout=10, headers=headers
             )
             if res.status_code == 200:
                 print("Confirmation sent and flow updated.")

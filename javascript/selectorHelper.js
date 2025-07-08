@@ -282,8 +282,10 @@ export function captureSelectors(el) {
   };
 }
 
+window.captureSelectors = captureSelectors;
+
 // Utility: full DOM path (basic fallback)
-function getFullDomPath(el) {
+export function getFullDomPath(el) {
   const path = [];
   while (el && el.nodeType === Node.ELEMENT_NODE) {
     let selector = el.nodeName.toLowerCase();
@@ -305,7 +307,7 @@ function getFullDomPath(el) {
 }
 
 // Utility: XPath fallback
-function getXPath(el) {
+export function getXPath(el) {
   if (el.id) {
     return `//*[@id="${el.id}"]`;
   }
