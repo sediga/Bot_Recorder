@@ -1,10 +1,7 @@
-# common/selectorRecoveryHelper.py
-
-import re
 from typing import List, Dict
 from playwright.async_api import Page
 from common.selectorHelper import get_devtools_like_selector
-
+import re
 
 def is_clickable(el_data):
     tag = el_data.get("tagName", "").lower()
@@ -36,6 +33,20 @@ def compute_bbox_overlap(box1, box2):
     union = area1 + area2 - intersection
 
     return intersection / union
+
+import re
+
+def is_dynamic_id(id_str: str) -> bool:
+    if not id_str:
+        return False
+
+    # Heuristics: numeric suffix, UUID, timestamp-like, or hashy
+    return (
+        re.search(r"-\d{5,}$", id_str) or  # ends in long number
+        re.fullmatch(r"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}", id_str) or  # UUID
+        re.search(r"(19|20)\d{2}[01]\d[0-3]\d", id_str) or  # date like 20240711
+        re.search(r"[a-z]{4,}[A-Z]{2,}[a-z0-9]{2,}", id_str)  # hash-style mix
+    )
 
 async def analyze_selector_failure(page: Page, selector_obj: dict, target_box=None) -> str:
     sel = selector_obj.get("selector", "")
@@ -87,6 +98,85 @@ async def analyze_selector_failure(page: Page, selector_obj: dict, target_box=No
     except Exception as e:
         return f"error: {str(e)}"
 
+
+def clean_text(text: str) -> str:
+    if not text:
+        return ""
+    text = re.sub(r"\.\w+\{[^}]+\}", "", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def build_attribute_selectors(tag: str, attributes: dict, text: str = "") -> List[Dict]:
+    selectors = []
+    preferred_attrs = ["data-testid", "aria-label", "name", "title", "alt"]
+
+    for attr in preferred_attrs:
+        val = attributes.get(attr)
+        if not val or not isinstance(val, str):
+            continue
+
+        safe_val = val.replace('"', '\\"').strip()
+        score = 90 if attr in ["data-testid", "aria-label"] else 70
+
+        selectors.append({
+            "selector": f'[{attr}="{safe_val}"]',
+            "source": f"attr:{attr}",
+            "score": score
+        })
+
+        if tag:
+            selectors.append({
+                "selector": f'{tag}[{attr}="{safe_val}"]',
+                "source": f"tag+attr:{attr}",
+                "score": score + 5
+            })
+
+        if tag and text:
+            selectors.append({
+                "selector": f'{tag}[{attr}="{safe_val}"]:has-text("{text}")',
+                "source": f"tag+attr+text:{attr}",
+                "score": score + 10
+            })
+
+    return selectors
+
+
+def build_class_selector(tag: str, class_list: List[str]) -> Dict:
+    stable_classes = [c for c in class_list if not re.match(r"^(cdk|ng|mat)-", c)]
+    if tag and stable_classes:
+        return {
+            "selector": f"{tag}." + ".".join(stable_classes),
+            "source": "class",
+            "score": 80
+        }
+    return None
+
+
+def build_text_selectors(tag: str, text: str, class_list: List[str]) -> List[Dict]:
+    if not tag or not text:
+        return []
+
+    stable_classes = [c for c in class_list if not re.match(r"^(cdk|ng|mat)-", c)]
+    prominent_class = next((c for c in stable_classes if len(c) > 5), None)
+    text = clean_text(text)
+
+    selectors = [{
+        "selector": f'{tag}:has-text("{text}")',
+        "source": "has-text",
+        "score": 60
+    }]
+
+    if prominent_class:
+        selectors.append({
+            "selector": f'{tag}.{prominent_class}:has-text("{text}")',
+            "source": "has-text-combo",
+            "score": 85
+        })
+
+    return selectors
+
+
 async def generate_recovery_selectors(page: Page, step: dict) -> List[Dict]:
     tag = step.get("tagName", "")
     el_id = step.get("attributes", {}).get("id", "")
@@ -97,42 +187,28 @@ async def generate_recovery_selectors(page: Page, step: dict) -> List[Dict]:
 
     candidate_selectors = []
 
+    # ID-based selector
     if el_id and re.match(r"^[A-Za-z][-A-Za-z0-9_:.]*$", el_id):
+        is_dynamic = is_dynamic_id(el_id)
         candidate_selectors.append({
             "selector": f'#{el_id}',
             "source": "id",
-            "score": 100
+            "score": 70 if is_dynamic else 100,
+            "isDynamicId": is_dynamic
         })
+        
+    # Attribute-based selectors
+    candidate_selectors += build_attribute_selectors(tag, attributes, text)
 
-    stable_classes = [c for c in class_list if not re.match(r"^(cdk|ng|mat)-", c)]
-    if tag and stable_classes:
-        candidate_selectors.append({
-            "selector": f"{tag}." + ".".join(stable_classes),
-            "source": "class",
-            "score": 80
-        })
+    # Class-based selector
+    class_sel = build_class_selector(tag, class_list)
+    if class_sel:
+        candidate_selectors.append(class_sel)
 
-    if text and tag:
-        # Remove CSS/JS-like definitions
-        text = re.sub(r"\.\w+\{[^}]+\}", "", text)
+    # Text-based selectors
+    candidate_selectors += build_text_selectors(tag, text, class_list)
 
-        # Collapse multiple whitespaces/newlines into one space
-        text = re.sub(r"\s+", " ", text)
-
-        prominent_class = next((c for c in stable_classes if len(c) > 5), None)
-        if prominent_class:
-            candidate_selectors.append({
-                "selector": f'{tag}.{prominent_class}:has-text("{text.strip()}")',
-                "source": "has-text-combo",
-                "score": 85
-            })
-
-        candidate_selectors.append({
-            "selector": f'{tag}:has-text("{text.strip()}")',
-            "source": "has-text",
-            "score": 60
-        })
-
+    # DOM path fallback
     dom_path = step.get("selector") or step.get("domPath")
     if dom_path:
         candidate_selectors.append({
@@ -141,6 +217,7 @@ async def generate_recovery_selectors(page: Page, step: dict) -> List[Dict]:
             "score": 40
         })
 
+    # XPath fallback
     xpath = step.get("xpath") or (f'//*[@id="{el_id}"]' if el_id else "")
     if xpath:
         candidate_selectors.append({

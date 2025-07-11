@@ -19,43 +19,11 @@ from pydantic import BaseModel
 from recorder.recorder import record
 from recorder.player import replay_flow
 from common import state
-from common import logger
+from common.logger import get_logger
 
-logger = logger.get_logger(__name__)
-# --- Logging ---
-# LOG_DIR = Path(os.getenv("LOCALAPPDATA", ".")) / "Botflows"
-# LOG_DIR.mkdir(parents=True, exist_ok=True)
+logger = get_logger(__name__)
 SETTINGS_LOCK_FILE = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
 
-# log_path = LOG_DIR / "botflows_agent.log"
-# log_file_prefix = LOG_DIR / f"botflows_{datetime.now().strftime('%Y-%m-%d')}.log"
-
-# file_handler = TimedRotatingFileHandler(
-#     filename=log_file_prefix,
-#     when="midnight",
-#     backupCount=7,  # keep logs for last 7 days
-#     encoding="utf-8",
-#     utc=False
-# )
-# file_handler.suffix = "%Y-%m-%d"
-# file_handler.setLevel(logging.DEBUG)
-# file_handler.setFormatter(logging.Formatter(
-#     "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-# ))
-
-# console_handler = logging.StreamHandler(sys.stdout)
-# console_handler.setLevel(logging.DEBUG)
-# console_handler.setFormatter(logging.Formatter(
-#     "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-# ))
-
-# logger = logging.getLogger("botflows-agent")
-# logger.setLevel(logging.DEBUG)
-# logger.handlers.clear()
-# logger.addHandler(file_handler)
-# logger.addHandler(console_handler)
-
-# logger.info("Logging initialized. Writing to %s", log_path)
 # --- FastAPI App ---
 app = FastAPI()
 state.connections = []
@@ -90,7 +58,7 @@ async def start_recording(req: RecordRequest):
     state.current_url = req.url
     try:
         logger.info(f"Starting recording for: {req.url}")
-        asyncio.create_task(record(req.url))
+        await record(req.url)
         return {"status": "started", "url": req.url}
     except Exception as e:
         state.is_recording = False
@@ -102,7 +70,7 @@ async def start_recording(req: RecordRequest):
 async def replay_by_json(request: Request):
     try:
         json_str = (await request.body()).decode("utf-8")
-        asyncio.create_task(replay_flow(json_str))
+        await replay_flow(json_str)
         return {"status": "replaying"}
     except Exception as e:
         logger.exception("Replay failed")
@@ -112,7 +80,7 @@ async def replay_by_json(request: Request):
 async def preview_replay(req: Request):
     try:
         json_str = await req.body()
-        await replay_flow(json_str.decode("utf-8"))
+        await replay_flow(json_str.decode("utf-8"), is_preview=True)
         return {"status": "ok"}
     except Exception as e:
         return {"status": "error", "details": str(e)}

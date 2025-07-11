@@ -379,7 +379,22 @@ import {getAllAttributes} from './domanalyser.js'
     }
     const primarySelector = getTopSelector(selectors);
 
-    const metadata = {
+    const computed = window.getComputedStyle(target);
+    const isVisible =
+      !!(target.offsetWidth || target.offsetHeight || target.getClientRects().length) &&
+      computed.visibility !== "hidden" &&
+      computed.display !== "none";
+
+    // Detect if inside iframe and capture context
+    const isFramed = window.self !== window.top;
+    const frameContext = isFramed
+      ? window.frameElement?.getAttribute("name") ||
+        window.frameElement?.getAttribute("id") ||
+        window.frameElement?.getAttribute("data-botflows-frame") ||
+        "__unnamed_frame__"
+      : null;    
+      
+      const metadata = {
       tagName: target.tagName.toLowerCase(),
       id: target.id || null,
       name: target.getAttribute("name") || null,
@@ -391,8 +406,19 @@ import {getAllAttributes} from './domanalyser.js'
       outerHTML: target.outerHTML || "",
       selector: primarySelector || "",
       domPath: getFullDomPath(target),
-      xpath: getXPath(target)
+      xpath: getXPath(target),
+      frameContext,
+      frameUrl: window.location.href,
+      isVisible,
+      computedStyles: {
+        display: computed.display,
+        visibility: computed.visibility,
+        pointerEvents: computed.pointerEvents
+      }
     };
+
+    metadata.frameContext = frameContext;
+    metadata.frameUrl = window.location.href;
 
     if (type === "click" && primarySelector === lastClick.selector && now - lastClick.timestamp < 80) {
       console.debug("[Botflows] Suppressed duplicate click:", primarySelector);

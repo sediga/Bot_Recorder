@@ -13,9 +13,9 @@ from common import selectorHelper
 # selector_builder.py
 from common.selectorHelper import get_devtools_like_selector
 from common.gridHelper import *
-from common import logger
+from common.logger import get_logger
 
-logger = logger.get_logger(__name__)
+logger = get_logger(__name__)
 
 recorded_events = []
 
@@ -102,9 +102,10 @@ async def standard_event_worker():
             await handle_standard_event(page, event)
         except Exception as e:
             logger.error(f"[Event Worker] Error processing event: {e}")
-        standard_event_queue.task_done()
+        finally:
+            standard_event_queue.task_done()
 
-def flush_standard_event_queue():
+async def flush_standard_event_queue():
     global standard_event_queue
     standard_event_queue = asyncio.Queue()
     logger.info("[Queue] Standard event queue flushed.")
@@ -136,17 +137,17 @@ async def handle_event(source, event):
         await standard_event_queue.put((page, event))
 
 async def handle_standard_event(page, event):
-    meta = {
-        "tagName": event.get("tagName", ""),
-        "id": event.get("id", ""),
-        "name": event.get("name", ""),
-        "classList": event.get("classList", []),
-        "attributes": event.get("attributes", {}),
-        "innerText": event.get("innerText", ""),
-        "outerHTML": event.get("outerHTML", ""),
-        "domPath": event.get("domPath", ""),
-        "xpath": event.get("xpath", "")
-    }
+    # meta = {
+    #     "tagName": event.get("tagName", ""),
+    #     "id": event.get("id", ""),
+    #     "name": event.get("name", ""),
+    #     "classList": event.get("classList", []),
+    #     "attributes": event.get("attributes", {}),
+    #     "innerText": event.get("innerText", ""),
+    #     "outerHTML": event.get("outerHTML", ""),
+    #     "domPath": event.get("domPath", ""),
+    #     "xpath": event.get("xpath", "")
+    # }
 
     # Extract dynamic parameter mapping if present
     attrs = event.get("attributes", {})
@@ -575,7 +576,7 @@ async def record(url: str):
     global recorded_events
     recorded_events = []
     logger.info(f"[Recorder] Starting session: {url}")
-    flush_standard_event_queue()
+    await flush_standard_event_queue()
     state.is_replaying = False
     if state.worker_task:
         state.worker_task.cancel()
@@ -592,10 +593,6 @@ async def record(url: str):
     async with async_playwright() as p:
         browser = await launch_chrome(p)
         context = browser.contexts[0] if browser.contexts else await browser.new_context(no_viewport=True)
-
-        for tab in context.pages:
-            if tab.url == "about:blank":
-                await tab.close()
 
         page = await context.new_page()
         state.active_page = page
@@ -616,8 +613,8 @@ async def record(url: str):
             await page.add_init_script("window.__pickModeActive = true")
             await page.add_init_script(preview_script_path.read_text("utf-8"))  # ✅ NEW
 
-        await page.goto("about:blank")
-        await page.evaluate(overlay_script)
+        # await page.goto("about:blank")
+        # await page.evaluate(overlay_script)
 
         await page.goto(url)
         await page.wait_for_load_state("networkidle")
@@ -637,32 +634,25 @@ async def record(url: str):
             if state.pick_mode:
                 await page.evaluate("window.__pickModeActive = true")
                 await page.add_init_script(preview_script_path.read_text("utf-8"))  # ✅ NEW
+                
             snapshot = await page.content()
             state.active_dom_snapshot = snapshot
             await upload_snapshot_to_api(new_url, snapshot)
 
         page.on("framenavigated", lambda frame: asyncio.create_task(reinject_on_spa_change(frame.url)))
 
-        async def wait_for_tab_close():
+        async def wait_for_tab_close(): 
             while not page.is_closed():
                 await asyncio.sleep(1)
-            if not state.pick_mode:
-                state.is_recording = False
-                state.worker_task = None
-                logger.info("Tab closed, recording stopped")
-
-        async def wait_for_stop_flag():
-            while state.is_recording:
-                await asyncio.sleep(1)
-            if not state.pick_mode:
-                state.worker_task = None
-                logger.info("Recording manually stopped")
+            state.is_recording = False
+            state.active_page = None
+            state.worker_task = None
+            state.pick_mode = False
+            state.current_loop = None
+            logger.info("Tab closed, recording stopped")
 
         try:
-            await asyncio.wait([
-                asyncio.create_task(wait_for_tab_close()),
-                asyncio.create_task(wait_for_stop_flag())
-            ], return_when=asyncio.FIRST_COMPLETED)
+            await wait_for_tab_close()
         finally:
             await browser.close()
             logger.info(f"[Recorder] Session complete. {len(recorded_events)} events captured.")

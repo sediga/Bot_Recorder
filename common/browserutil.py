@@ -1,3 +1,4 @@
+import asyncio
 import os
 import shutil
 import socket
@@ -174,3 +175,35 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
     return browser
 
 
+async def launch_replay_window(playwright, initial_url="about:blank", port=DEFAULT_PORT):
+    config = load_agent_config()
+    use_bundled = config.get("use_bundled_chrome", True)
+
+    if use_bundled:
+        logger.info("[Replay] Using bundled Chromium")
+        browser = await playwright.chromium.launch(headless=False)
+        page = await browser.new_page()
+        await page.goto(initial_url)
+        return browser, page
+
+    # Connect to real Chrome via CDP
+    logger.info("[Replay] Connecting to real Chrome via CDP")
+    browser = await playwright.chromium.connect_over_cdp(f"http://localhost:{port}")
+    existing_pages = [p for ctx in browser.contexts for p in ctx.pages]
+
+    # Create a new Chrome window with the desired initial URL
+    cdp_session = await browser.new_browser_cdp_session()
+    await cdp_session.send("Target.createTarget", {
+        "url": initial_url,
+        "newWindow": True
+    })
+
+    # Wait for the new window to show up as a Playwright Page
+    for _ in range(10):
+        await asyncio.sleep(0.5)
+        new_pages = [p for ctx in browser.contexts for p in ctx.pages]
+        diff = list(set(new_pages) - set(existing_pages))
+        if diff:
+            return browser, diff[0]
+
+    raise RuntimeError("Failed to open a new window for replay")
