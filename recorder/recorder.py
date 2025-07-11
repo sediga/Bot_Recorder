@@ -1,10 +1,11 @@
 import logging
 import asyncio
 import json
-from pathlib import Path
-from playwright.async_api import async_playwright
 import sys
 import re
+import asyncio
+from pathlib import Path
+from playwright.async_api import async_playwright
 from common import state
 from common.browserutil import launch_chrome
 from common.dom_snapshot import upload_snapshot_to_api
@@ -12,9 +13,10 @@ from common import selectorHelper
 # selector_builder.py
 from common.selectorHelper import get_devtools_like_selector
 from common.gridHelper import *
-import asyncio
+from common import logger
 
-logger = logging.getLogger(__name__)
+logger = logger.get_logger(__name__)
+
 recorded_events = []
 
 # Resolve paths

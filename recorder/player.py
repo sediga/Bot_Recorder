@@ -1,18 +1,20 @@
 import asyncio
 import json
 import logging
-from pathlib import Path
+import operator
 import re
+from pathlib import Path
 from playwright.async_api import async_playwright, Page
 from common import state
 from common.browserutil import launch_chrome
 from common.gridHelper import matches_filter
-from common.selectorHelper import call_selector_recovery_api, confirm_selector_worked
-import operator
 from dateutil import parser as dateparser
 from common.selectorRecoveryHelper import *
 from math import fabs
 from playwright.async_api import Locator
+from common import logger
+
+logger = logger.get_logger(__name__)
 
 ops = {
     ">": operator.gt,
@@ -28,9 +30,6 @@ ops = {
     "is true": lambda a, _: str(a).strip().lower() in ["true", "yes", "1"],
     "is false": lambda a, _: str(a).strip().lower() in ["false", "no", "0"],
 }
-
-logger = logging.getLogger("botflows-player")
-logging.basicConfig(level=logging.INFO)
 
 steps_by_parent = {}
 

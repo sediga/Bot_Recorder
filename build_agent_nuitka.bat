@@ -1,0 +1,14 @@
+nuitka api_server.py ^
+  --standalone ^
+  --output-dir=build ^
+  --enable-plugin=tk-inter ^
+  --windows-console-mode=disable ^
+  --include-data-dir=%USERPROFILE%\AppData\Local\ms-playwright=ms-playwright ^
+  --include-package=common ^
+  --include-package=recorder ^
+  --include-package=ui ^
+  --include-data-dir=javascript=javascript ^
+  --include-data-file=agent_config.json=agent_config.json ^
+  --include-data-dir=myenv/Lib/site-packages/dateparser/data=dateparser/data ^
+  --include-data-file=ui/config_ui.exe=ui/config_ui.exe ^
+  --show-progress

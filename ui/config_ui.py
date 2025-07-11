@@ -12,7 +12,7 @@ from playwright.async_api import async_playwright
 
 CONFIG_DIR = os.path.join(os.path.dirname(__file__), "..", "ui")
 CONFIG_FILE = os.path.join(CONFIG_DIR, "agent_config.json")
-LOCK_FILE = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
+SETTINGS_LOCK_FILE = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
 
 _settings_window = None  # Track if window is open
 
@@ -100,8 +100,8 @@ def open_config_ui(master):
         cfg["use_bundled_chrome"] = chrome_var.get()
         cfg["chrome_path"] = chrome_path_var.get().strip()
         save_config(cfg)
-        if os.path.exists(LOCK_FILE):
-            os.remove(LOCK_FILE)
+        if os.path.exists(SETTINGS_LOCK_FILE):
+            os.remove(SETTINGS_LOCK_FILE)
         _settings_window.destroy()
         _settings_window = None
         
@@ -182,8 +182,8 @@ def open_config_ui(master):
 
     def on_close():
         global _settings_window
-        if os.path.exists(LOCK_FILE):
-            os.remove(LOCK_FILE)
+        if os.path.exists(SETTINGS_LOCK_FILE):
+            os.remove(SETTINGS_LOCK_FILE)
         _settings_window.destroy()
         _settings_window = None
 

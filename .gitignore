@@ -47,9 +47,11 @@ dataset/selector_logs.jsonl
 # Environment
 .env
 .venv/
+.myenv/
 venv/
 env/
 ENV/
+mywnv/
 
 # OS files
 .DS_Store
@@ -58,6 +60,7 @@ Thumbs.db
 # Node
 node_modules/
 package-lock.json
+myenv/
 
 # VSCode settings
 .vscode/

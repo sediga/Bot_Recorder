@@ -1,6 +1,17 @@
-from pathlib import Path
+import atexit
+import logging
+import os
+import sys
+import json
+import asyncio
 import subprocess
 import tempfile
+import psutil
+import pathlib
+
+from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
+from datetime import datetime
+from pathlib import Path
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -8,26 +19,43 @@ from pydantic import BaseModel
 from recorder.recorder import record
 from recorder.player import replay_flow
 from common import state
-from common import selectorHelper
-from typing import Optional
-import logging
-import os
-import sys
-import json
-import asyncio
+from common import logger
 
+logger = logger.get_logger(__name__)
 # --- Logging ---
-log_path = Path(__file__).parent / "botflows_agent.log"
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler(log_path, mode='a', encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)
-    ]
-)
-logger = logging.getLogger("botflows-agent")
+# LOG_DIR = Path(os.getenv("LOCALAPPDATA", ".")) / "Botflows"
+# LOG_DIR.mkdir(parents=True, exist_ok=True)
+SETTINGS_LOCK_FILE = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
 
+# log_path = LOG_DIR / "botflows_agent.log"
+# log_file_prefix = LOG_DIR / f"botflows_{datetime.now().strftime('%Y-%m-%d')}.log"
+
+# file_handler = TimedRotatingFileHandler(
+#     filename=log_file_prefix,
+#     when="midnight",
+#     backupCount=7,  # keep logs for last 7 days
+#     encoding="utf-8",
+#     utc=False
+# )
+# file_handler.suffix = "%Y-%m-%d"
+# file_handler.setLevel(logging.DEBUG)
+# file_handler.setFormatter(logging.Formatter(
+#     "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+# ))
+
+# console_handler = logging.StreamHandler(sys.stdout)
+# console_handler.setLevel(logging.DEBUG)
+# console_handler.setFormatter(logging.Formatter(
+#     "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+# ))
+
+# logger = logging.getLogger("botflows-agent")
+# logger.setLevel(logging.DEBUG)
+# logger.handlers.clear()
+# logger.addHandler(file_handler)
+# logger.addHandler(console_handler)
+
+# logger.info("Logging initialized. Writing to %s", log_path)
 # --- FastAPI App ---
 app = FastAPI()
 state.connections = []
@@ -185,16 +213,37 @@ async def start_loop_recording(request: Request):
     }""")
     return { "status": "loop recording stopped" }
 
+LOCK_PATH = os.path.join(tempfile.gettempdir(), "botflows_agent.lock")
+def ensure_single_instance():
+    if os.path.exists(LOCK_PATH):
+        try:
+            with open(LOCK_PATH, "r") as f:
+                old_pid = int(f.read().strip())
+            if psutil.pid_exists(old_pid):
+                print(f"Agent is already running (PID {old_pid})")
+                sys.exit(0)
+        except Exception:
+            pass  # If unreadable or invalid, we'll overwrite
+
+    with open(LOCK_PATH, "w") as f:
+        f.write(str(os.getpid()))
+
+def cleanup_lock():
+    if os.path.exists(LOCK_PATH):
+        try:
+            os.remove(LOCK_PATH)
+        except Exception as e:
+            print(f"Failed to remove lock file: {e}")
+
 # === Tray Launcher ===
-if __name__ == "__main__":
+if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
+    ensure_single_instance()
     import threading
     import pystray
     from pystray import MenuItem as item
     from PIL import Image
     import winreg
     from uvicorn import Config, Server
-
-    import logging
 
     class SuppressStatusLogs(logging.Filter):
         def filter(self, record):
@@ -216,8 +265,7 @@ if __name__ == "__main__":
     def quit_app(icon, item):
         logger.info("Botflows Agent exiting...")
         try:
-            import psutil
-            for proc in psutil.process_iter(attrs=["pid", "name", "cmdline"]):
+             for proc in psutil.process_iter(attrs=["pid", "name", "cmdline"]):
                 if any("config_ui.py" in part for part in proc.info.get("cmdline", [])):
                     proc.terminate()
         except Exception as e:
@@ -228,15 +276,38 @@ if __name__ == "__main__":
 
         icon.stop()
         state.is_running = False
+        cleanup_lock()
         os._exit(0)
 
     def on_settings_click(icon, item):
-        if os.path.exists(lock_file):
+        if os.path.exists(SETTINGS_LOCK_FILE):
+            print("Settings already open.")
             return
-        with open(lock_file, "w") as f:
+
+        with open(SETTINGS_LOCK_FILE, "w") as f:
             f.write("1")
-        proc = subprocess.Popen([sys.executable, "ui/config_ui.py"])
-        threading.Thread(target=lambda: (proc.wait(), os.remove(lock_file)), daemon=True).start()
+
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        settings_exe = os.path.join(base_dir, "ui", "config_ui.exe")
+        proc = None
+
+        if os.path.exists(settings_exe):
+            try:
+                proc = subprocess.Popen([settings_exe])
+            except Exception as e:
+                print(f"Error launching settings: {e}")
+        else:
+            print(f"Settings executable not found at {settings_exe}")
+
+        def clear_lock():
+            if os.path.exists(SETTINGS_LOCK_FILE):
+                os.remove(SETTINGS_LOCK_FILE)
+
+        if proc:
+            threading.Thread(target=lambda: (proc.wait(), clear_lock()), daemon=True).start()
+        else:
+            clear_lock()
+
 
     def add_to_startup():
         exe_path = os.path.abspath(sys.argv[0])
@@ -268,3 +339,17 @@ if __name__ == "__main__":
 
     threading.Thread(target=start_api, daemon=True).start()
     tray_icon()
+
+    def kill_config_ui_on_exit():
+        for proc in psutil.process_iter(["name", "exe", "cmdline"]):
+            try:
+                name = proc.info["name"] or ""
+                cmdline = " ".join(proc.info["cmdline"] or [])
+
+                if "config_ui.exe" in name.lower() or "config_ui.exe" in cmdline.lower():
+                    print("Killing leftover config_ui.exe...")
+                    proc.kill()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+
+    atexit.register(kill_config_ui_on_exit)
