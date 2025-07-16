@@ -1,7 +1,7 @@
 from playwright.async_api import Page
 from common import state
 import httpx
-from config import API_BASE_URL, API_KEY
+from common.config import API_BASE_URL, API_KEY
 from bs4 import BeautifulSoup
 
 async def upload_snapshot_to_api(url: str, html: str):

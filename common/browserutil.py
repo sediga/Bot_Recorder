@@ -164,8 +164,11 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
             f"--remote-debugging-port={port}",
             f"--user-data-dir={user_profile_dir}",
             "--no-first-run",
-            "--no-default-browser-check"
+            "--no-default-browser-check",
+            "--new-window",
+            "about:blank"
         ])
+
         wait_for_debug_port(port)
         logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
     else:
@@ -176,34 +179,37 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
 
 
 async def launch_replay_window(playwright, initial_url="about:blank", port=DEFAULT_PORT):
-    config = load_agent_config()
-    use_bundled = config.get("use_bundled_chrome", True)
+    logger.info("[Replay] Launching browser for replay")
+    browser = await launch_chrome(playwright, port=port)
 
-    if use_bundled:
-        logger.info("[Replay] Using bundled Chromium")
-        browser = await playwright.chromium.launch(headless=False)
-        page = await browser.new_page()
-        await page.goto(initial_url)
-        return browser, page
+    # Case 1: Using real Chrome via connect_over_cdp — must create new window via CDP
+    if hasattr(browser, "new_browser_cdp_session"):
+        logger.info("[Replay] Detected CDP session — opening new window via Target.createTarget")
 
-    # Connect to real Chrome via CDP
-    logger.info("[Replay] Connecting to real Chrome via CDP")
-    browser = await playwright.chromium.connect_over_cdp(f"http://localhost:{port}")
-    existing_pages = [p for ctx in browser.contexts for p in ctx.pages]
+        # Get current pages to detect the new one later
+        existing_pages = [p for ctx in browser.contexts for p in ctx.pages]
 
-    # Create a new Chrome window with the desired initial URL
-    cdp_session = await browser.new_browser_cdp_session()
-    await cdp_session.send("Target.createTarget", {
-        "url": initial_url,
-        "newWindow": True
-    })
+        # Open new window using CDP
+        cdp_session = await browser.new_browser_cdp_session()
+        await cdp_session.send("Target.createTarget", {
+            "url": initial_url,
+            "newWindow": True
+        })
 
-    # Wait for the new window to show up as a Playwright Page
-    for _ in range(10):
-        await asyncio.sleep(0.5)
-        new_pages = [p for ctx in browser.contexts for p in ctx.pages]
-        diff = list(set(new_pages) - set(existing_pages))
-        if diff:
-            return browser, diff[0]
+        # Wait for the new window to register as a Playwright Page
+        for _ in range(10):
+            await asyncio.sleep(0.5)
+            new_pages = [p for ctx in browser.contexts for p in ctx.pages]
+            diff = list(set(new_pages) - set(existing_pages))
+            if diff:
+                logger.info("[Replay] New page successfully opened.")
+                return browser, diff[0]
 
-    raise RuntimeError("Failed to open a new window for replay")
+        raise RuntimeError("Failed to open a new window for replay")
+
+    # Case 2: Bundled Chromium — create new context and page
+    logger.info("[Replay] Using bundled Chromium — opening new context")
+    context = await browser.new_context()
+    page = await context.new_page()
+    await page.goto(initial_url)
+    return browser, page

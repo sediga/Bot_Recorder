@@ -1,3 +1,6 @@
 {
-  "use_bundled_chrome": false
+  "use_bundled_chrome": false,
+  "apiBaseUrl": "http://localhost:5000",
+  "authType": "jwt",                
+  "apiKey": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"    
 }

@@ -623,10 +623,13 @@ import {getAllAttributes} from './domanalyser.js'
     }
   };
 
-  ["click", "focus", "change", "dblclick"].forEach(type => {
-    document.addEventListener(type, sendEvent, true);
-    console.debug(`[Botflows] Event listener attached for ${type}`);
-  });
+  if (!window.__recorderListenersAttached) {
+      window.__recorderListenersAttached = true;
+    ["click", "focus", "change", "dblclick"].forEach(type => {
+      document.addEventListener(type, sendEvent, true);
+      console.debug(`[Botflows] Event listener attached for ${type}`);
+    });
+  }
 
   function waitForValidationComplete(timeout = 5000) {
     return new Promise((resolve) => {

@@ -6,6 +6,7 @@ import re
 import asyncio
 from pathlib import Path
 from playwright.async_api import async_playwright
+import psutil
 from common import state
 from common.browserutil import launch_chrome
 from common.dom_snapshot import upload_snapshot_to_api
@@ -14,6 +15,9 @@ from common import selectorHelper
 from common.selectorHelper import get_devtools_like_selector
 from common.gridHelper import *
 from common.logger import get_logger
+from common.util import get_auth_headers
+from common.config import get_api_url
+from common import state
 
 logger = get_logger(__name__)
 
@@ -137,17 +141,6 @@ async def handle_event(source, event):
         await standard_event_queue.put((page, event))
 
 async def handle_standard_event(page, event):
-    # meta = {
-    #     "tagName": event.get("tagName", ""),
-    #     "id": event.get("id", ""),
-    #     "name": event.get("name", ""),
-    #     "classList": event.get("classList", []),
-    #     "attributes": event.get("attributes", {}),
-    #     "innerText": event.get("innerText", ""),
-    #     "outerHTML": event.get("outerHTML", ""),
-    #     "domPath": event.get("domPath", ""),
-    #     "xpath": event.get("xpath", "")
-    # }
 
     # Extract dynamic parameter mapping if present
     attrs = event.get("attributes", {})
@@ -169,106 +162,14 @@ async def handle_standard_event(page, event):
     if "data-botflows-mapped" in attrs:
         event["mappedScope"] = attrs["data-botflows-mapped"]
 
-    # best_selector, selector_list = await generate_and_validate_selectors(meta, page, event, True)
-
-    # Use best_selector in event["selector"]
-    # Store selector_list in event["selectors"]
-
-
-    # if best_selector:
-    #     event["selector"] = best_selector
-    # if selector_list and len(selector_list) > 0:
-    #     event["selectors"] = selector_list
-    #     logger.info(f"[Selector Validation] Primary set to: {best_selector}")
-    #     await page.evaluate("window.postMessage({ type: 'validationComplete' }, '*')")
-    # else:
-    #     logger.warning("[Selector Validation] No valid selectors found, keeping original")
-
     recorded_events.append(event)
     try:
         await page.evaluate("window.hideValidationOverlay()")
         await page.evaluate("window.__pendingValidation = false")
     except Exception as e:
         logger.warning(f"Failed to clear pendingValidation: {e}")
-
+    state.log_to_status(f"Event recorded: {event.get('type')} on {event.get('selector')}")
     await broadcast_to_clients(event)
-
-# async def handle_picker_event(page, event):
-#     metadata = event.get("metadata", {})
-#     original_selector = metadata.get("gridSelector")
-#     row_selector = metadata.get("rowSelector")  # optional override
-#     validated_grid_selector = None
-
-#     if not original_selector:
-#         logger.warning("[Picker] No gridSelector found in metadata")
-#         return
-
-#     # Try validating multiple variants of the grid selector
-#     grid_selector_candidates = [
-#         original_selector,
-#         f"{original_selector} [role='grid']",
-#         f"{original_selector} .MuiDataGrid-root",
-#         f"{original_selector} table",
-#         "[role='grid']",
-#         ".MuiDataGrid-root",
-#         "table"
-#     ]
-
-#     for candidate in grid_selector_candidates:
-#         try:
-#             await page.wait_for_selector(candidate, timeout=1500)
-#             validated_grid_selector = candidate
-#             logger.info(f"[Picker] Grid selector validated: {candidate}")
-#             break
-#         except:
-#             continue
-
-#     if not validated_grid_selector:
-#         logger.warning("[Picker] Failed to validate any grid selector")
-#         await page.evaluate("window.__pendingValidation = false")
-#         return
-
-#     # Try row selectors
-#     possible_rows = []
-#     if row_selector:
-#         possible_rows.append(row_selector)
-#     possible_rows += [
-#         f"{validated_grid_selector} tr",
-#         f"{validated_grid_selector} div[role='row']",
-#         f"{validated_grid_selector} tbody > tr"
-#     ]
-
-#     validated_row_selector = None
-#     for candidate in possible_rows:
-#         try:
-#             await page.wait_for_selector(candidate, timeout=1000)
-#             validated_row_selector = candidate
-#             logger.info(f"[Picker] Row selector validated: {candidate}")
-#             break
-#         except:
-#             continue
-
-#     if not validated_row_selector:
-#         logger.warning("[Picker] No valid row selector found")
-#         await page.evaluate("window.__pendingValidation = false")
-#         return
-
-#     # Update metadata with validated selectors
-#     metadata["gridSelector"] = validated_grid_selector
-#     metadata["rowSelector"] = validated_row_selector
-
-#     response = {
-#         "type": "targetPicked",
-#         "metadata": metadata,
-#         "timestamp": event.get("timestamp")
-#     }
-
-#     try:
-#         await page.evaluate("window.__pendingValidation = false")
-#     except Exception as e:
-#         logger.warning(f"Failed to clear pendingValidation (picker): {e}")
-
-#     await broadcast_to_clients(response)
 
 async def handle_target_picked(page, event):
     try:
@@ -291,6 +192,7 @@ async def handle_target_picked(page, event):
             return
 
         row_selector = f"{grid_selector} [role='row'], {grid_selector} tr"
+        state.log_to_status(f"Grid detected with {len(column_headers)} columns. Analyzing rows...")
         if not await validate_selector(page, row_selector):
             logger.warning(f"Row selector failed: {row_selector}")
             await page.evaluate("window.finishPicker && window.finishPicker()")
@@ -343,7 +245,7 @@ async def handle_target_picked(page, event):
                 "extractable": bool(matched_selector),
                 "preview": txt or ""
             })
-
+        state.log_to_status(f"Grid analysis complete. {len(column_mappings)} columns mapped.")
         await broadcast_to_clients({
             "type": "targetPicked",
             "metadata": {
@@ -556,12 +458,17 @@ async def generate_and_validate_selectors(meta: dict, page, event, strict: bool 
     return best_selector, validated
 
 async def broadcast_to_clients(message):
-    for ws in state.connections:
-        try:
-            await ws.send_text(json.dumps(message))
-            logger.debug(f"[WS] Broadcasted: {message}")
-        except Exception as e:
-            logger.warning(f"WebSocket broadcast failed: {e}")
+    if state.user_id not in state.connections:
+        logger.warning(f"[WS] No active WebSocket for {state.user_id}")
+        return
+
+    try:
+        ws = state.connections[state.user_id]
+        await ws.send(json.dumps(message))
+        logger.debug(f"[WS] Sent message to .NET for {state.user_id}")
+    except Exception as e:
+        logger.warning(f"[WS] Failed to send to .NET for {state.user_id}: {e}")
+
 
 async def handle_url_change(source, new_url):
     logger.info(f"SPA navigation detected: {new_url}")
@@ -591,12 +498,19 @@ async def record(url: str):
         state.worker_task = asyncio.create_task(standard_event_worker())
 
     async with async_playwright() as p:
+        state.log_to_status("Launching browser...")
         browser = await launch_chrome(p)
         context = browser.contexts[0] if browser.contexts else await browser.new_context(no_viewport=True)
+        state.current_browser = browser
+        page = browser.contexts[0].pages[0]  # or browser.contexts[0].new_page() if none exist
 
-        page = await context.new_page()
+        # Close all other tabs if needed
+        for p in browser.contexts[0].pages[1:]:
+            await p.close()
+
         state.active_page = page
 
+        await inject_scripts(page)
         await state.active_page.evaluate("""() => {
         window.__botflows_replaying__ = false;
         const div = document.getElementById('botflows-replay-overlay');
@@ -606,8 +520,7 @@ async def record(url: str):
         await context.expose_binding("sendEventToPython", handle_event)
         await context.expose_binding("sendUrlChangeToPython", handle_url_change)
 
-        await page.add_init_script(selector_script_path.read_text("utf-8"))
-        await page.add_init_script(recorder_script_path.read_text("utf-8"))
+        await reinject_scripts_if_needed(page)
 
         if state.pick_mode:
             await page.add_init_script("window.__pickModeActive = true")
@@ -615,32 +528,65 @@ async def record(url: str):
 
         # await page.goto("about:blank")
         # await page.evaluate(overlay_script)
-
+        state.log_to_status(f"Navigating to {url} ...")
         await page.goto(url)
+
+        # Wait for page to stabilize (first visually, then network-wise)
+        await page.wait_for_load_state("domcontentloaded")
         await page.wait_for_load_state("networkidle")
 
-        state.active_dom_snapshot = await page.content()
-        await page.evaluate(remove_overlay_script)
-        await upload_snapshot_to_api(url, state.active_dom_snapshot)
+        # Capture snapshot after stable load
+        try:
+            state.active_dom_snapshot = await page.content()
+        except Exception as e:
+            logger.warning(f"[Snapshot] Failed to capture DOM: {e}")
+            state.active_dom_snapshot = None
+
+        # Attempt to remove any previous overlay (safe fallback)
+        try:
+            await page.evaluate(remove_overlay_script)
+        except Exception as e:
+            logger.warning(f"[Overlay] Failed to remove overlay: {e}")
+
+        # Upload snapshot if available
+        if state.active_dom_snapshot:
+            await upload_snapshot_to_api(url, state.active_dom_snapshot)
 
         async def reinject_on_spa_change(new_url):
             logger.info(f"[Recorder] SPA navigation: {new_url}")
-            await page.evaluate(overlay_script)
-            await asyncio.sleep(0.5)
-            await page.evaluate(remove_overlay_script)
-            await page.add_init_script(selector_script_path.read_text("utf-8"))
-            await page.add_init_script(recorder_script_path.read_text("utf-8"))
-            await reinject_scripts_if_needed(page)
-            if state.pick_mode:
-                await page.evaluate("window.__pickModeActive = true")
-                await page.add_init_script(preview_script_path.read_text("utf-8"))  # ✅ NEW
-                
-            snapshot = await page.content()
-            state.active_dom_snapshot = snapshot
-            await upload_snapshot_to_api(new_url, snapshot)
+
+            try:
+                await page.wait_for_load_state("domcontentloaded")
+                await page.wait_for_load_state("networkidle")
+                await page.evaluate(overlay_script)
+                await asyncio.sleep(0.5)
+
+                # Inject scripts using evaluate only if not already present
+                # already_injected = await page.evaluate("() => !!window.__recorderInjected")
+                # if not already_injected:
+                #     await page.evaluate(selector_script_path.read_text("utf-8"))
+                #     await page.evaluate(recorder_script_path.read_text("utf-8"))
+                # else:
+                #     logger.debug("[Recorder] Recorder already injected — skipping reinjection.")
+
+                await reinject_scripts_if_needed(page)
+
+                if state.pick_mode:
+                    await page.evaluate("window.__pickModeActive = true")
+                    await page.evaluate(preview_script_path.read_text("utf-8"))
+
+                snapshot = await page.content()
+                state.active_dom_snapshot = snapshot
+                await upload_snapshot_to_api(new_url, snapshot)
+                await page.evaluate(remove_overlay_script)
+
+            except Exception as e:
+                logger.error(f"[SPA Reinjection] Error: {e}")
 
         page.on("framenavigated", lambda frame: asyncio.create_task(reinject_on_spa_change(frame.url)))
 
+        state.is_recording = True
+        state.log_to_status("Recording started. Interact with the page to capture events.")
         async def wait_for_tab_close(): 
             while not page.is_closed():
                 await asyncio.sleep(1)
@@ -650,6 +596,7 @@ async def record(url: str):
             state.pick_mode = False
             state.current_loop = None
             logger.info("Tab closed, recording stopped")
+            state.log_to_status("Tab closed, recording stopped")
 
         try:
             await wait_for_tab_close()

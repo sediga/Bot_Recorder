@@ -6,6 +6,7 @@ import re
 import logging
 from pathlib import Path
 from urllib.parse import urlparse
+from matplotlib.pyplot import step
 from playwright.async_api import async_playwright, Page
 from common import state
 from common.browserutil import launch_chrome, launch_replay_window
@@ -16,6 +17,7 @@ from math import fabs
 from playwright.async_api import Locator
 from common.logger import get_logger
 from common.commonUtilities import *
+from common import state
 
 logger = get_logger(__name__)
 
@@ -234,11 +236,7 @@ async def extract_data_by_type(source_step, page):
     
     if extract_type == "gridExtract":
         return await extract_grid_data(
-            page,
-            grid_selector=source_step.get("gridSelector"),
-            row_selector=source_step.get("rowSelector"),
-            column_mappings=source_step.get("columnMappings", []),
-            filters=source_step.get("filters", [])
+            page, source_step
         )
     
     elif extract_type == "apiExtract":
@@ -337,9 +335,13 @@ async def extract_data_by_type(source_step, page):
 #     except Exception as ex:
 #         logger.error(f"[extract_grid_data] Error extracting rows: {ex}")
 #         return []
-async def extract_grid_data(page, grid_selector, row_selector, column_mappings, filters=None):
+async def extract_grid_data(page, source_step: dict):
     """Extracts structured row data from a grid using mappings and optional filters."""
-    filters = filters or []
+    grid_selector = source_step.get("gridSelector")
+    row_selector = source_step.get("rowSelector")
+    column_mappings = source_step.get("columnMappings", [])
+    filters = source_step.get("filters", [])
+
     extracted_rows = []
     filtered_row_locators = []
 
@@ -410,13 +412,16 @@ async def extract_grid_data(page, grid_selector, row_selector, column_mappings, 
         # ✅ Cache result for use in get_smart_locator
         if not hasattr(page.context, "_botflows_filtered_rows"):
             page.context._botflows_filtered_rows = {}
+        
+        source_step_id = source_step.get("id")  # Or however you're identifying the extract step
 
-        page.context._botflows_filtered_rows[row_selector] = {
+        page.context._botflows_filtered_rows[source_step_id] = {
             "rows": filtered_row_locators,  # Locators, not ElementHandles
             "data": extracted_rows,
             "columnMappings": column_mappings
         }
-
+        logger.debug(f"[Cache] Stored filtered rows under source ID: {source_step_id}")
+        
         return extracted_rows
 
     except Exception as ex:

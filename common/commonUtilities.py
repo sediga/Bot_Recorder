@@ -50,17 +50,14 @@ def bbox_mismatch(box1, box2, tolerance=100):
 async def can_perform_action_with_retries(locator: Locator, retries=3, delay=1.0) -> bool:
     for attempt in range(retries):
         try:
-            # Avoid calling .first on something that is already a single locator
-            target = locator
-            if hasattr(locator, "_first"):  # dirty hack, but Playwright exposes this
-                target = locator
-            else:
-                target = locator.first
-
-            if await target.count() == 0:
+            # Check how many elements match before calling .first
+            count = await locator.count()
+            if count == 0:
                 logger.debug(f"[RETRY {attempt+1}] Locator not found")
                 await asyncio.sleep(delay)
                 continue
+
+            target = locator.first
 
             if not await target.is_visible():
                 logger.debug(f"[RETRY {attempt+1}] Locator not visible")
@@ -73,7 +70,8 @@ async def can_perform_action_with_retries(locator: Locator, retries=3, delay=1.0
                 await asyncio.sleep(delay)
                 continue
 
-            if await element.get_attribute("disabled") is not None:
+            disabled = await element.get_attribute("disabled")
+            if disabled is not None:
                 logger.debug(f"[RETRY {attempt+1}] Element disabled")
                 await asyncio.sleep(delay)
                 continue
@@ -140,21 +138,10 @@ async def get_smart_locator(page: Page, step: dict):
         if not extract_step:
             raise Exception("No matching grid extract step found in context.")
 
-        grid_selector = extract_step.get("gridSelector")
-        row_selector = extract_step.get("rowSelector")
-
-        await page.wait_for_selector(grid_selector, timeout=3000)
-        try:
-            await page.wait_for_selector(row_selector, state="visible", timeout=3000)
-        except:
-            fallback = f"{grid_selector} tr"
-            await page.wait_for_selector(fallback, state="visible", timeout=3000)
-            logger.warning(f"[RowSelector Fallback] Switching from '{row_selector}' to '{fallback}'")
-            row_selector = fallback
-
-        cached = getattr(page.context, "_botflows_filtered_rows", {}).get(row_selector)
+        # ✅ Get cached filtered rows using sourceId
+        cached = getattr(page.context, "_botflows_filtered_rows", {}).get(source_id)
         if not cached:
-            raise Exception("No cached grid data found for selector")
+            raise Exception(f"No cached grid data found for source ID: {source_id}")
 
         rows = cached.get("rows", [])
         if not rows:
@@ -163,6 +150,7 @@ async def get_smart_locator(page: Page, step: dict):
         row_index = getattr(page.context, "_botflows_row_index", 0)
         row_locator = rows[row_index] if row_index < len(rows) else rows[0]
 
+        # Smart column fallback targeting
         fallback_selector = (
             f"td:nth-of-type({column_index + 1}), "
             f"[role='cell']:nth-of-type({column_index + 1}), "
@@ -187,7 +175,6 @@ async def get_smart_locator(page: Page, step: dict):
     except Exception as ex:
         logger.warning(f"[get_smart_locator] Fallback to default due to error: {ex}")
         return await get_locator(page, selector, source).first
-
 
 def apply_transformations(value: str, transform_type: str, transform: str) -> str:
     if not transform_type or not transform or not value:
