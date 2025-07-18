@@ -55,8 +55,12 @@ async def start_recording(req: RecordRequest, authorization: str = Header(None))
         state.set_user_token(authorization)
         logger.info(f"[Agent] Recording started for user: {state.user_id}")
         # Inside start_recording or replay_flow
-        if state.user_id not in state.connections:
-            asyncio.create_task(connect_to_dashboard_ws())
+        # if state.user_id not in state.connections:
+        await asyncio.gather(
+            connect_to_dashboard_ws("event"),
+            connect_to_dashboard_ws("log")
+        )
+
 
         logger.info(f"Starting recording for: {req.url}")
         if state.current_browser:
@@ -87,12 +91,15 @@ async def start_recording(req: RecordRequest, authorization: str = Header(None))
 @app.post("/api/replay")
 async def replay_by_json(request: Request, authorization: str = Header(None)):
     try:
+        await state.log_to_status(f"Replaying flow...")
         if not authorization:
             raise HTTPException(status_code=401, detail="Missing Authorization header")
 
         state.set_user_token(authorization)
-        if state.user_id not in state.connections:
-            asyncio.create_task(connect_to_dashboard_ws())
+        await asyncio.gather(
+            connect_to_dashboard_ws("event"),
+            connect_to_dashboard_ws("log")
+        )
 
         json_str = (await request.body()).decode("utf-8")
         await replay_flow(json_str)
@@ -104,12 +111,18 @@ async def replay_by_json(request: Request, authorization: str = Header(None)):
 @app.post("/api/preview-replay")
 async def preview_replay(req: Request, authorization: str = Header(None)):
     try:
+        if not state.is_recording:
+            state.log_to_status(f"Preview replay can only be started during recording.")
+            raise HTTPException(status_code=400, detail="Not recording")
+        await state.log_to_status(f"Starting preview replay, Recording will be paused till replay is finished... Replay will not stop even browser is closed. so, wait for the replay to finish...")
         if not authorization:
             raise HTTPException(status_code=401, detail="Missing Authorization header")
 
         state.set_user_token(authorization)
-        if state.user_id not in state.connections:
-            asyncio.create_task(connect_to_dashboard_ws())
+        # await asyncio.gather(
+        #     connect_to_dashboard_ws("event"),
+        #     connect_to_dashboard_ws("log")
+        # )
 
         json_str = await req.body()
         await replay_flow(json_str.decode("utf-8"), is_preview=True)
@@ -118,19 +131,44 @@ async def preview_replay(req: Request, authorization: str = Header(None)):
         return {"status": "error", "details": str(e)}
 
 @app.post("/api/stop")
-def stop_recording():
+async def stop_recording():
     try:
-        Path("recordings/stop.flag").write_text("stop")
         state.is_recording = False
         state.current_url = None
-        return {"status": "stopping"}
+
+        # Close browser and context if running
+        if state.current_browser:
+            try:
+                for ctx in state.current_browser.contexts:
+                    await ctx.close()
+                    logger.info("[Stop] Closed browser context.")
+            except Exception as e:
+                logger.warning(f"[Stop] Failed to close context: {e}")
+            try:
+                await state.current_browser.close()
+                logger.info("[Stop] Closed browser.")
+            except Exception as e:
+                logger.warning(f"[Stop] Failed to close browser: {e}")
+        
+        if state.chrome_process:
+            try:
+                state.chrome_process.terminate()
+                state.chrome_process.wait(timeout=5)
+                logger.info("[Stop] Terminated Chrome process.")
+            except Exception as e:
+                logger.warning(f"[Stop] Failed to terminate Chrome process: {e}")
+            state.chrome_process = None
+
+        state.current_browser = None
+        state.active_page = None
+
+        return {"status": "stopped"}
     except Exception as e:
         logger.exception("Stop failed")
         return {"error": str(e)}
     finally:
         logger.info(f"[Agent] Stopping session for user: {state.user_id}")
         state.clear_user_token()
-
 
 from fastapi import Request, HTTPException
 
@@ -147,6 +185,7 @@ def get_status(request: Request):
 @app.post("/api/target-pick-mode")
 async def enable_target_pick_mode(request: Request):
     try:
+        await state.log_to_status(f"Select the grid you want to record in the target webpage...")
         state.pick_mode = True
         data = await request.json()
         if data.get("mode") != "start":
@@ -175,6 +214,7 @@ async def enable_target_pick_mode(request: Request):
 
 @app.post("/api/target-pick-done")
 async def disable_pick_mode():
+    await state.log_to_status(f"Target picked.")
     state.pick_mode = False
     try:
         if state.active_page:
@@ -193,6 +233,7 @@ class StartLoopRequest(BaseModel):
 @app.post("/api/start-loop-recording")
 async def start_loop_recording(request: Request):
     data = await request.json()
+    await state.log_to_status(f"recording in a loop, please continue recording and click finish loop when done....")
     state.current_loop = {
         "active": True,
         "loopId": data.get("loopId"),
@@ -208,6 +249,7 @@ async def start_loop_recording(request: Request):
 
 @app.post("/api/end-loop-recording")
 async def start_loop_recording(request: Request):
+    await state.log_to_status(f"loop recording finished, please continue recording the rest of the flow....")
     state.current_loop = {
         "active": False,
         "loopId": None,
@@ -277,8 +319,7 @@ if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
         logger.info("API server started at http://localhost:8000")
         state.is_running = True
         server.run()
-        asyncio.create_task(connect_to_dashboard_ws())
-        state.log_to_status("Starting Botflows agent.")
+        # asyncio.create_task(connect_to_dashboard_ws())
 
     def quit_app(icon, item):
         logger.info("Botflows Agent exiting...")
@@ -295,11 +336,9 @@ if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
         icon.stop()
         state.is_running = False
         cleanup_lock()
-        state.log_to_status("Botflows Agent exited.")
         os._exit(0)
 
     def on_settings_click(icon, item):
-        state.log_to_status("Opening settings...")
         if os.path.exists(SETTINGS_LOCK_FILE):
             print("Settings already open.")
             return

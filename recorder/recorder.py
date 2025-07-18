@@ -18,6 +18,7 @@ from common.logger import get_logger
 from common.util import get_auth_headers
 from common.config import get_api_url
 from common import state
+from common.ws_client import safe_send, connect_to_dashboard_ws
 
 logger = get_logger(__name__)
 
@@ -168,7 +169,7 @@ async def handle_standard_event(page, event):
         await page.evaluate("window.__pendingValidation = false")
     except Exception as e:
         logger.warning(f"Failed to clear pendingValidation: {e}")
-    state.log_to_status(f"Event recorded: {event.get('type')} on {event.get('selector')}")
+    await state.log_to_status(f"Event recorded: {event.get('type')} on {event.get('selector')}")
     await broadcast_to_clients(event)
 
 async def handle_target_picked(page, event):
@@ -192,7 +193,7 @@ async def handle_target_picked(page, event):
             return
 
         row_selector = f"{grid_selector} [role='row'], {grid_selector} tr"
-        state.log_to_status(f"Grid detected with {len(column_headers)} columns. Analyzing rows...")
+        await state.log_to_status(f"Grid detected with {len(column_headers)} columns. Analyzing rows...")
         if not await validate_selector(page, row_selector):
             logger.warning(f"Row selector failed: {row_selector}")
             await page.evaluate("window.finishPicker && window.finishPicker()")
@@ -245,7 +246,7 @@ async def handle_target_picked(page, event):
                 "extractable": bool(matched_selector),
                 "preview": txt or ""
             })
-        state.log_to_status(f"Grid analysis complete. {len(column_mappings)} columns mapped.")
+        await state.log_to_status(f"Grid analysis complete. {len(column_mappings)} columns mapped.")
         await broadcast_to_clients({
             "type": "targetPicked",
             "metadata": {
@@ -457,17 +458,24 @@ async def generate_and_validate_selectors(meta: dict, page, event, strict: bool 
 
     return best_selector, validated
 
-async def broadcast_to_clients(message):
+async def broadcast_to_clients(payload, msg_type="event"):
     if state.user_id not in state.connections:
         logger.warning(f"[WS] No active WebSocket for {state.user_id}")
         return
 
     try:
         ws = state.connections[state.user_id]
-        await ws.send(json.dumps(message))
-        logger.debug(f"[WS] Sent message to .NET for {state.user_id}")
+        message = {
+            "type": msg_type,  # "event", "log", or "ping"
+            "userId": state.user_id,
+            "sessionId": state.user_id,  # assuming sessionId == userId for now
+            "payload": payload
+        }
+        await safe_send(state.user_id, "event", message)
+
+        logger.debug(f"[WS] Sent {msg_type} to .NET for {state.user_id}")
     except Exception as e:
-        logger.warning(f"[WS] Failed to send to .NET for {state.user_id}: {e}")
+        logger.warning(f"[WS] Failed to send {msg_type} for {state.user_id}: {e}")
 
 
 async def handle_url_change(source, new_url):
@@ -498,8 +506,8 @@ async def record(url: str):
         state.worker_task = asyncio.create_task(standard_event_worker())
 
     async with async_playwright() as p:
-        state.log_to_status("Launching browser...")
-        browser = await launch_chrome(p)
+        await state.log_to_status("Launching browser...")
+        browser = await launch_chrome(p, is_recording=True)
         context = browser.contexts[0] if browser.contexts else await browser.new_context(no_viewport=True)
         state.current_browser = browser
         page = browser.contexts[0].pages[0]  # or browser.contexts[0].new_page() if none exist
@@ -528,12 +536,11 @@ async def record(url: str):
 
         # await page.goto("about:blank")
         # await page.evaluate(overlay_script)
-        state.log_to_status(f"Navigating to {url} ...")
+        await state.log_to_status(f"Navigating to {url} ...")
         await page.goto(url)
 
         # Wait for page to stabilize (first visually, then network-wise)
         await page.wait_for_load_state("domcontentloaded")
-        await page.wait_for_load_state("networkidle")
 
         # Capture snapshot after stable load
         try:
@@ -557,7 +564,6 @@ async def record(url: str):
 
             try:
                 await page.wait_for_load_state("domcontentloaded")
-                await page.wait_for_load_state("networkidle")
                 await page.evaluate(overlay_script)
                 await asyncio.sleep(0.5)
 
@@ -586,7 +592,7 @@ async def record(url: str):
         page.on("framenavigated", lambda frame: asyncio.create_task(reinject_on_spa_change(frame.url)))
 
         state.is_recording = True
-        state.log_to_status("Recording started. Interact with the page to capture events.")
+        await state.log_to_status("Recording started. Interact with the page to capture events.")
         async def wait_for_tab_close(): 
             while not page.is_closed():
                 await asyncio.sleep(1)
@@ -596,7 +602,7 @@ async def record(url: str):
             state.pick_mode = False
             state.current_loop = None
             logger.info("Tab closed, recording stopped")
-            state.log_to_status("Tab closed, recording stopped")
+            await state.log_to_status("Tab closed, recording stopped")
 
         try:
             await wait_for_tab_close()

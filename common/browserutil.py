@@ -9,6 +9,8 @@ import logging
 import json
 from playwright.async_api import async_playwright
 
+from common import state
+
 logger = logging.getLogger(__name__)
 
 DEFAULT_PORT = 9222
@@ -140,14 +142,14 @@ def is_chrome_debug_running(port=DEFAULT_PORT):
     return False
 
 # ✅ Final unified launch method
-async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
+async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is_recording=False):
     config = load_agent_config()
     use_bundled = config.get("use_bundled_chrome", True)
 
     if use_bundled:
         logger.info("Launching bundled Chromium via Playwright.")
-        browser = await playwright.chromium.launch(headless=False)
-        return browser
+        state.current_browser = await playwright.chromium.launch(headless=False)
+        return state.current_browser
 
     if user_profile_dir is None:
         user_profile_dir = get_default_profile_dir()
@@ -158,8 +160,18 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
         chrome_path = config.get("chrome_path") or find_chrome_executable()
         if not chrome_path or not os.path.exists(chrome_path):
             raise FileNotFoundError("Chrome executable not found in config or standard locations.")
-
-        subprocess.Popen([
+        if is_recording:
+            state.chrome_process = subprocess.Popen([
+                chrome_path,
+                f"--remote-debugging-port={port}",
+                f"--user-data-dir={user_profile_dir}",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--new-window",
+                "about:blank"
+            ])
+        else:
+            subprocess.Popen([
             chrome_path,
             f"--remote-debugging-port={port}",
             f"--user-data-dir={user_profile_dir}",
@@ -168,6 +180,7 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
             "--new-window",
             "about:blank"
         ])
+
 
         wait_for_debug_port(port)
         logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
@@ -180,6 +193,48 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None):
 
 async def launch_replay_window(playwright, initial_url="about:blank", port=DEFAULT_PORT):
     logger.info("[Replay] Launching browser for replay")
+    browser = await launch_chrome(playwright, port=port)
+
+    # Case 1: Using real Chrome via connect_over_cdp
+    if hasattr(browser, "new_browser_cdp_session"):
+        logger.info("[Replay] Detected CDP session")
+
+        # Try to find an existing page
+        all_pages = [p for ctx in browser.contexts for p in ctx.pages]
+        if all_pages:
+            logger.info("[Replay] Reusing existing page")
+            page = all_pages[0]
+            await page.goto(initial_url)
+            return browser, page
+
+        # No pages? Create new one via CDP
+        logger.info("[Replay] No existing pages, creating new window via CDP")
+        cdp_session = await browser.new_browser_cdp_session()
+        await cdp_session.send("Target.createTarget", {
+            "url": initial_url,
+            "newWindow": True
+        })
+
+        # Wait for the new window
+        for _ in range(10):
+            await asyncio.sleep(0.5)
+            new_pages = [p for ctx in browser.contexts for p in ctx.pages]
+            diff = list(set(new_pages) - set(all_pages))
+            if diff:
+                logger.info("[Replay] New page successfully opened.")
+                return browser, diff[0]
+
+        raise RuntimeError("Failed to open a new window for replay")
+
+    # Case 2: Bundled Chromium fallback
+    logger.info("[Replay] Using bundled Chromium — opening new context")
+    context = await browser.new_context()
+    page = await context.new_page()
+    await page.goto(initial_url)
+    return browser, page
+
+async def launch_preview_window(playwright, initial_url="about:blank", port=DEFAULT_PORT):
+    logger.info("[Replay] Launching browser for preview")
     browser = await launch_chrome(playwright, port=port)
 
     # Case 1: Using real Chrome via connect_over_cdp — must create new window via CDP
@@ -206,10 +261,3 @@ async def launch_replay_window(playwright, initial_url="about:blank", port=DEFAU
                 return browser, diff[0]
 
         raise RuntimeError("Failed to open a new window for replay")
-
-    # Case 2: Bundled Chromium — create new context and page
-    logger.info("[Replay] Using bundled Chromium — opening new context")
-    context = await browser.new_context()
-    page = await context.new_page()
-    await page.goto(initial_url)
-    return browser, page

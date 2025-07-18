@@ -4,6 +4,7 @@ from fastapi import logger
 import jwt
 from collections import defaultdict, deque
 from common.logger import get_logger
+from common.ws_client import safe_send
 
 logger = get_logger(__name__)
 
@@ -14,7 +15,7 @@ user_states = defaultdict(lambda: {
     "current_url": None,
     "logs": deque(maxlen=50)
 })
-
+chrome_process = None  # Holds the subprocess.Popen object for Chrome   
 is_recording = False
 is_running = False
 is_replaying = False
@@ -40,7 +41,7 @@ user_id: str = None     # Optional: Parsed from token for folder scoping
 def get_user_state(user_id):
     return user_states[user_id]
 
-async def log_to_status(message: str):
+async def log_to_status(message: str, level="info"):
     print(f"[{user_id}] {message}")
     user_state = get_user_state(user_id)
     user_state["logs"].append(message)
@@ -48,14 +49,18 @@ async def log_to_status(message: str):
     ws = connections.get(user_id)
     if ws:
         try:
-            await ws.send(json.dumps({
+            structured_message = {
                 "type": "log",
-                "level": "info",  # or allow dynamic level param
-                "message": message
-            }))
+                "userId": user_id,
+                "sessionId": user_id,  # or real session ID if available
+                "payload": {
+                    "level": level,
+                    "message": message
+                }
+            }
+            await safe_send(user_id, "event", structured_message)
         except Exception as e:
             print(f"[Log] Failed to send to dashboard WS: {e}")
-
 
 def set_user_token(token: str):
     global user_token, user_id

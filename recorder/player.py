@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 from matplotlib.pyplot import step
 from playwright.async_api import async_playwright, Page
 from common import state
-from common.browserutil import launch_chrome, launch_replay_window
+from common.browserutil import launch_chrome, launch_preview_window, launch_replay_window
 from common.gridHelper import matches_filter
 from dateutil import parser as dateparser
 from common.selectorRecoveryHelper import *
@@ -44,18 +44,20 @@ async def _perform_action(page, step, retries=2):
     action = step.get("action", "")
     selector = step.get("selector")
     selectors = step.get("selectors", [])
+    await state.log_to_status(f"Performing action: {action} on selector: {selector}")
 
- 
     if step:
         frame_url = step.get("frameUrl")
         if frame_url:
             if page.url != frame_url:
+                await state.log_to_status(f"Switching to frame: {frame_url}")
                 frame = await wait_for_frame_url(page, frame_url)
                 if frame and not frame.is_detached():
                     await frame.wait_for_selector("body", state="attached", timeout=5000)
                     logger.info(f"Scoping to iframe: {frame.url}")
                     page = frame
                 else:
+                    await state.log_to_status(f"Could not access frame: {frame_url}")
                     logger.warning(f"Could not access frame: {frame_url}")
 
     effective_selectors = selectors if selectors else [{"selector": selector}]
@@ -81,23 +83,26 @@ async def _perform_action(page, step, retries=2):
         #         continue
 
     try:
+        await state.log_to_status(f"Attempting recovery for action: {action} on selector: {sel}")
         selector_candidates = await generate_recovery_selectors(page, step)
 
         for candidate in selector_candidates:
             candidate_selector = candidate.get("selector")
             candidate_source = candidate.get("source", "")
             try:
+                await state.log_to_status(f"Trying recovery selector: {candidate_selector} (source: {candidate_source})")
                 await try_action(page, candidate_selector, step, candidate_source)
                 logger.info(f"Recovered selector worked: {candidate_selector}")
                 # await confirm_selector_worked(url=page.url, original_selector=sel)
                 return
             except Exception as attempt_ex:
+                await state.log_to_status(f"Recovery attempt failed: {candidate_selector} => {attempt_ex}")
                 logger.warning(f"[Recovery attempt failed] {candidate_selector}: {attempt_ex}")
                 continue
     except Exception as recovery_ex:
         logger.warning(f"[Recovery Logic] Failed: {recovery_ex}")
-
-    raise Exception(f"All attempts failed for action '{action}' on selector: {selector}")
+    await state.log_to_status(f"All recovery attempts failed for action: {action} on selector: {sel}")
+    raise Exception(f"All attempts failed for action '{action}' on selector: {sel}")
 
 async def handle_step(step: dict, page: Page):
     step_type = step.get("type", "").lower()
@@ -341,7 +346,7 @@ async def extract_grid_data(page, source_step: dict):
     row_selector = source_step.get("rowSelector")
     column_mappings = source_step.get("columnMappings", [])
     filters = source_step.get("filters", [])
-
+    await state.log_to_status(f"Extracting grid data from: {grid_selector} with row selector: {row_selector}")
     extracted_rows = []
     filtered_row_locators = []
 
@@ -408,7 +413,8 @@ async def extract_grid_data(page, source_step: dict):
             if passed_filters:
                 extracted_rows.append(row_data)
                 filtered_row_locators.append(row)
-
+        await state.log_to_status(f"[total rows found] {row_count}")        
+        await state.log_to_status(f"[extract_grid_data] {len(extracted_rows)} rows after filtering")
         # ✅ Cache result for use in get_smart_locator
         if not hasattr(page.context, "_botflows_filtered_rows"):
             page.context._botflows_filtered_rows = {}
@@ -431,28 +437,28 @@ async def extract_grid_data(page, source_step: dict):
 async def replay_flow(json_str: str, is_preview: bool = False):
     if is_preview:
         state.is_replaying = True
-    if state.active_page:
-        await state.active_page.evaluate("""() => {
-        window.__botflows_replaying__ = true;
-        if (!document.getElementById('botflows-replay-overlay')) {
-            const div = document.createElement('div');
-            div.id = 'botflows-replay-overlay';
-            div.innerText = 'Preview in progress...';
-            div.style.position = 'fixed';
-            div.style.top = 0;
-            div.style.left = 0;
-            div.style.right = 0;
-            div.style.bottom = 0;
-            div.style.backgroundColor = 'rgba(0,0,0,0.5)';
-            div.style.color = 'white';
-            div.style.fontSize = '2rem';
-            div.style.display = 'flex';
-            div.style.alignItems = 'center';
-            div.style.justifyContent = 'center';
-            div.style.zIndex = 9999;
-            document.body.appendChild(div);
-        }
-        }""")
+        if state.active_page:
+            await state.active_page.evaluate("""() => {
+            window.__botflows_replaying__ = true;
+            if (!document.getElementById('botflows-replay-overlay')) {
+                const div = document.createElement('div');
+                div.id = 'botflows-replay-overlay';
+                div.innerText = 'Preview in progress...';
+                div.style.position = 'fixed';
+                div.style.top = 0;
+                div.style.left = 0;
+                div.style.right = 0;
+                div.style.bottom = 0;
+                div.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                div.style.color = 'white';
+                div.style.fontSize = '2rem';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
+                div.style.zIndex = 9999;
+                document.body.appendChild(div);
+            }
+            }""")
 
     flow = json.loads(json_str)
 
@@ -471,8 +477,10 @@ async def replay_flow(json_str: str, is_preview: bool = False):
         top_level_steps = [s for s in flow if not s.get("parentId")]
         navigate_step = next((s for s in top_level_steps if s.get("type") == "navigate" and s.get("url")), None)
         initial_url = navigate_step["url"] if navigate_step else "about:blank"
-
-        browser, page = await launch_replay_window(p, initial_url=initial_url)
+        if is_preview:
+            browser, page = await launch_preview_window(p, initial_url=initial_url)
+        else:
+            browser, page = await launch_replay_window(p, initial_url=initial_url)
 
         steps_by_id = {step["id"]: step for step in flow}
         page.context._botflows_steps_by_id = steps_by_id
@@ -484,7 +492,31 @@ async def replay_flow(json_str: str, is_preview: bool = False):
             await handle_step(step, page)
 
         logger.info("Replay complete.")
-        await browser.close()
+        asyncio.sleep(5)
+        if state.current_browser:
+            try:
+                for ctx in state.current_browser.contexts:
+                    await ctx.close()
+                    logger.info("[Stop] Closed browser context.")
+            except Exception as e:
+                logger.warning(f"[Stop] Failed to close context: {e}")
+            try:
+                await state.current_browser.close()
+                logger.info("[Stop] Closed browser.")
+            except Exception as e:
+                logger.warning(f"[Stop] Failed to close browser: {e}")
+        
+        if state.chrome_process:
+            try:
+                state.chrome_process.terminate()
+                state.chrome_process.wait(timeout=5)
+                logger.info("[Stop] Terminated Chrome process.")
+            except Exception as e:
+                logger.warning(f"[Stop] Failed to terminate Chrome process: {e}")
+            state.chrome_process = None
+        state.current_browser = None
+        state.active_page = None
+
         if is_preview:
             if state.active_page:
                 await state.active_page.evaluate("""() => {

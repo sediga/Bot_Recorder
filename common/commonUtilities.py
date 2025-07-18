@@ -9,7 +9,7 @@ from common.logger import get_logger
 
 logger = get_logger(__name__)
 
-async def wait_for_frame_url(page, target_url, timeout=10000):
+async def wait_for_frame_url(page, target_url, timeout=30000):
     deadline = page.context._loop.time() + timeout / 1000
     while page.context._loop.time() < deadline:
         for frame in page.frames:
