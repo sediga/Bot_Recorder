@@ -87,7 +87,7 @@ async def connect_to_dashboard_ws(channel="event"):
         logger.info(f"[WS] Connected as {user_id} on channel '{channel}'")
 
         # Start ping loop
-        asyncio.create_task(start_ping_loop(websocket, user_id, channel))
+        asyncio.create_task(start_ping_loop(websocket, user_id))
 
     except Exception as e:
         logger.warning(f"[WS] Connection failed for {user_id} ({channel}): {e}")

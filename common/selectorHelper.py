@@ -5,6 +5,7 @@ from typing import Optional, Tuple
 from datetime import datetime
 from bs4 import BeautifulSoup
 from common import state
+from common.config import get_api_url, get_headers
 
 async def get_devtools_like_selector(el):
     path = []
@@ -214,24 +215,40 @@ def convert_keys_to_pascal(obj):
         return [convert_keys_to_pascal(i) for i in obj]
     return obj
 
-async def call_selector_recovery_api(step: dict) -> list[dict]:
-    payload = convert_keys_to_pascal(step)
-    headers = {
-        "Content-Type": "application/json",
-        "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"
-    }
+# async def call_selector_recovery_api(step: dict) -> list[dict]:
+#     payload = convert_keys_to_pascal(step)
+#     headers = {
+#         "Content-Type": "application/json",
+#         "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"
+#     }
 
+#     try:
+#         async with httpx.AsyncClient(timeout=10) as client:
+#             base_url = os.getenv("BOTFLOWS_API_BASE_URL", "http://localhost:5000")
+#             res = await client.post(f"{base_url}/api/selectoranalysis/resolve", json=payload, headers=headers)
+#             if res.status_code == 200:
+#                 return res.json().get("selectors", [])
+#             print(f"Recovery API failed: {res.status_code} => {res.text}")
+#     except Exception as ex:
+#         print(f"Selector recovery failed: {ex}")
+    
+#     return []
+
+
+async def call_selector_recovery_api(step: dict):
     try:
         async with httpx.AsyncClient(timeout=10) as client:
-            base_url = os.getenv("BOTFLOWS_API_BASE_URL", "http://localhost:5000")
-            res = await client.post(f"{base_url}/api/selectoranalysis/resolve", json=payload, headers=headers)
+            url = get_api_url("/api/selectoranalysis/resolve")
+            res = await client.post(url, json=step, headers=get_headers())
+
             if res.status_code == 200:
-                return res.json().get("selectors", [])
-            print(f"Recovery API failed: {res.status_code} => {res.text}")
+                data = res.json()
+                return data.get("selectors", [])
+            print(f"[Recovery API] Failed: {res.status_code} => {res.text}")
     except Exception as ex:
-        print(f"Selector recovery failed: {ex}")
-    
+        print(f"[Recovery API] Exception: {ex}")
     return []
+
 
 async def confirm_selector_worked(flow_id, step_index, original_selector, improved_selector):
     headers = {

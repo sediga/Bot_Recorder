@@ -171,7 +171,7 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is
                 "about:blank"
             ])
         else:
-            subprocess.Popen([
+            state.temp_chrome_process = subprocess.Popen([
             chrome_path,
             f"--remote-debugging-port={port}",
             f"--user-data-dir={user_profile_dir}",
@@ -261,3 +261,30 @@ async def launch_preview_window(playwright, initial_url="about:blank", port=DEFA
                 return browser, diff[0]
 
         raise RuntimeError("Failed to open a new window for replay")
+
+async def close_chrome(close_all=False):
+    if close_all:
+        if state.chrome_process:
+            logger.info("Closing recorded Chrome instance.")
+            state.chrome_process.terminate()
+            try:
+                state.chrome_process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                state.chrome_process.kill()
+            state.chrome_process = None
+
+    if state.temp_chrome_process:
+        logger.info("Closing temporary Chrome instance.")
+        state.temp_chrome_process.terminate()
+        try:
+            state.temp_chrome_process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            state.temp_chrome_process.kill()
+        state.temp_chrome_process = None
+
+    if state.current_browser:
+        try:
+            await state.current_browser.close()
+        except Exception as e:
+            logger.warning(f"Failed to close browser: {e}")
+        state.current_browser = None

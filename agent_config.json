@@ -1,6 +1,6 @@
 {
   "use_bundled_chrome": false,
   "apiBaseUrl": "https://botflowsdashboardapi.onrender.com",
-  "authType": "jwt",                
+  "authType": "apiKey",                
   "apiKey": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"    
 }

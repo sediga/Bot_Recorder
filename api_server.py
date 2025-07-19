@@ -17,6 +17,7 @@ from fastapi import FastAPI, HTTPException, Header, Query, WebSocket, Request, W
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from common.browserutil import close_chrome
 from recorder.recorder import record
 from recorder.player import replay_flow
 from common import state
@@ -63,23 +64,7 @@ async def start_recording(req: RecordRequest, authorization: str = Header(None))
 
 
         logger.info(f"Starting recording for: {req.url}")
-        if state.current_browser:
-            try:
-                for ctx in state.current_browser.contexts:
-                    await ctx.close()
-                    logger.info("[Recorder] Closed browser context.")
-            except Exception as e:
-                logger.warning(f"[Recorder] Failed closing context: {e}")
-
-            try:
-                await state.current_browser.close()
-                logger.info("[Recorder] Closed browser.")
-            except Exception as e:
-                logger.warning(f"[Recorder] Failed closing browser: {e}")
-
-            state.current_browser = None
-            state.current_page = None
-            
+        await close_chrome(True)            
         await record(req.url)
         return {"status": "started", "url": req.url}
     except Exception as e:
@@ -91,7 +76,6 @@ async def start_recording(req: RecordRequest, authorization: str = Header(None))
 @app.post("/api/replay")
 async def replay_by_json(request: Request, authorization: str = Header(None)):
     try:
-        await state.log_to_status(f"Replaying flow...")
         if not authorization:
             raise HTTPException(status_code=401, detail="Missing Authorization header")
 
@@ -100,6 +84,8 @@ async def replay_by_json(request: Request, authorization: str = Header(None)):
             connect_to_dashboard_ws("event"),
             connect_to_dashboard_ws("log")
         )
+
+        await state.log_to_status(f"Starting replay...")
 
         json_str = (await request.body()).decode("utf-8")
         await replay_flow(json_str)
@@ -112,7 +98,7 @@ async def replay_by_json(request: Request, authorization: str = Header(None)):
 async def preview_replay(req: Request, authorization: str = Header(None)):
     try:
         if not state.is_recording:
-            state.log_to_status(f"Preview replay can only be started during recording.")
+            await state.log_to_status(f"Preview replay can only be started during recording.")
             raise HTTPException(status_code=400, detail="Not recording")
         await state.log_to_status(f"Starting preview replay, Recording will be paused till replay is finished... Replay will not stop even browser is closed. so, wait for the replay to finish...")
         if not authorization:
@@ -137,28 +123,7 @@ async def stop_recording():
         state.current_url = None
 
         # Close browser and context if running
-        if state.current_browser:
-            try:
-                for ctx in state.current_browser.contexts:
-                    await ctx.close()
-                    logger.info("[Stop] Closed browser context.")
-            except Exception as e:
-                logger.warning(f"[Stop] Failed to close context: {e}")
-            try:
-                await state.current_browser.close()
-                logger.info("[Stop] Closed browser.")
-            except Exception as e:
-                logger.warning(f"[Stop] Failed to close browser: {e}")
-        
-        if state.chrome_process:
-            try:
-                state.chrome_process.terminate()
-                state.chrome_process.wait(timeout=5)
-                logger.info("[Stop] Terminated Chrome process.")
-            except Exception as e:
-                logger.warning(f"[Stop] Failed to terminate Chrome process: {e}")
-            state.chrome_process = None
-
+        await close_chrome(True)
         state.current_browser = None
         state.active_page = None
 

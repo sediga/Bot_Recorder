@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import dateparser
 import re
 
+from common import state
+
 def infer_date_format(date_str: str) -> str:
     if re.match(r"\d{1,2}[/-]\d{1,2}[/-]\d{2,4}", date_str): return "dd/MM/yyyy"
     if re.match(r"\d{4}-\d{2}-\d{2}", date_str): return "yyyy-MM-dd"
@@ -274,13 +276,13 @@ async def extract_row_samples(page, grid_selector: str):
 
     return samples
 
-def matches_filter(row_data, filt, col_type="text"):
+async def matches_filter(row_data, filt, col_type="text"):
     col = filt.get("column")
     op = filt.get("operator", "").lower()
     val = filt.get("value", "")
     var = filt.get("variable", "")
     actual_val = row_data.get(col, "")
-
+    await state.log_to_status(f"Filtering column '{col}' with op '{op}' against value '{val}' (actual: '{actual_val}')")
     try:
         # Boolean or image
         if op in ["is true", "is false"]:

@@ -8,17 +8,12 @@ from common.ws_client import safe_send
 
 logger = get_logger(__name__)
 
-user_states = defaultdict(lambda: {
-    "is_running": False,
-    "is_recording": False,
-    "is_replaying": False,
-    "current_url": None,
-    "logs": deque(maxlen=50)
-})
-chrome_process = None  # Holds the subprocess.Popen object for Chrome   
+chrome_process = None
+temp_chrome_process = None
 is_recording = False
 is_running = False
 is_replaying = False
+is_previewing = False
 current_url = None
 active_page = None
 current_browser = None
@@ -38,13 +33,8 @@ current_loop = {
 user_token: str = None  # Holds the current user's JWT
 user_id: str = None     # Optional: Parsed from token for folder scoping
 
-def get_user_state(user_id):
-    return user_states[user_id]
-
 async def log_to_status(message: str, level="info"):
     print(f"[{user_id}] {message}")
-    user_state = get_user_state(user_id)
-    user_state["logs"].append(message)
 
     ws = connections.get(user_id)
     if ws:

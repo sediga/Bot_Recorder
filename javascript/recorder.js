@@ -16,6 +16,25 @@ import {getAllAttributes} from './domanalyser.js'
 
   const isInPickMode = () => window.__pickModeActive === true;
 
+  function shouldIgnoreClick(target) {
+    if (!target || typeof target.getBoundingClientRect !== "function") return true;
+
+    const rect = target.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2 || !target.offsetParent) return true;
+
+    const styles = window.getComputedStyle(target);
+    if (styles.pointerEvents === "none" || styles.visibility !== "visible" || styles.display === "none") return true;
+
+    const nonInteractiveTags = ["HTML", "BODY", "DIV", "SPAN", "P"];
+    const tag = target.tagName;
+    const text = (target.innerText || "").trim();
+
+    const isInteractive = target.closest("a, button, input, select, textarea, [role='button'], [onclick], [tabindex]");
+    if (nonInteractiveTags.includes(tag) && !isInteractive && text === "") return true;
+
+    return false;
+  }
+
   function showValidationOverlay() {
     if (document.getElementById("__botflows_validation_overlay")) return;
 
@@ -362,7 +381,8 @@ import {getAllAttributes} from './domanalyser.js'
       target === document ||
       target === document.body ||
       !document.contains(target) ||
-      typeof window.sendEventToPython !== "function"
+      typeof window.sendEventToPython !== "function" ||
+      (type === "click" && shouldIgnoreClick(target))
     ) {
       console.debug("[Botflows] Ignoring untrackable target:", target);
       return;
