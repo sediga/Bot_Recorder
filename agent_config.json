@@ -1,6 +1,6 @@
 {
-  "use_bundled_chrome": true,
-  "chrome_path": "C:/Program Files(x86)/Google/Chrome/Application/chrome.exe",
+  "use_bundled_chrome": false,
+  "chrome_path": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
   "apiBaseUrl": "https://botflowsdashboardapi.onrender.com",
   "authType": "apiKey",
   "apiKey": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR",

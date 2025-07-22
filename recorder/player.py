@@ -49,24 +49,23 @@ async def _perform_action(page, step, retries=2):
     dynamicValue = step.get("dynamicValue")
     if step and isinstance(dynamicValue, str):
         label += f" (Dynamic Value: {dynamicValue[:20]}...)"
-    await state.log_to_status(f"Performing action: {label}")
+    await state.log_to_status(f"🧩 Performing action: {label}")
 
     if step:
         frame_url = step.get("frameUrl")
         if frame_url:
             if page.url != frame_url:
-                await state.log_to_status(f"Switching to frame: {frame_url}")
+                await state.log_to_status(f"🖼️ Switching to frame: {frame_url}")
                 frame = await wait_for_frame_url(page, frame_url)
                 if frame and not frame.is_detached():
                     await frame.wait_for_selector("body", state="attached", timeout=5000)
                     logger.info(f"Scoping to iframe: {frame.url}")
                     page = frame
                 else:
-                    await state.log_to_status(f"Could not access frame: {frame_url}")
+                    await state.log_to_status(f"🚫 Could not access frame: {frame_url}")
                     logger.warning(f"Could not access frame: {frame_url}")
 
     effective_selectors = selectors if selectors else [{"selector": selector}]
-
     sel_obj = effective_selectors[0] if isinstance(effective_selectors[0], dict) else {"selector": effective_selectors[0], "source": ""}
     sel = sel_obj["selector"] or selector
     source = sel_obj.get("source", "")
@@ -76,55 +75,55 @@ async def _perform_action(page, step, retries=2):
         logger.info(f"Action '{action}' succeeded: {sel}")
         return
     except Exception as e:
-        await state.log_to_status(f"Initial attempt failed: {label} => {e}")
+        await state.log_to_status(f"❌ Initial attempt failed: {label} => {e}")
         logger.warning(f"Initial attempt failed: {action} / {sel} => {e}")
         for frame in page.frames:
             if frame == page.main_frame:
                 continue
             try:
-                await state.log_to_status(f"Trying inside iframe: {frame.url}")
+                await state.log_to_status(f"🛠️ Trying inside iframe: {frame.url}")
                 await try_action(frame, sel, step, source)
                 logger.info(f"[Frame] Success inside: {frame.url}")
                 return
             except:
-                await state.log_to_status(f"Failed inside iframe: {frame.url}")
+                await state.log_to_status(f"❌ Failed inside iframe: {frame.url}")
                 continue
 
     try:
-        await state.log_to_status(f"Attempting recovery for action: {label}")
+        await state.log_to_status(f"🛠️ Attempting recovery for action: {label}")
         selector_candidates = await generate_recovery_selectors(page, step)
 
         for candidate in selector_candidates:
             candidate_selector = candidate.get("selector")
             candidate_source = candidate.get("source", "")
             try:
-                await state.log_to_status(f"Trying recovery selector: {candidate_selector} (source: {candidate_source})")
+                await state.log_to_status(f"🛠️ Trying recovery selector: {candidate_selector} (source: {candidate_source})")
                 await try_action(page, candidate_selector, step, candidate_source)
                 logger.info(f"Recovered selector worked: {candidate_selector} (source: {candidate_source})")
                 # await confirm_selector_worked(url=page.url, original_selector=sel)
                 return
             except Exception as attempt_ex:
-                await state.log_to_status(f"Recovery attempt failed: {candidate_selector} => {attempt_ex}")
+                await state.log_to_status(f"❌ Recovery attempt failed: {candidate_selector} => {attempt_ex}")
                 logger.warning(f"[Recovery attempt failed] {candidate_selector}: {attempt_ex}")
                 continue
     except Exception as recovery_ex:
         logger.warning(f"[Recovery Logic] Failed: {recovery_ex}")
-    await state.log_to_status(f"All recovery attempts failed for action: {label}")
-    # ask api to help
+
+    await state.log_to_status(f"⛔ All recovery attempts failed for action: {label}")
+
     try:
-        await state.log_to_status(f"Requesting API assistance for action: {label}")
+        await state.log_to_status(f"🤖 Requesting API assistance for action: {label}")
         new_selectors = await call_selector_recovery_api(step)
-        await state.log_to_status(f"API returned {len(new_selectors)} new selectors")
+        await state.log_to_status(f"🤖 API returned {len(new_selectors)} new selectors")
         for idx, sel_obj in enumerate(new_selectors):
             new_selector = sel_obj["selector"]
             logger.info(f"Trying recovered selector from API: {new_selector}")
-            await state.log_to_status(f"Trying API recovered selector {idx + 1}: {new_selector}")
-            
+            await state.log_to_status(f"🤖 Trying API recovered selector {idx + 1}: {new_selector}")
             await try_action(page, new_selector, step)
             await confirm_selector_worked(url=page.url, original_selector=sel)
             return
     except Exception as api_ex:
-        await state.log_to_status(f"API recovery attempt failed for {idx + 1}: {api_ex}")
+        await state.log_to_status(f"❌ API recovery attempt failed for {idx + 1}: {api_ex}")
         logger.warning(f"[Recovery API] Failed: {api_ex}")
 
     raise Exception(f"All attempts failed for action '{action}' on selector: {sel}")
@@ -374,7 +373,7 @@ async def extract_grid_data(page, source_step: dict):
     column_mappings = source_step.get("columnMappings", [])
     filters = source_step.get("filters", [])
     name = source_step.get("name", "Unnamed Extract")
-    await state.log_to_status(f"Extracting grid data from: {name} ")
+    await state.log_to_status(f"📊 Extracting grid data from: {name}")
     extracted_rows = []
     filtered_row_locators = []
 
@@ -441,15 +440,17 @@ async def extract_grid_data(page, source_step: dict):
                     break
 
             if passed_filters:
-                await state.log_to_status(f"Filter passed for row {i + 1}: {row_data}")
+                await state.log_to_status(f"✅ Filter passed for row {i + 1}: {row_data}")
                 extracted_rows.append(row_data)
                 filtered_row_locators.append(row)
-        await state.log_to_status(f"[total rows found] {row_count}")        
-        await state.log_to_status(f"[extract_grid_data] {len(extracted_rows)} rows after filtering")
+
+        await state.log_to_status(f"📦 [total rows found] {row_count}")
+        await state.log_to_status(f"🔍 [extract_grid_data] {len(extracted_rows)} rows after filtering")
+
         # ✅ Cache result for use in get_smart_locator
         if not hasattr(page.context, "_botflows_filtered_rows"):
             page.context._botflows_filtered_rows = {}
-        
+
         source_step_id = source_step.get("id")  # Or however you're identifying the extract step
 
         page.context._botflows_filtered_rows[source_step_id] = {
@@ -458,7 +459,7 @@ async def extract_grid_data(page, source_step: dict):
             "columnMappings": column_mappings
         }
         logger.debug(f"[Cache] Stored filtered rows under source ID: {source_step_id}")
-        
+
         return extracted_rows
 
     except Exception as ex:
@@ -510,7 +511,8 @@ async def replay_flow(json_str: str, is_preview: bool = False):
         top_level_steps = [s for s in flow if not s.get("parentId")]
         navigate_step = next((s for s in top_level_steps if s.get("type") == "navigate" and s.get("url")), None)
         initial_url = navigate_step["url"] if navigate_step else "about:blank"
-        await state.log_to_status(f"Launching browser for replay to: {initial_url}")
+        await state.log_to_status(f"🚀 Launching browser for replay to: {initial_url}")
+        
         if is_preview:
             browser, page = await launch_preview_window(p, initial_url=initial_url)
         else:
@@ -521,19 +523,22 @@ async def replay_flow(json_str: str, is_preview: bool = False):
 
         for step in top_level_steps:
             if len(browser.contexts) == 0 or all(len(ctx.pages) == 0 for ctx in browser.contexts):
-                state.log_to_status(f"Oops, looks like Browser is closed!")
+                state.log_to_status(f"🛑 Oops, looks like Browser is closed!")
                 raise Exception(f"Oops, looks like Browser is closed!")
             # Skip the navigate step since we already opened the URL
             if step.get("type") == "navigate" and step.get("url") == initial_url:
                 continue
             await handle_step(step, page)
+
         if is_preview:
-            await state.log_to_status(f"Preview replay finished, you can continue recording now...")
+            await state.log_to_status(f"✅ Preview replay finished, you can continue recording now...")
         else:
-            await state.log_to_status(f"Replay finished.")
+            await state.log_to_status(f"✅ Replay finished.")
+
         logger.info("Replay complete.")
         await asyncio.sleep(2)
         await close_chrome()
+
         if is_preview:
             if state.active_page:
                 await state.active_page.evaluate("""() => {

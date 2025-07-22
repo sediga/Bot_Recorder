@@ -37,6 +37,11 @@ def get_headers():
         headers["x-api-key"] = API_KEY  # default for now
     return headers
 
+def save_config(cfg):
+    # os.makedirs(_config_path, exist_ok=True)
+    with open(_config_path, "w") as f:
+        json.dump(cfg, f, indent=2)
+
 def get_agent_config():
     global _agent_config
     if _agent_config is not None:

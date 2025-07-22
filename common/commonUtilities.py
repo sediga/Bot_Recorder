@@ -242,7 +242,7 @@ async def try_action(page, sel, step, source_hint=None):
 
     action = step.get("action", "").lower()
     if step.get("isSmartColumn"):
-        await state.log_to_status(f"[Smart Column] Performing '{action}' on smart column")
+        await state.log_to_status(f"🧠 [Smart Column] Performing '{action}' on smart column")
         matchedLocator = await get_smart_locator(page, step)
     else:
         locator = await get_locator(page, sel, source_hint or "")
@@ -289,10 +289,10 @@ async def try_action(page, sel, step, source_hint=None):
         for key, val in row_data.items():
             placeholder = f"{{{{{key}}}}}"
             if placeholder in raw_value:
-                await state.log_to_status(f"applying transform on {val} with {transform_type}:{transform}")
+                await state.log_to_status(f"🛠️ Applying transform on {val} with {transform_type}:{transform}")
                 final_val = apply_transformations(val, transform_type, transform)
                 raw_value = raw_value.replace(placeholder, final_val)
-                await state.log_to_status(f"[Dynamic Value] Replaced {placeholder} with: {final_val}")
+                await state.log_to_status(f"🔁 [Dynamic Value] Replaced {placeholder} with: {final_val}")
 
         value = raw_value
 

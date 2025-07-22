@@ -11,7 +11,7 @@ import asyncio
 import os
 from playwright.async_api import async_playwright
 from common import state
-from common.config import get_agent_config
+from common.config import get_agent_config, save_config
 
 config = get_agent_config()
 use_bundled = config.get("use_bundled_chrome", True)
@@ -162,15 +162,17 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is
             chrome_path = chrome_path_from_config or find_chrome_executable()
             if not chrome_path or not os.path.exists(chrome_path):
                 try:
-                    state.log_to_status(f"Default browser path to user profile seems different, updating it...")
+                    await state.log_to_status("🔄 Default browser path to user profile seems different, updating it...")
                     chrome_path = find_chrome_executable()
                     if not chrome_path or not os.path.exists(chrome_path):
-                        await state.log_to_status(f"Could not locate user chrome! Using bundled chrome, if you want to use your profile, please go to agent settings and configure")
+                        await state.log_to_status("🧭 Could not locate user Chrome! Using bundled Chrome — if you want to use your profile, please go to agent settings and configure.")
                         browser = await playwright.chromium.launch(headless=False)
                         return browser
+                    config["chrome_path"] = chrome_path
+                    save_config(config)
                 except Exception as e:
-                    await state.log_to_status(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
-                    logger.error(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
+                    await state.log_to_status("❌ Failed to open bundled Chrome too. Please open settings and configure Chrome path.")
+                    logger.error("failed to open bundeled chrome too. Please open settings and configure chrome path")
                     raise FileNotFoundError("Chrome executable not found in config or standard locations.")
             if is_recording:
                 state.chrome_process = subprocess.Popen([
@@ -184,15 +186,14 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is
                 ])
             else:
                 state.temp_chrome_process = subprocess.Popen([
-                chrome_path,
-                f"--remote-debugging-port={port}",
-                f"--user-data-dir={user_profile_dir}",
-                "--no-first-run",
-                "--no-default-browser-check",
-                "--new-window",
-                "about:blank"
-            ])
-
+                    chrome_path,
+                    f"--remote-debugging-port={port}",
+                    f"--user-data-dir={user_profile_dir}",
+                    "--no-first-run",
+                    "--no-default-browser-check",
+                    "--new-window",
+                    "about:blank"
+                ])
 
             wait_for_debug_port(port)
             logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
@@ -201,14 +202,14 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is
 
         state.current_browser = await playwright.chromium.connect_over_cdp(f"http://localhost:{port}")
     except FileNotFoundError as ex:
-        await state.log_to_status(f"Browser not found, attempting bundled chrome")
-        logger.error(f"Browser not found, attempting bundled chrome")
+        await state.log_to_status("🚫 Browser not found, attempting bundled Chrome...")
+        logger.error("Browser not found, attempting bundled chrome")
         try:
             browser = await playwright.chromium.launch(headless=False)
             return browser
         except Exception as e:
-            await state.log_to_status(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
-            logger.error(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
+            await state.log_to_status("❌ Failed to open bundled Chrome too. Please open settings and configure Chrome path.")
+            logger.error("failed to open bundeled chrome too. Please open settings and configure chrome path")
     return state.current_browser
 
 

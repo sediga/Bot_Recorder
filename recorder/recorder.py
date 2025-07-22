@@ -120,7 +120,7 @@ async def inject_scripts(page):
         await page.add_init_script(selector_script_path.read_text("utf-8"))
         await page.add_init_script(recorder_script_path.read_text("utf-8"))
         await page.evaluate("window.__recorderInjected = true")
-        logger.info("Recorder script injected")
+        logger.info("🎯 Recorder script injected")
     except Exception as e:
         logger.error(f"Script injection failed: {e}")
 
@@ -169,7 +169,7 @@ async def handle_standard_event(page, event):
         await page.evaluate("window.__pendingValidation = false")
     except Exception as e:
         logger.warning(f"Failed to clear pendingValidation: {e}")
-    await state.log_to_status(f"Event recorded: {event.get('type')} on {event.get('selector')}")
+    await state.log_to_status(f"📝 Event recorded: {event.get('type')} on {event.get('selector')}")
     await broadcast_to_clients(event)
 
 async def handle_target_picked(page, event):
@@ -193,7 +193,7 @@ async def handle_target_picked(page, event):
             return
 
         row_selector = f"{grid_selector} [role='row'], {grid_selector} tr"
-        await state.log_to_status(f"Grid detected with {len(column_headers)} columns. Analyzing rows...")
+        await state.log_to_status(f"📊 Grid detected with {len(column_headers)} columns. Analyzing rows...")
         if not await validate_selector(page, row_selector):
             logger.warning(f"Row selector failed: {row_selector}")
             await page.evaluate("window.finishPicker && window.finishPicker()")
@@ -246,7 +246,7 @@ async def handle_target_picked(page, event):
                 "extractable": bool(matched_selector),
                 "preview": txt or ""
             })
-        await state.log_to_status(f"Grid analysis complete. {len(column_mappings)} columns mapped.")
+        await state.log_to_status(f"✅ Grid analysis complete. {len(column_mappings)} columns mapped.")
         await broadcast_to_clients({
             "type": "targetPicked",
             "metadata": {
@@ -490,7 +490,7 @@ async def handle_url_change(source, new_url):
 async def record(url: str):
     global recorded_events
     recorded_events = []
-    logger.info(f"[Recorder] Starting session: {url}")
+    logger.info(f"[Recorder] 🚀 Starting session: {url}")
     await flush_standard_event_queue()
     state.is_replaying = False
     if state.worker_task:
@@ -506,7 +506,7 @@ async def record(url: str):
         state.worker_task = asyncio.create_task(standard_event_worker())
 
     async with async_playwright() as p:
-        await state.log_to_status("Launching browser...")
+        await state.log_to_status("🚀 Launching browser...")
         browser = await launch_chrome(p, is_recording=True)
         context = browser.contexts[0] if browser.contexts else await browser.new_context(no_viewport=True)
         state.current_browser = browser
@@ -537,7 +537,7 @@ async def record(url: str):
 
         # await page.goto("about:blank")
         # await page.evaluate(overlay_script)
-        await state.log_to_status(f"Navigating to {url} ...")
+        await state.log_to_status(f"🌐 Navigating to {url} ...")
         try:
             await page.goto(url, timeout=10000)
         except Exception as e:
@@ -600,7 +600,7 @@ async def record(url: str):
         page.on("framenavigated", lambda frame: asyncio.create_task(reinject_on_spa_change(frame.url)))
 
         state.is_recording = True
-        await state.log_to_status("Recording started. Interact with the page to capture events.")
+        await state.log_to_status("🎬 Recording started. Interact with the page to capture events.")
         async def wait_for_tab_close(): 
             while not page.is_closed():
                 await asyncio.sleep(1)
@@ -610,7 +610,7 @@ async def record(url: str):
             state.pick_mode = False
             state.current_loop = None
             logger.info("Tab closed, recording stopped")
-            await state.log_to_status("Tab closed, recording stopped")
+            await state.log_to_status("🛑 Tab closed, recording stopped")
 
         try:
             await wait_for_tab_close()

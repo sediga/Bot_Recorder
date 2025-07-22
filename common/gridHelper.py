@@ -282,7 +282,7 @@ async def matches_filter(row_data, filt, col_type="text"):
     val = filt.get("value", "")
     var = filt.get("variable", "")
     actual_val = row_data.get(col, "")
-    await state.log_to_status(f"Filtering column '{col}' with op '{op}' against value '{val}' (actual: '{actual_val}')")
+    await state.log_to_status(f"🔍 Filtering column '{col}' with op '{op}' against value '{val}' (actual: '{actual_val}')")
     try:
         # Boolean or image
         if op in ["is true", "is false"]:

@@ -99,7 +99,7 @@ async def replay_by_json(request: Request, authorization: str = Header(None)):
             connect_to_dashboard_ws("log")
         )
 
-        await state.log_to_status(f"Starting replay...")
+        await state.log_to_status(f"🎬 Starting replay...")
 
         json_str = (await request.body()).decode("utf-8")
         await replay_flow(json_str)
@@ -112,9 +112,9 @@ async def replay_by_json(request: Request, authorization: str = Header(None)):
 async def preview_replay(req: Request, authorization: str = Header(None)):
     try:
         if not state.is_recording:
-            await state.log_to_status(f"Preview replay can only be started during recording.")
+            await state.log_to_status(f"🧪 Preview replay can only be started during recording.")
             raise HTTPException(status_code=400, detail="Not recording")
-        await state.log_to_status(f"Starting preview replay, Recording will be paused till replay is finished... Replay will not stop even browser is closed. so, wait for the replay to finish...")
+        await state.log_to_status(f"⏯️ Starting preview replay, Recording will be paused till replay is finished... Replay will not stop even browser is closed. so, wait for the replay to finish...")
         if not authorization:
             raise HTTPException(status_code=401, detail="Missing Authorization header")
 
@@ -171,7 +171,7 @@ def get_status(request: Request):
 @app.post("/api/target-pick-mode")
 async def enable_target_pick_mode(request: Request):
     try:
-        await state.log_to_status(f"Select the grid you want to record in the target webpage...")
+        await state.log_to_status(f"🎯 Select the grid you want to record in the target webpage...")
         state.pick_mode = True
         data = await request.json()
         if data.get("mode") != "start":
@@ -200,7 +200,7 @@ async def enable_target_pick_mode(request: Request):
 
 @app.post("/api/target-pick-done")
 async def disable_pick_mode():
-    await state.log_to_status(f"Target picked.")
+    await state.log_to_status(f"📍 Target picked.")
     state.pick_mode = False
     try:
         if state.active_page:
@@ -219,7 +219,7 @@ class StartLoopRequest(BaseModel):
 @app.post("/api/start-loop-recording")
 async def start_loop_recording(request: Request):
     data = await request.json()
-    await state.log_to_status(f"recording in a loop, please continue recording and click finish loop when done....")
+    await state.log_to_status(f"🔁 recording in a loop, please continue recording and click finish loop when done....")
     state.current_loop = {
         "active": True,
         "loopId": data.get("loopId"),
@@ -235,7 +235,7 @@ async def start_loop_recording(request: Request):
 
 @app.post("/api/end-loop-recording")
 async def start_loop_recording(request: Request):
-    await state.log_to_status(f"loop recording finished, please continue recording the rest of the flow....")
+    await state.log_to_status(f"✅ loop recording finished, please continue recording the rest of the flow....")
     state.current_loop = {
         "active": False,
         "loopId": None,
