@@ -1,5 +1,5 @@
 import asyncio
-import websockets
+from websockets.client import WebSocketClientProtocol
 import logging
 import json
 import base64
@@ -63,7 +63,7 @@ async def connect_to_dashboard_ws(channel="event"):
 
     # Close previous socket on same channel, if any
     old_socket = state.connections[user_id].get(channel)
-    if isinstance(old_socket, websockets.WebSocketClientProtocol) and not old_socket.closed:
+    if isinstance(old_socket, WebSocketClientProtocol) and not old_socket.closed:
         try:
             await old_socket.close()
             logger.info(f"[WS] Closed old connection on channel '{channel}' for user {user_id}")

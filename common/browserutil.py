@@ -1,15 +1,22 @@
-import asyncio
+
 import os
-import shutil
-import socket
 import subprocess
-import time
-import psutil
 import logging
 import json
+import time
+import socket
+import shutil
+import psutil
+import asyncio
+import os
 from playwright.async_api import async_playwright
-
 from common import state
+from common.config import get_agent_config
+
+config = get_agent_config()
+use_bundled = config.get("use_bundled_chrome", True)
+chrome_path_from_config = config.get("chrome_path")
+manifest_url = config.get("UPDATE_MANIFEST_URL")
 
 logger = logging.getLogger(__name__)
 
@@ -72,15 +79,6 @@ def wait_for_debug_port(port=DEFAULT_PORT, timeout=10):
         time.sleep(0.5)
     raise RuntimeError(f"Chrome did not open debugging port {port} within timeout.")
 
-import os
-import subprocess
-import logging
-import json
-import time
-import socket
-import shutil
-import psutil
-
 logger = logging.getLogger(__name__)
 DEFAULT_PORT = 9222
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "../agent_config.json")
@@ -97,7 +95,13 @@ def get_default_profile_dir():
     return os.path.expanduser(r"~\AppData\Local\Botflows\ChromeProfile")
 
 def find_chrome_executable():
-    chrome_path = shutil.which("chrome") or shutil.which("chrome.exe")
+    chrome_path = (
+        shutil.which("chrome") or
+        shutil.which("chrome.exe") or
+        shutil.which("google-chrome") or
+        shutil.which("chromium") or
+        shutil.which("chromium-browser")
+    )
     if chrome_path and os.path.exists(chrome_path):
         return chrome_path
 
@@ -142,26 +146,44 @@ def is_chrome_debug_running(port=DEFAULT_PORT):
     return False
 
 # ✅ Final unified launch method
-async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is_recording=False):
-    config = load_agent_config()
-    use_bundled = config.get("use_bundled_chrome", True)
-
+async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is_recording=True):
     if use_bundled:
         logger.info("Launching bundled Chromium via Playwright.")
-        state.current_browser = await playwright.chromium.launch(headless=False)
-        return state.current_browser
+        browser = await playwright.chromium.launch(headless=False)
+        return browser
 
-    if user_profile_dir is None:
-        user_profile_dir = get_default_profile_dir()
+    try:
+        if user_profile_dir is None:
+            user_profile_dir = get_default_profile_dir()
 
-    os.makedirs(user_profile_dir, exist_ok=True)
+        os.makedirs(user_profile_dir, exist_ok=True)
 
-    if not is_chrome_debug_running(port):
-        chrome_path = config.get("chrome_path") or find_chrome_executable()
-        if not chrome_path or not os.path.exists(chrome_path):
-            raise FileNotFoundError("Chrome executable not found in config or standard locations.")
-        if is_recording:
-            state.chrome_process = subprocess.Popen([
+        if not is_chrome_debug_running(port):
+            chrome_path = chrome_path_from_config or find_chrome_executable()
+            if not chrome_path or not os.path.exists(chrome_path):
+                try:
+                    state.log_to_status(f"Default browser path to user profile seems different, updating it...")
+                    chrome_path = find_chrome_executable()
+                    if not chrome_path or not os.path.exists(chrome_path):
+                        await state.log_to_status(f"Could not locate user chrome! Using bundled chrome, if you want to use your profile, please go to agent settings and configure")
+                        browser = await playwright.chromium.launch(headless=False)
+                        return browser
+                except Exception as e:
+                    await state.log_to_status(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
+                    logger.error(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
+                    raise FileNotFoundError("Chrome executable not found in config or standard locations.")
+            if is_recording:
+                state.chrome_process = subprocess.Popen([
+                    chrome_path,
+                    f"--remote-debugging-port={port}",
+                    f"--user-data-dir={user_profile_dir}",
+                    "--no-first-run",
+                    "--no-default-browser-check",
+                    "--new-window",
+                    "about:blank"
+                ])
+            else:
+                state.temp_chrome_process = subprocess.Popen([
                 chrome_path,
                 f"--remote-debugging-port={port}",
                 f"--user-data-dir={user_profile_dir}",
@@ -170,33 +192,32 @@ async def launch_chrome(playwright, port=DEFAULT_PORT, user_profile_dir=None, is
                 "--new-window",
                 "about:blank"
             ])
+
+
+            wait_for_debug_port(port)
+            logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
         else:
-            state.temp_chrome_process = subprocess.Popen([
-            chrome_path,
-            f"--remote-debugging-port={port}",
-            f"--user-data-dir={user_profile_dir}",
-            "--no-first-run",
-            "--no-default-browser-check",
-            "--new-window",
-            "about:blank"
-        ])
+            logger.info(f"Reusing existing Chrome with --remote-debugging-port={port}")
 
-
-        wait_for_debug_port(port)
-        logger.info(f"Launched Chrome with debugging port {port} and profile: {user_profile_dir}")
-    else:
-        logger.info(f"Reusing existing Chrome with --remote-debugging-port={port}")
-
-    browser = await playwright.chromium.connect_over_cdp(f"http://localhost:{port}")
-    return browser
+        state.current_browser = await playwright.chromium.connect_over_cdp(f"http://localhost:{port}")
+    except FileNotFoundError as ex:
+        await state.log_to_status(f"Browser not found, attempting bundled chrome")
+        logger.error(f"Browser not found, attempting bundled chrome")
+        try:
+            browser = await playwright.chromium.launch(headless=False)
+            return browser
+        except Exception as e:
+            await state.log_to_status(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
+            logger.error(f"failed to open bundeled chrome too. Please open settings and configure chrome path")
+    return state.current_browser
 
 
 async def launch_replay_window(playwright, initial_url="about:blank", port=DEFAULT_PORT):
     logger.info("[Replay] Launching browser for replay")
-    browser = await launch_chrome(playwright, port=port)
+    browser = await launch_chrome(playwright, port=port, user_profile_dir=None, is_recording=False)
 
     # Case 1: Using real Chrome via connect_over_cdp
-    if hasattr(browser, "new_browser_cdp_session"):
+    if not use_bundled:
         logger.info("[Replay] Detected CDP session")
 
         # Try to find an existing page
@@ -235,10 +256,16 @@ async def launch_replay_window(playwright, initial_url="about:blank", port=DEFAU
 
 async def launch_preview_window(playwright, initial_url="about:blank", port=DEFAULT_PORT):
     logger.info("[Replay] Launching browser for preview")
-    browser = await launch_chrome(playwright, port=port)
+    browser = await launch_chrome(playwright, port=port, is_recording=False)
+
+    if use_bundled:
+        context = await browser.new_context()
+        page = await context.new_page()
+        await page.goto(initial_url)
+        return browser, page
 
     # Case 1: Using real Chrome via connect_over_cdp — must create new window via CDP
-    if hasattr(browser, "new_browser_cdp_session"):
+    if not use_bundled:
         logger.info("[Replay] Detected CDP session — opening new window via Target.createTarget")
 
         # Get current pages to detect the new one later
@@ -246,10 +273,11 @@ async def launch_preview_window(playwright, initial_url="about:blank", port=DEFA
 
         # Open new window using CDP
         cdp_session = await browser.new_browser_cdp_session()
-        await cdp_session.send("Target.createTarget", {
+        result = await cdp_session.send("Target.createTarget", {
             "url": initial_url,
             "newWindow": True
         })
+        state.target_id = result["targetId"]
 
         # Wait for the new window to register as a Playwright Page
         for _ in range(10):
@@ -282,9 +310,10 @@ async def close_chrome(close_all=False):
             state.temp_chrome_process.kill()
         state.temp_chrome_process = None
 
-    if state.current_browser:
+    if(state.target_id):
         try:
-            await state.current_browser.close()
+            cdp_session = await state.current_browser.new_browser_cdp_session()
+            await cdp_session.send("Target.closeTarget", {"targetId": state.target_id})
+            state.target_id = None
         except Exception as e:
-            logger.warning(f"Failed to close browser: {e}")
-        state.current_browser = None
+            logger.warning(f"Failed to close target window: {e}")

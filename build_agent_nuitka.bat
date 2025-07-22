@@ -10,5 +10,7 @@ nuitka api_server.py ^
   --include-data-dir=javascript=javascript ^
   --include-data-file=agent_config.json=agent_config.json ^
   --include-data-dir=myenv/Lib/site-packages/dateparser/data=dateparser/data ^
-  --include-data-file=ui/config_ui.exe=ui/config_ui.exe ^
+  --include-data-dir=myenv\Lib\site-packages\playwright\driver\package\.local-browsers=playwright/driver/package/.local-browsers ^
+  --include-data-files=myenv/Lib/site-packages/playwright/driver/package/.local-browsers/chromium-1169/chrome-win/*.dll=playwright/driver/package/.local-browsers/chromium-1169/chrome-win ^
+  --include-data-files=myenv/Lib/site-packages/playwright/driver/package/.local-browsers/chromium-1169/chrome-win/*.exe=playwright/driver/package/.local-browsers/chromium-1169/chrome-win ^
   --show-progress

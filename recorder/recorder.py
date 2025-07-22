@@ -510,7 +510,8 @@ async def record(url: str):
         browser = await launch_chrome(p, is_recording=True)
         context = browser.contexts[0] if browser.contexts else await browser.new_context(no_viewport=True)
         state.current_browser = browser
-        page = browser.contexts[0].pages[0]  # or browser.contexts[0].new_page() if none exist
+        pages = context.pages
+        page = pages[0] if pages else await context.new_page()  # or browser.contexts[0].new_page() if none exist
 
         # Close all other tabs if needed
         for p in browser.contexts[0].pages[1:]:
@@ -537,7 +538,14 @@ async def record(url: str):
         # await page.goto("about:blank")
         # await page.evaluate(overlay_script)
         await state.log_to_status(f"Navigating to {url} ...")
-        await page.goto(url)
+        try:
+            await page.goto(url, timeout=10000)
+        except Exception as e:
+            logger.error(f"[Recorder] Failed to navigate to URL: {url} - {e}")
+            await state.log_to_status(f"❌ Failed to navigate: {url}")
+            # Optionally, show a visible toast/alert in dashboard via websocket
+            return
+
 
         # Wait for page to stabilize (first visually, then network-wise)
         await page.wait_for_load_state("domcontentloaded")

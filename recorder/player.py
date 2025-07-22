@@ -520,6 +520,9 @@ async def replay_flow(json_str: str, is_preview: bool = False):
         page.context._botflows_steps_by_id = steps_by_id
 
         for step in top_level_steps:
+            if len(browser.contexts) == 0 or all(len(ctx.pages) == 0 for ctx in browser.contexts):
+                state.log_to_status(f"Oops, looks like Browser is closed!")
+                raise Exception(f"Oops, looks like Browser is closed!")
             # Skip the navigate step since we already opened the URL
             if step.get("type") == "navigate" and step.get("url") == initial_url:
                 continue

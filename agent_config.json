@@ -1,6 +1,9 @@
 {
-  "use_bundled_chrome": false,
+  "use_bundled_chrome": true,
+  "chrome_path": "C:/Program Files(x86)/Google/Chrome/Application/chrome.exe",
   "apiBaseUrl": "https://botflowsdashboardapi.onrender.com",
-  "authType": "apiKey",                
-  "apiKey": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"    
+  "authType": "apiKey",
+  "apiKey": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR",
+  "UPDATE_MANIFEST_URL": "api/agent/version",
+  "AGENT_VERSION": "1.0.0"
 }

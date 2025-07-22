@@ -1,6 +1,10 @@
+import os
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"  # ✅ must come before any Playwright imports
+
+import httpx
+import requests
 import atexit
 import logging
-import os
 import sys
 import json
 import asyncio
@@ -9,9 +13,10 @@ import tempfile
 import jwt
 import psutil
 import pathlib
-
+import tkinter as tk
+import time
+from tkinter import ttk, filedialog, messagebox
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
-from datetime import datetime
 from pathlib import Path
 from fastapi import FastAPI, HTTPException, Header, Query, WebSocket, Request, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,6 +31,16 @@ from common.config import AUTH_TYPE
 from common.state import extract_user_id
 from common import state
 from common.ws_client import connect_to_dashboard_ws
+from ui.config_ui import open_config_ui
+from common.config import get_agent_config, get_api_url, get_headers
+
+config = get_agent_config()
+use_bundled = config.get("use_bundled_chrome", True)
+chrome_path_from_config = config.get("chrome_path")
+UPDATE_URL = config.get("UPDATE_MANIFEST_URL")
+AGENT_VERSION = config.get("AGENT_VERSION")
+
+logger = logging.getLogger(__name__)
 
 logger = get_logger(__name__)
 SETTINGS_LOCK_FILE = os.path.join(tempfile.gettempdir(), "botflows_settings.lock")
@@ -61,7 +76,6 @@ async def start_recording(req: RecordRequest, authorization: str = Header(None))
             connect_to_dashboard_ws("event"),
             connect_to_dashboard_ws("log")
         )
-
 
         logger.info(f"Starting recording for: {req.url}")
         await close_chrome(True)            
@@ -114,6 +128,13 @@ async def preview_replay(req: Request, authorization: str = Header(None)):
         await replay_flow(json_str.decode("utf-8"), is_preview=True)
         return {"status": "ok"}
     except Exception as e:
+        if state.active_page:
+            await state.active_page.evaluate("""() => {
+                window.__botflows_replaying__ = false;
+                const div = document.getElementById('botflows-replay-overlay');
+                if (div) div.remove();
+            }""")
+        state.is_previewing = False
         return {"status": "error", "details": str(e)}
 
 @app.post("/api/stop")
@@ -265,9 +286,78 @@ if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
     from PIL import Image
     import winreg
     from uvicorn import Config, Server
+    import os
+    import tempfile
+    from win10toast import ToastNotifier
+    
+    APP_DIR = os.path.join(os.getenv("LOCALAPPDATA"), "BotflowsAgent")
+    VERSION_FILE = os.path.join(APP_DIR, "version.txt")
+
+    # Ensure folder exists
+    os.makedirs(APP_DIR, exist_ok=True)
+
+    # Save version.txt
+    with open(VERSION_FILE, "w") as f:
+        f.write(AGENT_VERSION)
 
     print(jwt.__file__)
-    
+
+    def is_newer(latest, current):
+        def parse(v): return tuple(map(int, v.split(".")))
+        return parse(latest) > parse(current)
+
+    def check_for_updates():
+        try:
+            res = requests.get(get_api_url(UPDATE_URL), headers=get_headers(), timeout=5)
+            if res.status_code != 200:
+                print("[Updater] Failed to fetch version info.")
+                return None
+
+            data = {k.lower(): v for k, v in res.json().items()}
+            latest = data.get("latest")
+            if latest and is_newer(latest, AGENT_VERSION):
+                print(f"[Updater] New version available: {latest}")
+                return data  # send version info back
+            else:
+                print("[Updater] Agent is up-to-date.")
+                return None
+        except Exception as e:
+            print("[Updater] Update check failed:", e)
+            return None
+
+    toaster = ToastNotifier()
+
+    def show_notification(title, msg, duration=5):
+        try:
+            toaster.show_toast(title, msg, duration=duration, threaded=True)
+        except Exception as e:
+            print(f"[Notifier] Failed to show notification: {e}")
+
+    def download_and_install(url):
+        try:
+            show_notification("Botflows Agent", "Downloading update...")
+            print(f"[Updater] Downloading installer from {url}")
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                temp_path = os.path.join(tempfile.gettempdir(), "BotflowsAgentInstaller.exe")
+                with open(temp_path, "wb") as f:
+                    for chunk in response.iter_content(1024 * 1024):
+                        f.write(chunk)
+                print(f"[Updater] Installer saved to {temp_path}")
+
+                show_notification("Botflows Agent", "Installing update now...")
+
+                subprocess.Popen([temp_path, "/S"])  # Silent install
+                time.sleep(2)
+                show_notification("Botflows Agent", "Update installed. Restarting...")
+                # os._exit(0)
+            else:
+                show_notification("Botflows Agent", "Failed to download update.")
+                print(f"[Updater] Failed to download: status {response.status_code}")
+        except Exception as e:
+            show_notification("Botflows Agent", f"Update error: {str(e)}")
+            print("[Updater] Exception during install:", e)
+
     class SuppressStatusLogs(logging.Filter):
         def filter(self, record):
             return "/api/status" not in record.getMessage()
@@ -304,34 +394,7 @@ if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
         os._exit(0)
 
     def on_settings_click(icon, item):
-        if os.path.exists(SETTINGS_LOCK_FILE):
-            print("Settings already open.")
-            return
-
-        with open(SETTINGS_LOCK_FILE, "w") as f:
-            f.write("1")
-
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        settings_exe = os.path.join(base_dir, "ui", "config_ui.exe")
-        proc = None
-
-        if os.path.exists(settings_exe):
-            try:
-                proc = subprocess.Popen([settings_exe])
-            except Exception as e:
-                print(f"Error launching settings: {e}")
-        else:
-            print(f"Settings executable not found at {settings_exe}")
-
-        def clear_lock():
-            if os.path.exists(SETTINGS_LOCK_FILE):
-                os.remove(SETTINGS_LOCK_FILE)
-
-        if proc:
-            threading.Thread(target=lambda: (proc.wait(), clear_lock()), daemon=True).start()
-        else:
-            clear_lock()
-
+        open_config_ui()
 
     def add_to_startup():
         exe_path = os.path.abspath(sys.argv[0])
@@ -355,6 +418,7 @@ if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
         icon = pystray.Icon("BotflowsAgent", icon_image, "Botflows Agent", menu=(
             item("Start with Windows", lambda icon, _: add_to_startup()),
             item("Remove from Startup", lambda icon, _: remove_from_startup()),
+            item("Check for update", lambda icon, _: threading.Thread(target=run_update_check).start()),
             item("Settings", on_settings_click),
             item("Quit", quit_app),
         ))
@@ -362,6 +426,14 @@ if __name__ == "__main__" and "config_ui.py" not in sys.argv[0]:
         icon.run()
 
     threading.Thread(target=start_api, daemon=True).start()
+
+    def run_update_check():
+        update_info = check_for_updates()
+        if update_info:
+            download_and_install(update_info["downloadurl"])
+
+    threading.Thread(target=run_update_check, daemon=True).start()
+
     tray_icon()
 
     def kill_config_ui_on_exit():

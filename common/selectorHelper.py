@@ -5,6 +5,7 @@ from typing import Optional, Tuple
 from datetime import datetime
 from bs4 import BeautifulSoup
 from common import state
+from common import config
 from common.config import get_api_url, get_headers
 
 async def get_devtools_like_selector(el):
@@ -251,11 +252,6 @@ async def call_selector_recovery_api(step: dict):
 
 
 async def confirm_selector_worked(flow_id, step_index, original_selector, improved_selector):
-    headers = {
-        "Content-Type": "application/json",
-        # "x-api-key": os.getenv("BOTFLOWS_API_KEY", "")
-        "x-api-key": "u42Q7gXgVx8fN1rLk9eJ0cGm5wYzA2dR"
-    }
     try:
         async with httpx.AsyncClient() as client:
             res = await client.post(
@@ -266,7 +262,7 @@ async def confirm_selector_worked(flow_id, step_index, original_selector, improv
                     "originalSelector": original_selector,
                     "improvedSelector": improved_selector
                 },
-                timeout=10, headers=headers
+                timeout=10, headers=config.get_headers()
             )
             if res.status_code == 200:
                 print("Confirmation sent and flow updated.")

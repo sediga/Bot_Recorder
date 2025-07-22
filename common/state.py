@@ -8,6 +8,7 @@ from common.ws_client import safe_send
 
 logger = get_logger(__name__)
 
+target_id = None
 chrome_process = None
 temp_chrome_process = None
 is_recording = False
